@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Berglund Luxury War Room" />
+  <meta name="theme-color" content="#080a0f" />
+  <link rel="apple-touch-icon" href="icon-180.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>BLL War Room</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg:#080a0f; --panel:#121722; --panel2:#151b27; --line:#263143;
+      --text:#f2f4fa; --muted:#929bad; --cyan:#2da8ee; --cyan-dim:#102d42;
+      --lime:#39da88; --amber:#ff7626; --red:#ff4f57; --red-dim:#341a23;
+      --blue:#31a9f4; --shadow:rgba(0,0,0,.28); --wash:rgba(255,255,255,.025);
+      --radius:20px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg:#080a0f; --panel:#121722; --panel2:#151b27; --line:#263143;
+        --text:#f2f4fa; --muted:#929bad; --cyan:#2da8ee; --cyan-dim:#102d42;
+        --lime:#39da88; --amber:#ff7626; --red:#ff4f57; --red-dim:#341a23;
+        --blue:#31a9f4; --shadow:rgba(0,0,0,.28); --wash:rgba(255,255,255,.025);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans Condensed",sans-serif;min-height:100vh;letter-spacing:.005em}
+    /* Keep the board clear of the phone status bar / notch when running as a home-screen app */
+    body{padding-top:env(safe-area-inset-top,0px);padding-right:env(safe-area-inset-right,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px)}
+    button,input{font:inherit}
+    button{color:inherit}
+    .shell{width:min(760px,100%);margin:0 auto;padding:clamp(22px,5vw,38px)}
+    /* Brand banner: three franchise panels + logo plate */
+    .brand{position:relative;border:2px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;background:#04121c}
+    .brand::after{content:"";position:absolute;inset:auto 0 0 0;height:62%;background:linear-gradient(to top,rgba(3,12,18,.42),rgba(3,12,18,0));pointer-events:none}
+    .brand-strip{height:clamp(118px,21vw,164px)}
+    .brand-strip img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+    .brand-logo{position:absolute;z-index:1;left:16px;bottom:14px;background:#fff;border:1px solid rgba(4,18,28,.08);border-radius:10px;padding:9px 16px;line-height:0;box-shadow:0 4px 14px rgba(0,0,0,.22)}
+    .brand-logo img{display:block;height:clamp(21px,4.5vw,30px);width:auto}
+    /* Header */
+    .command{display:flex;justify-content:space-between;align-items:center;gap:22px;margin:0 0 14px}
+    .command h1{margin:0;font-size:clamp(24px,5.6vw,36px);line-height:1.02;letter-spacing:.08em;font-weight:700}
+    .kicker{font-size:clamp(11px,2.8vw,15px);line-height:1.6;letter-spacing:.26em;color:var(--muted);margin:11px 0 0;text-transform:uppercase}
+    .status{display:flex;align-items:center;gap:9px;color:var(--lime);font-size:clamp(13px,3vw,19px);font-weight:600;letter-spacing:.2em;text-align:right;white-space:nowrap;font-family:"IBM Plex Sans Condensed",sans-serif}
+    .pulse{width:16px;height:16px;border-radius:50%;background:var(--lime);box-shadow:0 0 9px rgba(57,218,136,.9),0 0 0 7px rgba(57,218,136,.07);animation:pulseGlow 2.2s ease-in-out infinite}
+    @keyframes pulseGlow{0%,100%{box-shadow:0 0 9px rgba(57,218,136,.9),0 0 0 7px rgba(57,218,136,.07)}50%{box-shadow:0 0 12px rgba(57,218,136,1),0 0 0 11px rgba(57,218,136,.13)}}
+    .updated-line{margin:14px 2px 0;color:var(--muted);font:500 11px/1.5 "IBM Plex Mono",monospace;letter-spacing:.06em}
+    /* Tabs */
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+    .tab{flex:1;border:1px solid var(--line);background:var(--panel);padding:12px;border-radius:9px;cursor:pointer;font:600 12px/1 "IBM Plex Mono",monospace;letter-spacing:.13em;color:var(--muted)}
+    .tab:hover,.tab:focus-visible{border-color:var(--cyan);color:var(--text);outline:none}
+    .tab.active{background:#202839;border-color:#39465d;color:var(--text)}
+    .view{display:none}.view.active{display:block}
+    /* Cards + metrics */
+    .card{background:var(--panel);border:2px solid var(--line);border-radius:var(--radius);box-shadow:none;overflow:hidden;position:relative}
+    .clickable{cursor:pointer;transition:border-color .18s ease,background .18s ease}
+    .clickable:hover,.clickable:focus-visible{border-color:var(--cyan);background:var(--panel2);outline:none}
+    .card-pad{padding:25px}
+    .metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:0}
+    .metric{min-height:270px;padding:25px;display:block}
+    .metric-label,.section-label{font:600 14px/1.2 "IBM Plex Mono",monospace;letter-spacing:.18em;text-transform:uppercase;color:#9ca5b8}
+    .section-label{font-size:11px}
+    .metric-value{font-size:clamp(50px,11vw,68px);font-weight:700;line-height:.96;letter-spacing:-.04em;margin:18px 0 22px;white-space:nowrap}
+    .metric-sub{display:block;font-size:20px;line-height:1.35;color:var(--muted)}
+    .metric-sub strong{color:var(--text);font-weight:600}
+    .metric .tap{display:block;margin-top:15px;color:#536071;font:500 13px/1.2 "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase}
+    .negative{color:var(--red)}.positive{color:var(--lime)}.warning{color:var(--amber)}.cyan{color:var(--cyan)}
+    .metric-new .metric-value{color:var(--amber)}
+    .metric-used .metric-value{color:var(--blue)}
+    .metric-units{border-color:#294e69}.metric-units .metric-value{color:var(--cyan)}
+    .metric-total{border-color:#245e3b}.metric-total .metric-value{color:var(--lime)}
+    .pending{color:var(--muted)}
+    .units-breakdown{display:none}
+    .metric-units.is-split .units-summary{display:none}
+    .metric-units.is-split .units-breakdown{display:block}
+    .units-split{display:grid;grid-template-columns:1fr 1fr;margin:22px 0 18px}
+    .units-part{min-width:0}
+    .units-part+.units-part{border-left:1px solid var(--line);padding-left:20px}
+    .units-type{display:block;font:600 11px/1.2 "IBM Plex Mono",monospace;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+    .units-value{display:block;font-size:clamp(44px,9vw,60px);font-weight:700;line-height:1;margin:10px 0 7px;letter-spacing:-.05em}
+    .units-part:first-child .units-value{color:var(--amber)}.units-part:last-child .units-value{color:var(--blue)}
+    .units-pace{display:block;color:var(--muted);font-size:14px}
+    /* Split layout cards */
+    .split-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+    .span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-7{grid-column:span 7}.span-12{grid-column:span 12}
+    .card-head{display:flex;justify-content:space-between;gap:12px;align-items:start;margin-bottom:18px}
+    .card-title{font-size:25px;font-weight:700;letter-spacing:-.02em;margin:4px 0 0}
+    .tap{color:var(--cyan);font:500 10px/1.2 "IBM Plex Mono",monospace;white-space:nowrap;letter-spacing:.1em}
+    .footnote{margin:15px 2px 0;color:var(--muted);font:500 10px/1.5 "IBM Plex Mono",monospace}
+    /* Summary + inventory tiles */
+    .sum-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .health{background:var(--wash);border:1px solid var(--line);border-radius:9px;padding:15px}
+    .health-num{display:block;font-size:clamp(20px,2.5vw,27px);font-weight:700;line-height:1;letter-spacing:-.03em;white-space:nowrap}
+    .health-label{display:block;margin-top:9px;color:var(--muted);font:600 9.5px/1.4 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+    .health-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+    .big-slot{font-size:clamp(50px,11vw,68px);font-weight:700;line-height:.96;letter-spacing:-.04em}
+    /* NEW tab inventory row — the four cards stay locked in one row of four at every width */
+    .inv-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .inv-card{padding:20px;display:flex;flex-direction:column}
+    .inv-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--line)}
+    .inv-card.inv-bmw::before{background:#2e9be6}
+    .inv-card.inv-benz::before{background:#3ecf6f}
+    .inv-card.inv-volvo::before{background:linear-gradient(180deg,#eef1f6 0,#454c58 26%,#05070a 62%,#05070a 100%)}
+    .inv-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;min-height:38px}
+    .inv-badge{width:38px;height:38px;flex:0 0 auto;display:block}
+    .inv-badge-wide{width:42px;height:30px;margin-top:4px}
+    .inv-name{font-size:19px;font-weight:700;letter-spacing:-.01em;margin:13px 0 0;line-height:1.15}
+    .inv-bmw .inv-name{color:var(--red)}
+    .inv-benz .inv-name{color:var(--lime)}
+    .inv-volvo .inv-name{color:var(--amber)}
+    .inv-num{font-size:clamp(36px,5.5vw,58px);font-weight:700;line-height:1;letter-spacing:-.04em;margin:12px 0 9px}
+    .inv-sub{display:block;color:var(--muted);font-size:14px;line-height:1.35}
+    /* Used Health Report table (DealersLink age buckets) */
+    .health-table{width:100%;border-collapse:collapse}
+    .health-table th{color:var(--muted);font:600 10px/1.2 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;text-align:right;padding:2px 10px 10px;border-bottom:1px solid var(--line)}
+    .health-table th:first-child{text-align:left;padding-left:0}
+    .health-table th:last-child{padding-right:0}
+    .health-table td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:right;font:600 14px/1.2 "IBM Plex Mono",monospace;white-space:nowrap}
+    .health-table td:first-child{text-align:left;padding-left:0;font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:600;font-size:16px}
+    .health-table td:last-child{padding-right:0}
+    .health-table tbody tr:last-child td{border-bottom:0}
+    .health-table tr.total td{border-top:2px solid var(--line);color:var(--text);font-weight:700}
+    .age-dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:9px;vertical-align:baseline}
+    .age-dot.fresh{background:var(--lime)}
+    .age-dot.mid{background:var(--amber)}
+    .age-dot.old{background:var(--red)}
+    /* Deal table */
+    .deal-list{display:grid;gap:8px}
+    .deal{display:grid;grid-template-columns:minmax(0,1.5fr) .55fr .55fr .55fr;gap:12px;padding:13px;background:var(--wash);border:1px solid var(--line);border-radius:7px;align-items:center}
+    .deal-head{background:transparent;border:0;padding:2px 13px 8px;color:var(--muted);font:600 10px/1 "IBM Plex Mono",monospace;letter-spacing:.1em}
+    .deal-total{border:2px solid #2f7a52;border-top:4px solid var(--lime);background:linear-gradient(90deg,rgba(57,218,136,.18),rgba(57,218,136,.05) 72%);box-shadow:inset 0 0 0 1px rgba(57,218,136,.12),0 6px 18px rgba(0,0,0,.28)}
+    .deal-total .deal-title{color:var(--lime);font-size:17px;letter-spacing:.01em}
+    .deal-total .deal-meta{color:#b9c9be}
+    .deal-total .deal-num:last-child{color:var(--lime);font-size:17px;font-weight:700;text-shadow:0 0 14px rgba(57,218,136,.28)}
+    .deal-title{font-weight:700}.deal-meta{color:var(--muted);font:500 11px/1.45 "IBM Plex Mono",monospace;margin-top:3px}
+    .deal-num{font:600 13px/1.2 "IBM Plex Mono",monospace;text-align:right}
+    .empty-note{padding:22px;border:1px dashed var(--line);border-radius:7px;color:var(--muted);font-size:15px;line-height:1.5;text-align:center}
+    /* Team board */
+    .rep-list{display:grid;gap:3px}
+    .rep{display:grid;grid-template-columns:42px minmax(0,1fr) auto auto;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+    .rep:last-child{border-bottom:0}
+    .rank{font:600 11px/1 "IBM Plex Mono",monospace;color:var(--muted)}
+    .rep strong{font-size:17px}.rep small{display:block;color:var(--muted);font-size:14px}
+    .rep-units{font-size:31px;font-weight:700;line-height:.9;letter-spacing:-.04em;text-align:right}
+    .rep-units small{display:block;font:600 8.5px/1.2 "IBM Plex Mono",monospace;letter-spacing:.13em;color:var(--muted);margin-top:4px}
+    .rep-total{text-align:right;font:600 15px/1 "IBM Plex Mono",monospace;align-self:center}
+    /* Activity table */
+    .act-row{display:grid;grid-template-columns:1.05fr repeat(6,.62fr);gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+    .act-row:last-child{border-bottom:0}
+    .act-row>span:not(.act-name){text-align:right;font:600 14px/1 "IBM Plex Mono",monospace;color:var(--muted)}
+    .act-head{padding:2px 0 10px}
+    .act-head>span{font-size:9.5px!important;letter-spacing:.07em}
+    .act-name{font-size:17px;font-weight:700}
+    @media (max-width:980px){.span-7,.span-5,.span-4{grid-column:span 12}}
+    @media(max-width:820px){.health-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:620px){
+      /* Phones: letterbox the single wide banner — the whole 2688×864 image
+         scales down to fit, never cropped, so all three SUVs stay in frame */
+      .brand-strip{height:auto;aspect-ratio:2688/864}
+      .brand-strip img{object-fit:contain}
+      .shell{padding:24px 18px}
+      .command{align-items:flex-start;margin-bottom:12px}
+      .command h1{font-size:24px}
+      .kicker{font-size:10px;letter-spacing:.22em}
+      .status{font-size:14px;padding-top:6px}
+      .pulse{width:13px;height:13px}
+      .tabs{display:grid;grid-template-columns:repeat(5,1fr)}
+      .tab{font-size:9px;padding:10px 2px}
+      .metrics{gap:12px}
+      .metric{min-height:234px;padding:20px}
+      .metric-label{font-size:12px}
+      .metric-value{font-size:49px;margin:16px 0 20px}
+      .metric-sub{font-size:16px}
+      .metric .tap{font-size:11px}
+      .card-pad{padding:16px}
+      .card-title{font-size:22px}
+      .sum-grid{grid-template-columns:1fr}
+      .inv-row{gap:8px}
+      .inv-card{padding:13px 10px}
+      .inv-top{min-height:27px}
+      .inv-card .tap{display:none}
+      .inv-badge{width:27px;height:27px}
+      .inv-badge-wide{width:31px;height:21px;margin-top:3px}
+      .inv-name{font-size:13px;margin-top:9px}
+      .inv-num{font-size:29px;margin:8px 0 6px}
+      .inv-sub{font-size:11px;line-height:1.3}
+      .health-grid{grid-template-columns:repeat(2,1fr)}
+      .deal{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+      .deal>div:first-child{grid-column:1/-1}
+      .deal .deal-num{text-align:left}
+      .deal .deal-num::before{content:attr(data-label);display:block;color:var(--muted);font:600 8.5px/1.2 "IBM Plex Mono",monospace;letter-spacing:.08em;margin-bottom:3px}
+      .deal-head{display:none}
+      .health-table th{font-size:8.5px;padding:2px 5px 8px}
+      .health-table td{font-size:11px;padding:10px 5px}
+      .health-table td:first-child{font-size:13px}
+      .age-dot{width:8px;height:8px;margin-right:6px}
+      .rep{grid-template-columns:30px minmax(0,1fr) auto;gap:10px}
+      .rep .rep-total{grid-column:2/-1;text-align:left}
+      .act-head{display:none}
+      .act-row{grid-template-columns:repeat(3,1fr);gap:13px 8px;padding:15px 0}
+      .act-name{grid-column:1/-1}
+      .act-row>span:not(.act-name){text-align:left}
+      .act-stat::before{content:attr(data-label);display:block;color:var(--muted);font:600 8.5px/1.3 "IBM Plex Mono",monospace;letter-spacing:.07em;margin-bottom:4px}
+    }
+    @media(max-width:430px){
+      .shell{padding:22px 16px}
+      .brand{margin-bottom:18px}
+      .brand-strip{height:auto}
+      .brand-logo{left:10px;bottom:9px;padding:5px 9px;border-radius:7px}
+      .brand-logo img{height:14px}
+      .command{display:block;position:relative}
+      .command h1{font-size:19px;max-width:250px}
+      .command .status{position:absolute;right:0;top:1px;padding:0;font-size:10px;gap:7px}
+      .command .pulse{width:10px;height:10px}
+      .kicker{font-size:9px;line-height:1.7;letter-spacing:.18em;margin-top:10px}
+      .metrics{gap:8px}
+      .metric{min-height:210px;padding:16px}
+      .metric-label{font-size:9px;letter-spacing:.15em}
+      .metric-value{font-size:42px;margin:14px 0 18px}
+      .metric-sub{font-size:12px}
+      .metric .tap{font-size:8px;margin-top:13px}
+      .metric-total .metric-value,.metric-new .metric-value,.metric-used .metric-value{font-size:34px}
+    }
+    /* Wide-monitor layout: fill the viewport width instead of the narrow column */
+    @media (min-width:1280px){
+      .shell{width:100%;max-width:none;padding-left:clamp(24px,2.5vw,40px);padding-right:clamp(24px,2.5vw,40px)}
+      .metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
+      .metric-value{font-size:clamp(40px,3.4vw,64px)}
+      .metric-total .metric-value,.metric-new .metric-value{font-size:clamp(32px,2.9vw,54px)}
+      .metric-used .metric-value{font-size:clamp(30px,2.7vw,52px)}
+      .brand-strip{height:clamp(150px,16vw,210px)}
+      .health-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+      .deal{padding:16px 20px;grid-template-columns:minmax(0,2.2fr) .6fr .6fr .6fr;gap:18px}
+      .deal-head{padding:2px 20px 8px}
+      #new .span-7{grid-column:span 7}
+      #new .span-5{grid-column:span 5}
+    }
+    @media (min-width:1600px){
+      #team .split-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      #team .split-grid>.card{min-width:0}
+    }
+    /* Overview on wide monitors: lock the four KPI cards into a 2×2 grid that
+       stretches to fill the full viewport height between the tabs and the
+       footer note, so no dead space sits below the cards. */
+    @media (min-width:1280px){
+      .shell{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+      #overview.active{display:flex;flex-direction:column;flex:1 1 auto}
+      #overview .metrics{flex:1 1 auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))}
+      #overview .metric{display:flex;flex-direction:column;justify-content:space-between;min-height:0}
+      #overview .units-summary{display:flex;flex-direction:column;justify-content:space-between;flex:1 1 auto;min-height:0}
+      #overview .metric-units.is-split .units-summary{display:none}
+      #overview .metric-units.is-split .units-breakdown{display:flex;flex-direction:column;justify-content:space-between;flex:1 1 auto;min-height:0}
+      #overview .updated-line{flex:0 0 auto}
+    }
+    @media (min-width:1280px) and (min-height:1080px){
+      #overview .metric-value{font-size:clamp(52px,3.9vw,76px)}
+      #overview .metric-total .metric-value,#overview .metric-new .metric-value{font-size:clamp(42px,3.3vw,64px)}
+      #overview .metric-used .metric-value{font-size:clamp(40px,3.1vw,60px)}
+    }
+    /* LEADS snapshot view (Project Resurrection) */
+    .snapshot-note{margin:0 0 14px;color:var(--muted);font:600 11px/1.5 "IBM Plex Mono",monospace;letter-spacing:.1em}
+    .lead-metrics{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+    .lead-big{font-size:clamp(44px,8vw,60px);font-weight:700;line-height:1;letter-spacing:-.04em;margin:14px 0 10px}
+    .stage-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .stage-card{display:block;width:100%;text-align:left;background:var(--wash);border:1px solid var(--line);border-radius:10px;padding:14px 15px;cursor:pointer;color:var(--text);font:inherit}
+    .stage-card:hover,.stage-card:focus-visible{border-color:var(--cyan);outline:none}
+    .stage-card.active{border-color:var(--cyan);background:var(--cyan-dim)}
+    .stage-card.zero{opacity:.55}
+    .stage-card .sc-name{display:block;font:600 11px/1.35 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .stage-card.active .sc-name{color:var(--text)}
+    .stage-card .sc-count{display:block;font-size:34px;font-weight:700;line-height:1;margin-top:8px}
+    .sp-head,.sp-row{display:grid;grid-template-columns:1.5fr .5fr .8fr .6fr;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+    .sp-row:last-child{border-bottom:0}
+    .sp-head{padding:2px 0 10px;color:var(--muted);font:600 9.5px/1.3 "IBM Plex Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+    .sp-head>span:not(:first-child),.sp-row>span:not(:first-child){text-align:right;font:600 14px/1 "IBM Plex Mono",monospace}
+    .sp-head>span:not(:first-child){font-size:9.5px}
+    .sp-name{font-size:16px;font-weight:700}
+    .lead-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:6px}
+    .week-select{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:7px;padding:9px 10px;font:600 12px/1.2 "IBM Plex Mono",monospace;letter-spacing:.03em;max-width:100%}
+    .week-select:focus-visible{border-color:var(--cyan);outline:none}
+    .lead-count-line{color:var(--muted);font:600 11px/1.4 "IBM Plex Mono",monospace;letter-spacing:.08em}
+    .clear-filter{border:1px solid var(--line);background:transparent;border-radius:5px;padding:7px 11px;cursor:pointer;font:600 10px/1 "IBM Plex Mono",monospace;letter-spacing:.06em;color:var(--cyan)}
+    .clear-filter:hover,.clear-filter:focus-visible{border-color:var(--cyan);outline:none}
+    .lead-head,.lead-row{display:grid;grid-template-columns:1.25fr .62fr .8fr 1.45fr 1fr 1.15fr;gap:10px;align-items:start}
+    .lead-head{padding:10px 12px;border-bottom:1px solid var(--line)}
+    .sort-btn{background:none;border:0;padding:0;cursor:pointer;font:600 10px/1.2 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left}
+    .sort-btn:hover,.sort-btn:focus-visible{color:var(--text);outline:none}
+    .sort-btn .arrow{color:var(--cyan)}
+    .lead-row{padding:12px;border-bottom:1px solid var(--line);cursor:pointer}
+    .lead-row:last-child{border-bottom:0}
+    .lead-row:hover,.lead-row:focus-visible{background:var(--wash);outline:none}
+    .lead-name{font-weight:700;font-size:16px;line-height:1.25}
+    .lead-cell{font-size:14px;line-height:1.35;min-width:0}
+    .lead-cell.mut{color:var(--muted)}
+    .lead-cell .due{display:block;color:var(--muted);font:500 11px/1.4 "IBM Plex Mono",monospace;margin-top:2px}
+    .stage-chip{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:4px 9px;font:600 10px/1 "IBM Plex Mono",monospace;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+    .stage-chip.working{border-color:var(--cyan);color:var(--cyan)}
+    .stage-chip.appointment{border-color:var(--amber);color:var(--amber)}
+    .lead-detail{grid-column:1/-1;display:none;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:12px 14px;font:500 12px/1.7 "IBM Plex Mono",monospace;color:var(--muted)}
+    .lead-detail .ld i{font-style:normal}
+    .lead-detail strong{color:var(--text)}
+    .lead-row.open .lead-detail{display:block}
+    .lead-empty{padding:26px 12px;color:var(--muted);font-size:15px;text-align:center}
+    @media(min-width:1280px){.stage-grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
+    @media(max-width:700px){
+      .lead-head{display:none}
+      .lead-metrics{gap:10px}
+      .lead-big{font-size:42px}
+      .stage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .lead-row{grid-template-columns:minmax(0,1fr) auto;gap:7px 10px}
+      .c-name{grid-column:1;grid-row:1}
+      .c-stage{grid-column:2;grid-row:1;text-align:right}
+      .c-date,.c-veh,.c-rep,.c-next{grid-column:1/-1}
+      .lead-row .lead-cell::before{content:attr(data-label);display:block;color:var(--muted);font:600 8.5px/1.3 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+      .sp-name{font-size:14px}
+      .sp-row>span:not(:first-child){font-size:13px}
+    }
+    /* LEADS view — compact phone layout (≤480px only). Desktop/tablet and all
+       other views keep the layouts above, unchanged. Rows become tight
+       3-line items: name + stage pill + date / vehicle / rep · step · due. */
+    @media (max-width:480px){
+      /* Compressed LEADS header stack so the list starts higher */
+      #leads .snapshot-note{font-size:10px;margin-bottom:10px}
+      #leads .lead-metrics{gap:10px;margin-bottom:12px}
+      #leads .lead-metrics .card-pad{padding:14px 16px}
+      #leads .lead-big{font-size:36px;margin:10px 0 6px}
+      #leads .lead-metrics .metric-sub{font-size:12px;line-height:1.3}
+      #leads .split-grid{gap:12px}
+      #leads .card-head{margin-bottom:12px}
+      #leads .card-title{font-size:20px}
+      #leads .card-head .tap{display:none}
+      #leads .stage-card{padding:10px 12px}
+      #leads .stage-card .sc-count{font-size:26px;margin-top:5px}
+      #leads .sp-head,#leads .sp-row{padding-top:7px;padding-bottom:7px}
+      #leads .lead-controls{gap:8px;margin-bottom:2px}
+      #leads .week-select{width:100%;padding:8px 10px}
+      #leads .lead-count-line{font-size:10px}
+      /* Compact 3-line lead rows */
+      #leads .lead-row{display:flex;flex-wrap:wrap;align-items:center;column-gap:8px;row-gap:2px;padding:10px 12px}
+      #leads .lead-row .lead-cell::before{display:none}
+      #leads .c-name{order:1;flex:1 1 auto;min-width:0}
+      #leads .lead-name{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      #leads .c-stage{order:2;flex:0 0 auto;text-align:right}
+      #leads .stage-chip{padding:3px 8px;font-size:9px}
+      #leads .c-date{order:3;flex:0 0 auto;font-size:12px;white-space:nowrap}
+      #leads .c-veh{order:4;flex:1 1 100%;min-width:0;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      #leads .c-rep{order:5;flex:0 1 auto;min-width:0;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      #leads .c-rep::after{content:" · "}
+      #leads .c-next{order:6;flex:0 0 auto;font-size:12px;color:var(--muted);white-space:nowrap}
+      #leads .c-next .due{display:inline;margin:0;font:inherit;text-transform:capitalize}
+      #leads .c-next .due::before{content:" · "}
+      /* Expanded detail: two-column label / value rows */
+      #leads .lead-detail{order:7;flex:1 1 100%;margin-top:8px}
+      #leads .lead-row.open .lead-detail{display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 14px;padding:11px 12px;font-size:11px;line-height:1.45}
+      #leads .lead-detail .ld{display:contents}
+      #leads .lead-detail .ld i{font:600 9px/1.4 "IBM Plex Mono",monospace;letter-spacing:.08em;color:var(--muted);align-self:center;white-space:nowrap}
+      #leads .lead-detail .ld strong{font-size:12px;font-weight:600;min-width:0}
+      #leads .lead-detail .ld-sep,#leads .lead-detail br{display:none}
+    }
+    @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}.pulse{animation:none}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="brand">
+      <div class="brand-strip">
+        <img src="assets/banner-final.webp" alt="Green Mercedes-Benz, grey BMW X5 and black Volvo XC90 parked side by side at dusk, set back in the right third of an open lot" width="2688" height="864">
+      </div>
+      <span class="brand-logo"><img src="assets/berglund-luxury-logo.jpg" alt="Berglund Luxury Lynchburg" width="1500" height="525"></span>
+    </header>
+    <section class="command" aria-labelledby="page-title">
+      <div>
+        <h1 id="page-title">BERGLUND LUXURY LYNCHBURG</h1>
+        <p class="kicker">BMW · MERCEDES-BENZ · VOLVO<br>WAR ROOM · OCTOBER 2026 · DAY 16 OF 27</p>
+      </div>
+      <div class="status" role="status"><span class="pulse" aria-hidden="true"></span><span>LIVE</span></div>
+    </section>
+
+    <nav class="tabs" aria-label="Dashboard sections">
+      <button class="tab active" data-view="overview" aria-selected="true">OVERVIEW</button>
+      <button class="tab" data-view="new" aria-selected="false">NEW</button>
+      <button class="tab" data-view="used" aria-selected="false">USED</button>
+      <button class="tab" data-view="team" aria-selected="false">SALES PEOPLE</button>
+      <button class="tab" data-view="leads" aria-selected="false">LEADS</button>
+    </nav>
+
+    <section id="overview" class="view active">
+      <div class="metrics">
+        <article class="card metric metric-units clickable" tabindex="0" role="button" aria-pressed="false" aria-label="Total units MTD: 10. Show new and used breakdown." data-units-toggle>
+          <div class="units-summary">
+            <span class="metric-label">Total units MTD</span>
+            <div class="metric-value">10</div>
+            <span class="metric-sub">Through day <strong>16</strong> of <strong>27</strong></span>
+            <span class="tap">TAP FOR NEW / USED ›</span>
+          </div>
+          <div class="units-breakdown" aria-live="polite">
+            <span class="metric-label">Units by type</span>
+            <div class="units-split">
+              <div class="units-part"><span class="units-type">New</span><strong class="units-value">4</strong><span class="units-pace">Pace 6.8</span></div>
+              <div class="units-part"><span class="units-type">Used</span><strong class="units-value">6</strong><span class="units-pace">Pace 10.1</span></div>
+            </div>
+            <span class="tap">TAP FOR TOTAL ›</span>
+          </div>
+        </article>
+        <article class="card metric metric-total">
+          <span class="metric-label">Total gross MTD</span>
+          <div class="metric-value">$42,300</div>
+          <span class="metric-sub">Front <strong>$23,236</strong> · back <strong>$19,064</strong></span>
+        </article>
+        <article class="card metric metric-new">
+          <span class="metric-label">New gross MTD</span>
+          <div class="metric-value">$27,633</div>
+          <span class="metric-sub">Front <strong>$17,344</strong> · back <strong>$10,289</strong> · <strong>4</strong> units</span>
+        </article>
+        <article class="card metric metric-used">
+          <span class="metric-label">Used gross MTD</span>
+          <div class="metric-value">$14,667</div>
+          <span class="metric-sub">Front <strong>$5,892</strong> · back <strong>$8,775</strong> · <strong>6</strong> units</span>
+        </article>
+      </div>
+      <p class="updated-line">OCTOBER 2026 · SALES LOG THROUGH OCT 19</p>
+    </section>
+
+    <section id="new" class="view">
+      <div class="split-grid">
+        <article class="card card-pad span-12">
+          <div class="card-head"><div><span class="section-label">Summary · October MTD</span><h2 class="card-title">New at a glance</h2></div><span class="tap">SALES LOG · OCT 19</span></div>
+          <div class="sum-grid">
+            <div class="health"><span class="health-num warning">$27,633</span><span class="health-label">MTD new gross</span></div>
+            <div class="health"><span class="health-num">+$4,336</span><span class="health-label">Avg front per deal</span></div>
+            <div class="health"><span class="health-num">0</span><span class="health-label">Deals working</span></div>
+          </div>
+        </article>
+        <div class="inv-row">
+          <article class="card inv-card inv-total">
+            <div class="inv-top">
+              <svg class="inv-badge" viewBox="0 0 40 40" role="img" aria-label="All brands"><circle cx="20" cy="20" r="17.5" fill="#171d29" stroke="#5b6a84" stroke-width="2"/><text x="20" y="24.5" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9.5" font-weight="600" letter-spacing="1" fill="#aeb9cc">ALL</text></svg>
+              <span class="tap">DEALERSLINK · OCT 19</span>
+            </div>
+            <h2 class="inv-name">New lot at a glance</h2>
+            <div class="inv-num">82</div>
+            <span class="inv-sub">New units in stock</span>
+          </article>
+          <article class="card inv-card inv-bmw">
+            <div class="inv-top">
+              <svg class="inv-badge" viewBox="0 0 40 40" role="img" aria-label="BMW"><circle cx="20" cy="20" r="18.5" fill="#0d1015" stroke="#4a5568" stroke-width="1.5"/><circle cx="20" cy="20" r="11" fill="#eef1f6"/><path d="M20 20 L20 9 A11 11 0 0 1 31 20 Z" fill="#2e9be6"/><path d="M20 20 L20 31 A11 11 0 0 1 9 20 Z" fill="#2e9be6"/><circle cx="20" cy="20" r="11" fill="none" stroke="#4a5568" stroke-width="1"/><text x="11.5" y="10.5" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" font-weight="600" fill="#dfe6f2">B</text><text x="20" y="8" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" font-weight="600" fill="#dfe6f2">M</text><text x="28.5" y="10.5" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" font-weight="600" fill="#dfe6f2">W</text></svg>
+              <span class="tap">DEALERSLINK · OCT 19</span>
+            </div>
+            <h2 class="inv-name">New BMW</h2>
+            <div class="inv-num">39</div>
+            <span class="inv-sub">New BMW units in stock</span>
+          </article>
+          <article class="card inv-card inv-benz">
+            <div class="inv-top">
+              <svg class="inv-badge" viewBox="0 0 40 40" role="img" aria-label="Mercedes-Benz"><circle cx="20" cy="20" r="18" fill="#0e1a12" stroke="#3ecf6f" stroke-width="2"/><g stroke="#3ecf6f" stroke-width="2.4" stroke-linecap="round"><line x1="20" y1="20" x2="20" y2="4.5"/><line x1="20" y1="20" x2="6.8" y2="27.5"/><line x1="20" y1="20" x2="33.2" y2="27.5"/></g><circle cx="20" cy="20" r="2.2" fill="#3ecf6f"/></svg>
+              <span class="tap">DEALERSLINK · OCT 19</span>
+            </div>
+            <h2 class="inv-name">New Mercedes</h2>
+            <div class="inv-num">26</div>
+            <span class="inv-sub">New Mercedes-Benz units in stock</span>
+          </article>
+          <article class="card inv-card inv-volvo">
+            <div class="inv-top">
+              <svg class="inv-badge inv-badge-wide" viewBox="0 0 44 30" role="img" aria-label="Volvo"><defs><linearGradient id="volvoSheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3038"/><stop offset=".45" stop-color="#0a0c10"/><stop offset="1" stop-color="#05070a"/></linearGradient></defs><rect x="1" y="1" width="42" height="28" rx="5" fill="url(#volvoSheen)" stroke="#9aa5b4" stroke-width="1.5"/><text x="22" y="20" text-anchor="middle" font-family="IBM Plex Sans Condensed,sans-serif" font-size="10.5" font-weight="700" letter-spacing="1.5" fill="#ffffff">VOLVO</text></svg>
+              <span class="tap">DEALERSLINK · OCT 19</span>
+            </div>
+            <h2 class="inv-name">New Volvo</h2>
+            <div class="inv-num">17</div>
+            <span class="inv-sub">New Volvo units in stock</span>
+          </article>
+        </div>
+        <article class="card card-pad span-12">
+          <div class="card-head"><div><span class="section-label">New-car deals</span><h2 class="card-title">Every new deal · front &amp; back</h2></div><span class="tap">SALES LOG · OCT 19</span></div>
+          <div class="deal-list">
+            <div class="deal deal-head" aria-hidden="true"><div>DEAL</div><div class="deal-num">FRONT</div><div class="deal-num">BACK</div><div class="deal-num">TOTAL</div></div>
+            <div class="deal deal-total"><div><div class="deal-title">New total · 4 units</div><div class="deal-meta">AVG $6,908 PER UNIT</div></div><div class="deal-num" data-label="FRONT">$17,344</div><div class="deal-num" data-label="BACK">$10,289</div><div class="deal-num" data-label="TOTAL">$27,633</div></div>
+            <div class="deal"><div><div class="deal-title">2026 BMW X3</div><div class="deal-meta">OCT 3 · DEAL #114364 · STOCK LLB4289 · HINNANT · ARABI</div></div><div class="deal-num positive" data-label="FRONT">$5,059</div><div class="deal-num positive" data-label="BACK">$710</div><div class="deal-num positive" data-label="TOTAL">$5,769</div></div>
+            <div class="deal"><div><div class="deal-title">2027 Mercedes E350</div><div class="deal-meta">OCT 3 · DEAL #114375 · STOCK LLM4363 · PRESTON · HENRY</div></div><div class="deal-num positive" data-label="FRONT">$1,820</div><div class="deal-num positive" data-label="BACK">$5,318</div><div class="deal-num positive" data-label="TOTAL">$7,138</div></div>
+            <div class="deal"><div><div class="deal-title">2027 Volvo XC60</div><div class="deal-meta">OCT 10 · DEAL #114365 · STOCK LLV4366 · FRIAR · RIPLEY / HENRY</div></div><div class="deal-num positive" data-label="FRONT">$4,513</div><div class="deal-num" data-label="BACK">$0</div><div class="deal-num positive" data-label="TOTAL">$4,513</div></div>
+            <div class="deal"><div><div class="deal-title">2026 Volvo V60</div><div class="deal-meta">OCT 17 · DEAL #114388 · STOCK LLV4366 · FRANK · HENRY</div></div><div class="deal-num positive" data-label="FRONT">$5,952</div><div class="deal-num positive" data-label="BACK">$4,260</div><div class="deal-num positive" data-label="TOTAL">$10,213</div></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="used" class="view">
+      <div class="split-grid">
+        <article class="card card-pad span-12">
+          <div class="card-head"><div><span class="section-label">Summary · October MTD</span><h2 class="card-title">Used at a glance</h2></div><span class="tap">SALES LOG · OCT 19</span></div>
+          <div class="sum-grid">
+            <div class="health"><span class="health-num" style="color:var(--blue)">$14,667</span><span class="health-label">MTD used gross</span></div>
+            <div class="health"><span class="health-num">+$1,178</span><span class="health-label">Avg front per deal</span></div>
+            <div class="health"><span class="health-num">0</span><span class="health-label">Deals working</span></div>
+          </div>
+        </article>
+        <article class="card card-pad span-12">
+          <div class="card-head"><div><span class="section-label">Inventory health</span><h2 class="card-title">Used lot at a glance</h2></div><span class="tap">DEALERSLINK · OCT 19</span></div>
+          <div class="sum-grid">
+            <div class="health"><span class="health-num">42</span><span class="health-label">Used units in stock</span></div>
+            <div class="health"><span class="health-num">83 days</span><span class="health-label">Avg age in stock</span></div>
+            <div class="health"><span class="health-num">429 days</span><span class="health-label">Oldest unit · 2026 BMW XM Label</span></div>
+          </div>
+        </article>
+        <article class="card card-pad span-12">
+          <div class="card-head"><div><span class="section-label">Inventory health</span><h2 class="card-title">Used Health Report</h2></div><span class="tap">DEALERSLINK · OCT 19</span></div>
+          <table class="health-table">
+            <thead><tr><th scope="col">Age</th><th scope="col">Units</th><th scope="col">Avg Investment</th><th scope="col">Investment</th></tr></thead>
+            <tbody>
+              <tr><td><span class="age-dot fresh" aria-hidden="true"></span>Under 20 Days</td><td>7</td><td>$32,863</td><td>$230,040</td></tr>
+              <tr><td><span class="age-dot mid" aria-hidden="true"></span>20 Days – 50 Days</td><td>9</td><td>$28,775</td><td>$258,978</td></tr>
+              <tr><td><span class="age-dot old" aria-hidden="true"></span>Over 50 Days</td><td>31</td><td>$48,556</td><td>$1,505,236</td></tr>
+              <tr class="total"><td>All Units</td><td>47</td><td>$42,431</td><td>$1,994,254</td></tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="card card-pad span-12">
+          <div class="card-head"><div><span class="section-label">Used-car deals</span><h2 class="card-title">Every used deal · front &amp; back</h2></div><span class="tap">SALES LOG · OCT 19</span></div>
+          <div class="deal-list">
+            <div class="deal deal-head" aria-hidden="true"><div>DEAL</div><div class="deal-num">FRONT</div><div class="deal-num">BACK</div><div class="deal-num">TOTAL</div></div>
+            <div class="deal deal-total"><div><div class="deal-title">Used total · 6 units</div><div class="deal-meta">FRONT $5,892 · BACK $8,775</div></div><div class="deal-num" data-label="FRONT">$5,892</div><div class="deal-num" data-label="BACK">$8,775</div><div class="deal-num" data-label="TOTAL">$14,667</div></div>
+            <div class="deal"><div><div class="deal-title">2021 Mercedes GLE350</div><div class="deal-meta">OCT 7 · DEAL #114368 · STOCK LRM35394A · COX · RIPLEY / HENRY</div></div><div class="deal-num negative" data-label="FRONT">−$305</div><div class="deal-num positive" data-label="BACK">$941</div><div class="deal-num positive" data-label="TOTAL">$636</div></div>
+            <div class="deal"><div><div class="deal-title">2022 BMW X5</div><div class="deal-meta">OCT 8 · DEAL #114366 · STOCK LLP6412A · MUSENSCKI · HENRY</div></div><div class="deal-num positive" data-label="FRONT">$2,922</div><div class="deal-num" data-label="BACK">$0</div><div class="deal-num positive" data-label="TOTAL">$2,922</div></div>
+            <div class="deal"><div><div class="deal-title">2026 Mercedes C300</div><div class="deal-meta">OCT 12 · DEAL #114381 · STOCK LLL6435 · ZAINAB · RIPLEY</div></div><div class="deal-num positive" data-label="FRONT">$1,879</div><div class="deal-num" data-label="BACK">$0</div><div class="deal-num positive" data-label="TOTAL">$1,879</div></div>
+            <div class="deal"><div><div class="deal-title">2020 Lincoln Corsair</div><div class="deal-meta">OCT 17 · DEAL #114387 · STOCK LLP6369B · SCOTT · ARABI</div></div><div class="deal-num negative" data-label="FRONT">−$326</div><div class="deal-num positive" data-label="BACK">$1,997</div><div class="deal-num positive" data-label="TOTAL">$1,670</div></div>
+            <div class="deal"><div><div class="deal-title">2023 BMW M2</div><div class="deal-meta">OCT 19 · DEAL #114390 · STOCK LLP6448 · WILLIAMS · RIPLEY</div></div><div class="deal-num positive" data-label="FRONT">$1,723</div><div class="deal-num positive" data-label="BACK">$5,837</div><div class="deal-num positive" data-label="TOTAL">$7,560</div></div>
+            <div class="deal"><div><div class="deal-title">2024 Chevrolet Blazer EV</div><div class="deal-meta">OCT 19 · DEAL #114391 · STOCK BCP49633 · NO SALESPERSON LOGGED YET</div></div><div class="deal-num" data-label="FRONT">$0</div><div class="deal-num" data-label="BACK">$0</div><div class="deal-num" data-label="TOTAL">$0</div></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="team" class="view">
+      <div class="split-grid">
+        <article class="card card-pad span-12">
+          <div class="card-head"><div><span class="section-label">Team board · ranked by total gross</span><h2 class="card-title">Units first</h2></div><span class="tap">SALES LOG · OCT 19</span></div>
+          <div class="rep-list">
+            <div class="rep"><span class="rank"><span class="age-dot fresh" aria-hidden="true"></span>01</span><div><strong>Justin Henry</strong><small>Front $10,694 · Back $9,579 · $6,758 per unit</small></div><span class="rep-units">3<small>UNITS</small></span><span class="rep-total">$20,273</span></div>
+            <div class="rep"><span class="rank"><span class="age-dot mid" aria-hidden="true"></span>02</span><div><strong>David Ripley</strong><small>Front $7,810 · Back $6,778 · $3,647 per unit</small></div><span class="rep-units">4<small>UNITS</small></span><span class="rep-total">$14,589</span></div>
+            <div class="rep"><span class="rank"><span class="age-dot old" aria-hidden="true"></span>03</span><div><strong>Pirooz Arabi</strong><small>Front $4,732 · Back $2,707 · $3,720 per unit</small></div><span class="rep-units">2<small>UNITS</small></span><span class="rep-total">$7,439</span></div>
+          </div>
+          <p class="footnote" style="margin:14px 0 0">Ranked by total gross on deals where each rep is the primary salesperson; split partners appear in the deal tables. Covers 9 of 10 units — the Oct 19 Blazer EV deal has no salesperson or gross in the log yet.</p>
+        </article>
+        <article class="card card-pad span-12">
+          <div class="card-head"><div><span class="section-label">Activity · October MTD</span><h2 class="card-title">Ups, calls, texts &amp; appointments</h2></div><span class="tap">ELEAD OCT 1–19 · PURPLE CLOUD OCT 1–19</span></div>
+          <div class="activity">
+            <div class="act-row act-head" aria-hidden="true"><span class="act-name"></span><span>SHOWROOM UPS</span><span>PHONE UPS</span><span>INTERNET LEADS</span><span>OUTBOUND CALLS</span><span>TEXTS SENT</span><span>APPTS SET</span></div>
+            <div class="act-row"><span class="act-name">Pirooz Arabi</span><span class="act-stat" data-label="SHOWROOM UPS">7</span><span class="act-stat" data-label="PHONE UPS">1</span><span class="act-stat" data-label="INTERNET LEADS">21</span><span class="act-stat" data-label="OUTBOUND CALLS">260</span><span class="act-stat" data-label="TEXTS SENT">317</span><span class="act-stat" data-label="APPTS SET">6</span></div>
+            <div class="act-row"><span class="act-name">David Ripley</span><span class="act-stat" data-label="SHOWROOM UPS">6</span><span class="act-stat" data-label="PHONE UPS">2</span><span class="act-stat" data-label="INTERNET LEADS">17</span><span class="act-stat" data-label="OUTBOUND CALLS">184</span><span class="act-stat" data-label="TEXTS SENT">180</span><span class="act-stat" data-label="APPTS SET">6</span></div>
+            <div class="act-row"><span class="act-name">Justin Henry</span><span class="act-stat" data-label="SHOWROOM UPS">3</span><span class="act-stat" data-label="PHONE UPS">2</span><span class="act-stat" data-label="INTERNET LEADS">38</span><span class="act-stat" data-label="OUTBOUND CALLS">229</span><span class="act-stat" data-label="TEXTS SENT">405</span><span class="act-stat" data-label="APPTS SET">2</span></div>
+            <div class="act-row"><span class="act-name">Isaiah Contreras</span><span class="act-stat" data-label="SHOWROOM UPS">0</span><span class="act-stat" data-label="PHONE UPS">1</span><span class="act-stat" data-label="INTERNET LEADS">6</span><span class="act-stat" data-label="OUTBOUND CALLS">171</span><span class="act-stat" data-label="TEXTS SENT">323</span><span class="act-stat" data-label="APPTS SET">25</span></div>
+            <div class="act-row"><span class="act-name">Ashton Brown</span><span class="act-stat" data-label="SHOWROOM UPS">0</span><span class="act-stat" data-label="PHONE UPS">0</span><span class="act-stat" data-label="INTERNET LEADS">4</span><span class="act-stat" data-label="OUTBOUND CALLS">153</span><span class="act-stat" data-label="TEXTS SENT">12</span><span class="act-stat" data-label="APPTS SET">5</span></div>
+          </div>
+          <p class="footnote" style="margin:14px 0 0">Ups, internet leads &amp; appointments: eLEAD (CDK) · Calls &amp; texts: Purple Cloud · Oct 1–19, 2026.</p>
+        </article>
+      </div>
+      <p class="footnote">Roster: Berglund Luxury Lynchburg sales team · October 2026 · Sales log through Oct 19.</p>
+    </section>
+
+    <section id="leads" class="view">
+      <p class="snapshot-note">SNAPSHOT · OCT 19 — STAGES MOVE IN THE PROJECT RESURRECTION APP</p>
+      <div class="lead-metrics">
+        <article class="card card-pad">
+          <span class="section-label">Avg engagement score</span>
+          <div class="lead-big pending" id="avgScore">—</div>
+          <span class="metric-sub">0–100 · touches + engagement + recency</span>
+        </article>
+        <article class="card card-pad">
+          <span class="section-label">Hot leads (score 70+)</span>
+          <div class="lead-big pending" id="hotLeads">—</div>
+          <span class="metric-sub">Work these first — highest revival odds</span>
+        </article>
+      </div>
+      <div class="split-grid">
+        <article class="card card-pad span-12">
+          <div class="card-head"><div><span class="section-label">Pipeline · tap a stage to filter the list</span><h2 class="card-title">Stages</h2></div><span class="tap">ELEAD 8890 · OCT 1–19</span></div>
+          <div class="stage-grid" id="stageGrid"></div>
+        </article>
+        <article class="card card-pad span-12">
+          <div class="card-head"><div><span class="section-label">Audit</span><h2 class="card-title">By salesperson</h2></div><span class="tap">ELEAD 8890 · OCT 1–19</span></div>
+          <div id="repTable"></div>
+        </article>
+        <article class="card card-pad span-12">
+          <div class="card-head"><div><span class="section-label">Project Resurrection</span><h2 class="card-title">Lead list</h2></div><span class="tap">ELEAD 8890 · OCT 1–19</span></div>
+          <div class="lead-controls">
+            <select class="week-select" id="weekSelect" aria-label="Filter leads by week">
+              <option value="rolling" selected>Current 7 days (rolling) · Oct 13–19</option>
+              <option value="w1">Week 1 · Oct 1–7</option>
+              <option value="w2">Week 2 · Oct 8–14</option>
+              <option value="w3">Week 3 · Oct 15–21</option>
+              <option value="w4">Week 4 · Oct 22–28</option>
+              <option value="w5">Week 5 · Oct 29–31</option>
+              <option value="all">All leads</option>
+            </select>
+            <span class="lead-count-line" id="leadCountLine"></span>
+            <button class="clear-filter" id="clearFilter" type="button" hidden>CLEAR FILTERS</button>
+          </div>
+          <div class="lead-head" id="leadHead" aria-hidden="false"></div>
+          <div id="leadList"></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      var tabs=document.querySelectorAll('.tab');
+      tabs.forEach(function(tab){tab.addEventListener('click',function(){
+        tabs.forEach(function(t){t.classList.remove('active');t.setAttribute('aria-selected','false')});
+        document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
+        tab.classList.add('active');tab.setAttribute('aria-selected','true');document.getElementById(tab.dataset.view).classList.add('active');
+      })});
+      var unitsToggle=document.querySelector('[data-units-toggle]');
+      function toggleUnits(){
+        var split=unitsToggle.classList.toggle('is-split');
+        unitsToggle.setAttribute('aria-pressed',split?'true':'false');
+        unitsToggle.setAttribute('aria-label',split?'Units by type: 4 new, 6 used. Show total units.':'Total units MTD: 10. Show new and used breakdown.');
+      }
+      unitsToggle.addEventListener('click',toggleUnits);
+      unitsToggle.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleUnits()}});
+    })();
+  </script>
+  <script>
+    /* LEADS snapshot — static Project Resurrection data (Oct 19): the BLL
+       eLEAD (8890) ACTIVE internet lead list, Oct 1–19, 2026. All 80 leads
+       sit in New — Not Contacted: the app pipeline has not run for this
+       store yet, so touches are 0 across the board. */
+    (function(){
+      var STAGES=[
+        {key:'new',label:'New — Not Contacted',short:'New'},
+        {key:'working',label:'Working',short:'Working'},
+        {key:'engaging',label:'Engaged',short:'Engaged'},
+        {key:'negotiation',label:'Negotiation',short:'Negotiation'},
+        {key:'appointment',label:'Appointment',short:'Appointment'},
+        {key:'sold',label:'Sold',short:'Sold'}
+      ];
+      var stageOrder={},stageShort={};
+      STAGES.forEach(function(s,i){stageOrder[s.key]=i;stageShort[s.key]=s.short});
+      var REPS=['Pirooz Arabi','David Ripley','Justin Henry','Isaiah Contreras','Ashton Brown'];
+      /* name | vehicle | salesperson | date in | stage | next task | due | touches | score | phone
+         (phone shows in the expanded detail only, per the user's call — same as the Kia tab) */
+      var RAW=[
+        ['Hamid Akbarali','2027 New BMW iX3','Justin Henry','2026-10-14','new','Email #1','2026-10-14',0,0,'(804) 248-7990'],
+        ['Adam Amro','2027 New BMW','Pirooz Arabi','2026-10-11','new','Email #2','2026-10-13',0,0,'(804) 877-2075'],
+        ['Ezekiel Ampem','2026 Used BMW 530','David Ripley','2026-10-11','new','Email #1','2026-10-11',0,0,'(804) 389-2301'],
+        ['Malik Andrews','','Justin Henry','2026-10-12','new','Email #1','2026-10-12',0,0,''],
+        ['Larry Baker','2027 New Volvo EX60','Justin Henry','2026-10-14','new','Email #1','2026-10-14',0,0,'(839) 293-9124'],
+        ['Colleen Bathan','2027 New BMW X5','Pirooz Arabi','2026-10-05','new','Phone Follow-Up','2026-10-15',0,0,'(540) 447-3414'],
+        ['Angele Beeman','2018 Used MINI Convertible','Justin Henry','2026-10-16','new','Call #3','2026-10-20',0,0,'(919) 645-8425'],
+        ['Claus Bonner','2026 New BMW','Justin Henry','2026-10-18','new','Email #1','2026-10-18',0,0,'(804) 380-5436'],
+        ['Norman Bouchard','2026 New Volvo XC40','David Ripley','2026-10-11','new','Call #2','2026-10-13',0,0,'(703) 395-8243'],
+        ['Rina Brigham','2022 Used Mercedes-Benz C-Class','Justin Henry','2026-10-05','new','Email #1','2026-10-05',0,0,''],
+        ['Shanta Brown','','David Ripley','2026-10-04','new','Email #1','2026-10-04',0,0,'(434) 473-0505'],
+        ['Hester Bruce','2022 Used Mercedes-Benz GLE 350','David Ripley','2026-10-03','new','MGR Appointment Confirmation Call','2026-10-12',0,0,'(434) 665-4533'],
+        ['Don Carlson','2026 Used Volvo XC60','Justin Henry','2026-10-06','new','Email #1','2026-10-06',0,0,'(315) 882-3432'],
+        ['Dalton Cesarz','2026 New BMW X5','Isaiah Contreras','2026-10-09','new','Email #4','2026-10-16',0,0,'(814) 279-4074'],
+        ['Deandra Chamblee','2022 Used Mercedes-Benz C-Class','David Ripley','2026-10-11','new','Email #1','2026-10-11',0,0,'(252) 258-5684'],
+        ['Pawan Chitta','2027 New BMW M3','Justin Henry','2026-10-05','new','Phone Follow-Up','2026-10-12',0,0,'(757) 770-0022'],
+        ['Frances Clemons','2026 New BMW Z4','Pirooz Arabi','2026-10-14','new','Email #2','2026-10-16',0,0,'(540) 500-4700'],
+        ['Mark Clodfelter','2026 Used Volvo XC40','Justin Henry','2026-10-15','new','Email #1','2026-10-15',0,0,'(703) 731-9297'],
+        ['Alexis Coles','2026 New BMW 430','Pirooz Arabi','2026-10-09','new','Email #2','2026-10-17',0,0,'(540) 238-5422'],
+        ['Devin Cox','2026 New Mercedes-Benz','Justin Henry','2026-10-12','new','Phone Follow-Up','2026-10-13',0,0,'(434) 953-0506'],
+        ['Lauren Crawford','2025 Used Volvo V60 Cross Country','Ashton Brown','2026-10-12','new','Call #1','2026-10-12',0,0,'(804) 980-6181'],
+        ['Brandeis Croner','','Pirooz Arabi','2026-10-11','new','Email #4','2026-10-15',0,0,'(434) 347-0957'],
+        ['Natalie Darling','','Justin Henry','2026-10-12','new','Email #1','2026-10-13',0,0,'(434) 941-3784'],
+        ['Mike Dixon','2027 New BMW X5','Pirooz Arabi','2026-10-07','new','Email #4','2026-10-10',0,0,'(804) 929-4492'],
+        ['Alison Eckis','2026 New BMW','Justin Henry','2026-10-12','new','Email #1','2026-10-12',0,0,'(804) 484-0622'],
+        ['Stephen Elam','2026 Used Volvo XC40','Pirooz Arabi','2026-10-11','new','Call #4','2026-10-19',0,0,'(561) 324-5115'],
+        ['Matthew Fisher','2022 Used BMW X5','Pirooz Arabi','2026-10-05','new','Phone Follow-Up','2026-10-16',0,0,'(434) 660-6936'],
+        ['Daniel Flores','2026 New BMW M2','Justin Henry','2026-10-19','new','Email #1','2026-10-19',0,0,'(540) 908-6514'],
+        ['Mary Fuller-Gore','2027 New BMW X6 M','David Ripley','2026-10-06','new','Email #1','2026-10-06',0,0,'(434) 770-1480'],
+        ['Jim Gardner','2018 Used MINI Convertible','Pirooz Arabi','2026-10-15','new','Email #1','2026-10-15',0,0,'(941) 412-7955'],
+        ['Brent Gerald','','Justin Henry','2026-10-04','new','Email #1','2026-10-04',0,0,'(540) 810-0630'],
+        ['Navid Geula','2026 New BMW XM','Justin Henry','2026-10-18','new','Email #1','2026-10-18',0,0,'(818) 917-8394'],
+        ['Michael Graley','2024 Used BMW X5','David Ripley','2026-10-05','new','Email #1','2026-10-05',0,0,''],
+        ['Tina Halterman','2027 New Mercedes-Benz GLC 300','Pirooz Arabi','2026-10-01','new','Email #2','2026-10-03',0,0,'(304) 646-3959'],
+        ['Tim Hamilton','2023 Used Volvo C40 Recharge','Pirooz Arabi','2026-10-07','new','Phone Follow-Up','2026-10-16',0,0,'(434) 386-3089'],
+        ['Chris Hanessian','2026 New Mercedes-Benz GLE 580','Justin Henry','2026-10-17','new','Email #1','2026-10-17',0,0,'(301) 529-9747'],
+        ['David Herb','2026 New BMW','Pirooz Arabi','2026-10-19','new','Email #1','2026-10-19',0,0,'(434) 238-8513'],
+        ['Daniel Hernandez','2026 Used BMW X5','Justin Henry','2026-10-16','new','Email #1','2026-10-16',0,0,''],
+        ['Yusuf Ibrahim Abdulrafiu','2024 Used BMW X5','Isaiah Contreras','2026-10-08','new','Call #2','2026-10-16',0,0,'(234) 803-2274'],
+        ['Ahana Israt','2026 New BMW','Justin Henry','2026-10-03','new','Email #1','2026-10-03',0,0,'(213) 415-5136'],
+        ['Kenterio Jefferson','','David Ripley','2026-10-09','new','Email #4','2026-10-11',0,0,'(434) 546-1582'],
+        ['Jameel John','2027 New BMW M3','Justin Henry','2026-10-13','new','Email #1','2026-10-13',0,0,'(561) 281-7325'],
+        ['Zaciah Jones','2027 New Mercedes-Benz GLC 300','David Ripley','2026-10-13','new','Email #1','2026-10-13',0,0,'(434) 473-9868'],
+        ['Michael Kane','2026 New BMW X5','Justin Henry','2026-10-12','new','Email #1','2026-10-12',0,0,'(585) 313-5646'],
+        ['Sumit Kumar','2027 New BMW X7','Pirooz Arabi','2026-10-05','new','Phone Follow-Up','2026-10-16',0,0,'(804) 587-9652'],
+        ['Verify Lead-Report','2023 Used Volvo C40 Recharge','Justin Henry','2026-10-06','new','Email #1','2026-10-06',0,0,'(404) 620-5501'],
+        ['Don Long','2026 Used Genesis GV80','Justin Henry','2026-10-03','new','Email #1','2026-10-03',0,0,'(703) 851-8001'],
+        ['Paul Mahoney','2026 New Volvo XC60 Plug-In Hybrid','Isaiah Contreras','2026-10-12','new','Email #1','2026-10-12',0,0,'(540) 989-9171'],
+        ['Denise McKeown','2019 Used Toyota RAV4 Hybrid','David Ripley','2026-10-01','new','Phone Follow-Up','2026-10-08',0,0,'(843) 276-4876'],
+        ['Rawen Mohammed','2026 New BMW M4','Justin Henry','2026-10-18','new','Email #1','2026-10-18',0,0,'(540) 476-4052'],
+        ['Pedro Montiel Acosta','2026 New BMW','Elias David','2026-10-04','new','Email #1','2026-10-04',0,0,'(540) 764-8147'],
+        ['Keith Morris','2027 New BMW X5','David Ripley','2026-10-16','new','Email #2','2026-10-17',0,0,'(540) 241-0144'],
+        ['Brylee Olivares','2027 New BMW','Justin Henry','2026-10-10','new','Email #1','2026-10-10',0,0,'(804) 295-2926'],
+        ['Jay Patel','2026 BMW 330','Pirooz Arabi','2026-10-14','new','Call #1','2026-10-14',0,0,''],
+        ['Peter Quill','2027 New BMW M3','Isaiah Contreras','2026-10-07','new','Call #2','2026-10-16',0,0,''],
+        ['Krishna Reddy','2026 New BMW 330','Justin Henry','2026-10-05','new','Phone Follow-Up','2026-10-05',0,0,'(479) 287-0123'],
+        ['Jeff Rinker','2027 New BMW','Pirooz Arabi','2026-10-09','new','Email #1','2026-10-09',0,0,'(540) 421-0444'],
+        ['Bryson Rittenhouse','2026 New BMW M2','Pirooz Arabi','2026-10-07','new','Phone Follow-Up','2026-10-15',0,0,'(434) 989-9537'],
+        ['Jack Ross','2026 Used BMW X5','David Ripley','2026-10-16','new','Phone Follow-Up','2026-10-17',0,0,'(757) 535-0174'],
+        ['Angela Sachar','2027 New BMW X5','Justin Henry','2026-10-14','new','Email #1','2026-10-14',0,0,'(434) 979-3912'],
+        ['Michael Santoliquido','2026 New BMW X5','Justin Henry','2026-10-12','new','Email #1','2026-10-12',0,0,'(914) 447-1172'],
+        ['George Sharo','2026 New BMW X2','Justin Henry','2026-10-16','new','Call #2','2026-10-18',0,0,'(804) 306-8707'],
+        ['Pamela Sheffer','2018 Used MINI Convertible','David Ripley','2026-10-13','new','Email #1','2026-10-13',0,0,'(540) 290-0583'],
+        ['Robert Sisti','2026 New BMW 228 Gran Coupe','Justin Henry','2026-10-16','new','Email #1','2026-10-16',0,0,'(786) 271-4853'],
+        ['Brent Sperry','2026 Used BMW X5','Justin Henry','2026-10-16','new','Email #1','2026-10-16',0,0,'(814) 881-0679'],
+        ['Akhil Sripaithi','2026 New BMW 530','Pirooz Arabi','2026-10-05','new','Phone Follow-Up','2026-10-17',0,0,'(660) 238-3337'],
+        ['David Steppe','2026 New BMW','Ashton Brown','2026-10-13','new','Email #1','2026-10-13',0,0,'(804) 909-2050'],
+        ['Mason Talbott','2022 Used Mercedes-Benz C-Class','David Ripley','2026-10-13','new','Email #1','2026-10-13',0,0,'(434) 222-6771'],
+        ['Harry Tao','','Justin Henry','2026-10-16','new','Call #2','2026-10-17',0,0,'(213) 828-8899'],
+        ['Camden Toliver','2026 Used BMW M4','Justin Henry','2026-10-04','new','Email #1','2026-10-04',0,0,'(540) 351-7667'],
+        ['Sitaram Varkal','2026 New BMW','Justin Henry','2026-10-11','new','Call #2','2026-10-13',0,0,'(580) 222-7126'],
+        ['Jacqueline Vechery','2020 Used Lincoln Corsair','Pirooz Arabi','2026-10-03','new','Phone Follow-Up','2026-10-12',0,0,'(804) 214-8751'],
+        ['Chloey Vereen','2026 New Volvo XC90','Pirooz Arabi','2026-10-14','new','Email #2','2026-10-16',0,0,'(434) 736-6202'],
+        ['Alexander Vershinskiy','2026 New Volvo EX90','Justin Henry','2026-10-15','new','Email #1','2026-10-15',0,0,'(919) 480-5052'],
+        ['Ganier Vincent','2027 New BMW X5','Pirooz Arabi','2026-10-18','new','Call #2','2026-10-21',0,0,'(540) 926-5866'],
+        ['Ashley Walker','2026 New Volvo V60 Cross Country','David Ripley','2026-10-12','new','—','',0,0,'(828) 545-9551'],
+        ['Dennis White','2027 New BMW X6 M','Justin Henry','2026-10-07','new','Email #1','2026-10-07',0,0,'(804) 883-6110'],
+        ['Keys Wilford','2026 New Volvo XC40','Ashton Brown','2026-10-07','new','Email #2','2026-10-09',0,0,'(304) 645-5111'],
+        ['Kay Wilson','2026 Used Volvo XC90','Justin Henry','2026-10-08','new','Email #1','2026-10-08',0,0,'(434) 338-9083'],
+        ['Alma Wright','2022 Used BMW 230','Isaiah Contreras','2026-10-12','new','Email #1','2026-10-12',0,0,'(240) 377-7285']
+      ];
+      var leads=RAW.map(function(r){
+        return {name:r[0],vehicle:r[1],rep:r[2],dateIn:r[3],stage:r[4],
+          task:r[5]||'Day 1 Email',due:(r[5]==='—')?'':(r[6]||r[3]),touches:r[7]||0,score:r[8]||0,phone:r[9]||''};
+      });
+      var pending=leads.length===0;
+      var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      function fmtD(iso){var p=iso.split('-');return MONTHS[Number(p[1])-1]+' '+Number(p[2])}
+      function fmtDFull(iso){var p=iso.split('-');return MONTHS[Number(p[1])-1]+' '+Number(p[2])+', '+p[0]}
+      function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+      /* Metrics: no app engagement data exists for this store yet, so the
+         Avg Engagement Score and Hot Leads cards stay in the "—" state. */
+      /* Stage cards */
+      var stageFilter=null;
+      var stageGrid=document.getElementById('stageGrid');
+      function stageCount(key){var n=0;leads.forEach(function(l){if(l.stage===key)n++});return n}
+      STAGES.forEach(function(s){
+        var n=stageCount(s.key);
+        var b=document.createElement('button');
+        b.type='button';b.className='stage-card'+(!pending&&n===0?' zero':'');b.dataset.stage=s.key;
+        b.setAttribute('aria-pressed','false');
+        b.innerHTML='<span class="sc-name">'+esc(s.label)+'</span><span class="sc-count">'+(pending?'—':n)+'</span>';
+        b.addEventListener('click',function(){
+          stageFilter=(stageFilter===s.key)?null:s.key;
+          renderStages();renderList();
+        });
+        stageGrid.appendChild(b);
+      });
+      function renderStages(){
+        stageGrid.querySelectorAll('.stage-card').forEach(function(b){
+          var on=b.dataset.stage===stageFilter;
+          b.classList.toggle('active',on);b.setAttribute('aria-pressed',on?'true':'false');
+        });
+      }
+      /* By salesperson */
+      var repAgg={};
+      REPS.forEach(function(name){repAgg[name]={n:0,never:0,touches:0}});
+      leads.forEach(function(l){
+        var a=repAgg[l.rep]||(repAgg[l.rep]={n:0,never:0,touches:0});
+        a.n++;if(l.touches===0)a.never++;a.touches+=l.touches;
+      });
+      /* Elias David (manager) holds one lead in the list but is not a row
+         in the By Salesperson audit table. */
+      var repNames=Object.keys(repAgg).filter(function(n){return n!=='Elias David'});
+      if(!pending)repNames.sort(function(a,b){return repAgg[b].n-repAgg[a].n||a.localeCompare(b)});
+      var repHtml='<div class="sp-head"><span>Salesperson</span><span>Leads</span><span>Never touched</span><span>Avg touches</span></div>';
+      repNames.forEach(function(name){
+        var a=repAgg[name];
+        if(pending){
+          repHtml+='<div class="sp-row"><span class="sp-name">'+esc(name)+'</span><span>—</span><span>—</span><span>—</span></div>';
+        }else{
+          repHtml+='<div class="sp-row"><span class="sp-name">'+esc(name)+'</span><span>'+a.n+'</span><span class="'+(a.never>0?'negative':'')+'">'+a.never+'</span><span>'+(a.touches/a.n).toFixed(1)+'</span></div>';
+        }
+      });
+      document.getElementById('repTable').innerHTML=repHtml;
+      /* List: week filter + sort + render */
+      var WEEKS={rolling:['2026-10-13','2026-10-19'],w1:['2026-10-01','2026-10-07'],w2:['2026-10-08','2026-10-14'],w3:['2026-10-15','2026-10-21'],w4:['2026-10-22','2026-10-28'],w5:['2026-10-29','2026-10-31'],all:null};
+      var weekSel=document.getElementById('weekSelect');
+      var listEl=document.getElementById('leadList');
+      var countLine=document.getElementById('leadCountLine');
+      var clearBtn=document.getElementById('clearFilter');
+      var sortKey='dateIn',sortDir=1;
+      var COLS=[
+        {key:'name',label:'Lead'},
+        {key:'dateIn',label:'Date In'},
+        {key:'stage',label:'Stage'},
+        {key:'vehicle',label:'Vehicle'},
+        {key:'rep',label:'Salesperson'},
+        {key:'next',label:'Next step'}
+      ];
+      var headEl=document.getElementById('leadHead');
+      COLS.forEach(function(c){
+        var b=document.createElement('button');
+        b.type='button';b.className='sort-btn';b.dataset.key=c.key;
+        b.addEventListener('click',function(){
+          if(sortKey===c.key){sortDir*=-1}else{sortKey=c.key;sortDir=1}
+          renderHead();renderList();
+        });
+        headEl.appendChild(b);
+      });
+      function renderHead(){
+        headEl.querySelectorAll('.sort-btn').forEach(function(b){
+          var c=null;COLS.forEach(function(x){if(x.key===b.dataset.key)c=x});
+          b.innerHTML=esc(c.label)+(sortKey===c.key?' <span class="arrow">'+(sortDir===1?'▲':'▼')+'</span>':'');
+        });
+      }
+      function sortVal(l,key){
+        if(key==='stage')return stageOrder[l.stage];
+        if(key==='next')return l.due+'|'+l.task;
+        return (l[key]||'').toLowerCase();
+      }
+      function visibleLeads(){
+        var range=WEEKS[weekSel.value];
+        var out=leads.filter(function(l){
+          if(stageFilter&&l.stage!==stageFilter)return false;
+          if(range&&(l.dateIn<range[0]||l.dateIn>range[1]))return false;
+          return true;
+        });
+        out.sort(function(a,b){
+          var va=sortVal(a,sortKey),vb=sortVal(b,sortKey);
+          if(va<vb)return -1*sortDir;if(va>vb)return 1*sortDir;return 0;
+        });
+        return out;
+      }
+      function renderList(){
+        var rows=visibleLeads();
+        countLine.textContent='SHOWING '+rows.length+' OF '+leads.length+' LEADS';
+        clearBtn.hidden=!(stageFilter||weekSel.value!=='rolling');
+        if(pending){listEl.innerHTML='<div class="empty-note">No leads posted yet — the October eLEAD (8890) internet lead list will land here the moment the BLL lead feed connects.</div>';return}
+        if(!rows.length){listEl.innerHTML='<div class="lead-empty">No leads in this window.</div>';return}
+        var html='';
+        rows.forEach(function(l,i){
+          html+='<div class="lead-row" tabindex="0" role="button" aria-expanded="false" data-row="'+i+'">'
+            +'<span class="lead-name c-name">'+esc(l.name)+'</span>'
+            +'<span class="lead-cell mut c-date" data-label="Date In">'+fmtD(l.dateIn)+'</span>'
+            +'<span class="lead-cell c-stage"><span class="stage-chip '+esc(l.stage)+'">'+esc(stageShort[l.stage])+'</span></span>'
+            +'<span class="lead-cell c-veh" data-label="Vehicle">'+esc(l.vehicle||'—')+'</span>'
+            +'<span class="lead-cell c-rep" data-label="Salesperson">'+esc(l.rep)+'</span>'
+            +'<span class="lead-cell c-next" data-label="Next step">'+esc(l.task)+(l.due?'<span class="due">DUE '+fmtD(l.due).toUpperCase()+'</span>':'')+'</span>'
+            +'<span class="lead-detail">'
+            +'<span class="ld"><i>NEXT STEP </i><strong>'+esc(l.task)+'</strong></span><span class="ld-sep"> · </span>'
+            +'<span class="ld"><i>DUE </i><strong>'+esc(l.due?fmtDFull(l.due):'—')+'</strong></span><br>'
+            +'<span class="ld"><i>TOUCHES </i><strong>'+l.touches+'</strong></span><span class="ld-sep"> · </span>'
+            +'<span class="ld"><i>ENGAGEMENT SCORE </i><strong>'+l.score+'</strong></span><br>'
+            +'<span class="ld"><i>DATE IN </i><strong>'+esc(fmtDFull(l.dateIn))+'</strong></span><span class="ld-sep"> · </span>'
+            +'<span class="ld"><i>STAGE </i><strong>'+esc(stageShort[l.stage])+'</strong></span><span class="ld-sep"> · </span>'
+            +'<span class="ld"><i>SALESPERSON </i><strong>'+esc(l.rep)+'</strong></span><br>'
+            +'<span class="ld"><i>PHONE </i><strong>'+esc(l.phone||'—')+'</strong></span>'
+            +'</span>'
+            +'</div>';
+        });
+        listEl.innerHTML=html;
+        listEl.querySelectorAll('.lead-row').forEach(function(row){
+          function toggle(){
+            var open=row.classList.toggle('open');
+            row.setAttribute('aria-expanded',open?'true':'false');
+          }
+          row.addEventListener('click',toggle);
+          row.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle()}});
+        });
+      }
+      weekSel.addEventListener('change',renderList);
+      clearBtn.addEventListener('click',function(){
+        stageFilter=null;weekSel.value='rolling';renderStages();renderList();
+      });
+      renderHead();renderList();
+    })();
+  </script>
+</body>
+</html>
