@@ -100,6 +100,8 @@
     .footnote{margin:15px 2px 0;color:var(--muted);font:500 10px/1.5 "IBM Plex Mono",monospace}
     /* Summary + inventory tiles */
     .sum-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .sold-by-brand{margin-top:20px}
+    .sold-by-brand .section-label{display:block;margin-bottom:10px}
     .health{background:var(--wash);border:1px solid var(--line);border-radius:9px;padding:15px}
     .health-num{display:block;font-size:clamp(20px,2.5vw,27px);font-weight:700;line-height:1;letter-spacing:-.03em;white-space:nowrap}
     .health-label{display:block;margin-top:9px;color:var(--muted);font:600 9.5px/1.4 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
@@ -440,6 +442,14 @@
             <div class="health"><span class="health-num warning">$27,633</span><span class="health-label">MTD new gross</span></div>
             <div class="health"><span class="health-num positive">+$4,336</span><span class="health-label">Avg front per deal</span></div>
             <div class="health"><span class="health-num">0</span><span class="health-label">Deals working</span></div>
+          </div>
+          <div class="sold-by-brand">
+            <span class="section-label">New units sold · by brand</span>
+            <div class="sum-grid">
+              <div class="health"><span class="health-num">1</span><span class="health-label">New BMW sold</span></div>
+              <div class="health"><span class="health-num">1</span><span class="health-label">New Mercedes sold</span></div>
+              <div class="health"><span class="health-num">2</span><span class="health-label">New Volvo sold</span></div>
+            </div>
           </div>
         </article>
         <div class="inv-row">
