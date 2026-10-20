@@ -100,26 +100,19 @@
     .footnote{margin:15px 2px 0;color:var(--muted);font:500 10px/1.5 "IBM Plex Mono",monospace}
     /* Summary + inventory tiles */
     .sum-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-    .sold-by-brand{margin-top:20px}
-    .sold-by-brand .section-label{display:block;margin-bottom:10px}
-    /* USED tab — the two glance cards share one row at every width, like the NEW inventory row */
-    .used-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-    .used-row .card-pad{padding:18px}
-    .used-row .card-head{margin-bottom:12px}
-    .used-row .card-title{font-size:20px}
-    .used-row .sum-grid{gap:9px}
-    .used-row .health{padding:11px 12px}
-    .used-row .health-num{font-size:clamp(17px,2vw,23px)}
-    .used-row .sum-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
-    @media(max-width:980px){.used-row .sum-grid{grid-template-columns:1fr}}
-    @media(max-width:620px){
-      .used-row{gap:8px}
-      .used-row .card-pad{padding:12px 10px}
-      .used-row .card-title{font-size:16px}
-      .used-row .card-head .tap{display:none}
-      .used-row .health{padding:10px}
-      .used-row .health-label{font-size:8.5px}
-    }
+    /* NEW tab glance — 2×3 tile grid, reference style: grey label on top, one big colored number */
+    .tile-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+    .tile{background:var(--wash);border:1px solid var(--line);border-radius:12px;padding:11px 12px 12px;min-width:0}
+    .tile-label{display:block;color:var(--muted);font:600 9.5px/1.35 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+    .tile-num{display:block;font-size:clamp(24px,6.4vw,31px);font-weight:700;line-height:1.05;letter-spacing:-.03em;margin-top:7px;white-space:nowrap}
+    .tile-num.c-blue{color:var(--blue)}
+    .tile-num.c-green{color:var(--lime)}
+    .tile-num.c-red{color:var(--red)}
+    .tile-num.c-orange{color:var(--amber)}
+    .tile-num.sm{font-size:clamp(18px,4.9vw,25px);letter-spacing:-.02em}
+    .tile-cap{display:block;margin-top:5px;color:var(--muted);font-size:11px;line-height:1.3}
+    .glance-line{margin-top:11px;color:var(--muted);font:600 11px/1.4 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+    .glance-line strong{color:var(--text);font-size:13px;margin-left:6px}
     .health{background:var(--wash);border:1px solid var(--line);border-radius:9px;padding:15px}
     .health-num{display:block;font-size:clamp(20px,2.5vw,27px);font-weight:700;line-height:1;letter-spacing:-.03em;white-space:nowrap}
     .health-label{display:block;margin-top:9px;color:var(--muted);font:600 9.5px/1.4 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
@@ -189,7 +182,14 @@
          scales down to fit, never cropped, so all three SUVs stay in frame */
       .brand-strip{height:auto;aspect-ratio:2688/864}
       .brand-strip img{object-fit:contain}
-      .shell{padding:24px 18px}
+      .shell{padding:18px 18px 24px}
+      .brand{margin-bottom:16px}
+      .tabs{margin-bottom:12px}
+      /* NEW/USED glance fit: header + tile grid + inventory row in one phone screen */
+      .tile{padding:9px 10px 10px}
+      .tile-num{margin-top:5px}
+      .glance-line{margin-top:8px}
+      #new .card-head,#used .card-head{margin-bottom:12px}
       .command{align-items:flex-start;margin-bottom:12px}
       .command h1{font-size:24px}
       .kicker{font-size:10px;letter-spacing:.22em}
@@ -456,19 +456,15 @@
       <div class="split-grid">
         <article class="card card-pad span-12">
           <div class="card-head"><div><span class="section-label">Summary · October MTD</span><h2 class="card-title">New at a glance</h2></div><span class="tap">SALES LOG · OCT 19</span></div>
-          <div class="sum-grid">
-            <div class="health"><span class="health-num warning">$27,633</span><span class="health-label">MTD new gross</span></div>
-            <div class="health"><span class="health-num positive">+$4,336</span><span class="health-label">Avg front per deal</span></div>
-            <div class="health"><span class="health-num">0</span><span class="health-label">Deals working</span></div>
+          <div class="tile-grid">
+            <div class="tile"><span class="tile-label">New units sold</span><span class="tile-num c-blue">4</span></div>
+            <div class="tile"><span class="tile-label">MTD new gross</span><span class="tile-num c-green">$27,633</span></div>
+            <div class="tile"><span class="tile-label">Avg front per deal</span><span class="tile-num positive">+$4,336</span></div>
+            <div class="tile"><span class="tile-label">New BMW sold</span><span class="tile-num c-red">1</span></div>
+            <div class="tile"><span class="tile-label">New Mercedes sold</span><span class="tile-num c-green">1</span></div>
+            <div class="tile"><span class="tile-label">New Volvo sold</span><span class="tile-num c-orange">2</span></div>
           </div>
-          <div class="sold-by-brand">
-            <span class="section-label">New units sold · by brand</span>
-            <div class="sum-grid">
-              <div class="health"><span class="health-num">1</span><span class="health-label">New BMW sold</span></div>
-              <div class="health"><span class="health-num">1</span><span class="health-label">New Mercedes sold</span></div>
-              <div class="health"><span class="health-num">2</span><span class="health-label">New Volvo sold</span></div>
-            </div>
-          </div>
+          <p class="glance-line">Deals working (new)<strong>0</strong></p>
         </article>
         <div class="inv-row">
           <article class="card inv-card inv-total">
@@ -524,25 +520,18 @@
 
     <section id="used" class="view">
       <div class="split-grid">
-        <div class="used-row">
-        <article class="card card-pad">
+        <article class="card card-pad span-12">
           <div class="card-head"><div><span class="section-label">Summary · October MTD</span><h2 class="card-title">Used at a glance</h2></div><span class="tap">SALES LOG · OCT 19</span></div>
-          <div class="sum-grid sum-grid-4">
-            <div class="health"><span class="health-num">6</span><span class="health-label">Used units sold</span></div>
-            <div class="health"><span class="health-num" style="color:var(--blue)">$14,667</span><span class="health-label">MTD used gross</span></div>
-            <div class="health"><span class="health-num positive">+$1,178</span><span class="health-label">Avg front per deal</span></div>
-            <div class="health"><span class="health-num">0</span><span class="health-label">Deals working</span></div>
+          <div class="tile-grid">
+            <div class="tile"><span class="tile-label">Used units sold</span><span class="tile-num c-blue">6</span></div>
+            <div class="tile"><span class="tile-label">MTD used gross</span><span class="tile-num c-green">$14,667</span></div>
+            <div class="tile"><span class="tile-label">Avg front per deal</span><span class="tile-num positive">+$1,178</span></div>
+            <div class="tile"><span class="tile-label">For sale</span><span class="tile-num c-orange">42</span></div>
+            <div class="tile"><span class="tile-label">Avg age in stock</span><span class="tile-num sm c-orange">83 days</span></div>
+            <div class="tile"><span class="tile-label">Oldest unit</span><span class="tile-num sm c-red">429 days</span><span class="tile-cap">2026 BMW XM Label</span></div>
           </div>
+          <p class="glance-line">Deals working (used)<strong>0</strong></p>
         </article>
-        <article class="card card-pad">
-          <div class="card-head"><div><span class="section-label">Inventory health</span><h2 class="card-title">Used lot at a glance</h2></div><span class="tap">DEALERSLINK · OCT 19</span></div>
-          <div class="sum-grid">
-            <div class="health"><span class="health-num">42</span><span class="health-label">Used units in stock</span></div>
-            <div class="health"><span class="health-num">83 days</span><span class="health-label">Avg age in stock</span></div>
-            <div class="health"><span class="health-num">429 days</span><span class="health-label">Oldest unit · 2026 BMW XM Label</span></div>
-          </div>
-        </article>
-        </div>
         <article class="card card-pad span-12">
           <div class="card-head"><div><span class="section-label">Inventory health</span><h2 class="card-title">Used Health Report</h2></div><span class="tap">DEALERSLINK · OCT 19</span></div>
           <table class="health-table">
