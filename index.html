@@ -22,6 +22,7 @@
       --bg:#080a0f; --panel:#121722; --panel2:#151b27; --line:#263143;
       --text:#f2f4fa; --muted:#929bad; --cyan:#2da8ee; --cyan-dim:#102d42;
       --lime:#39da88; --amber:#ff7626; --red:#ff4f57; --red-dim:#341a23;
+      --gold:#f5b83d;
       --blue:#31a9f4; --shadow:rgba(0,0,0,.28); --wash:rgba(255,255,255,.025);
       --radius:20px;
     }
@@ -30,6 +31,7 @@
         --bg:#080a0f; --panel:#121722; --panel2:#151b27; --line:#263143;
         --text:#f2f4fa; --muted:#929bad; --cyan:#2da8ee; --cyan-dim:#102d42;
         --lime:#39da88; --amber:#ff7626; --red:#ff4f57; --red-dim:#341a23;
+        --gold:#f5b83d;
         --blue:#31a9f4; --shadow:rgba(0,0,0,.28); --wash:rgba(255,255,255,.025);
       }
     }
@@ -305,7 +307,7 @@
     }
     /* LEADS snapshot view (Project Resurrection) */
     .snapshot-note{margin:0 0 14px;color:var(--muted);font:600 11px/1.5 "IBM Plex Mono",monospace;letter-spacing:.1em}
-    .lead-metrics{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+    .lead-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:14px}
     .lead-big{font-size:clamp(44px,8vw,60px);font-weight:700;line-height:1;letter-spacing:-.04em;margin:14px 0 10px}
     .stage-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
     .stage-card{display:block;width:100%;text-align:left;background:var(--wash);border:1px solid var(--line);border-radius:10px;padding:14px 15px;cursor:pointer;color:var(--text);font:inherit}
@@ -315,6 +317,13 @@
     .stage-card .sc-name{display:block;font:600 11px/1.35 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
     .stage-card.active .sc-name{color:var(--text)}
     .stage-card .sc-count{display:block;font-size:34px;font-weight:700;line-height:1;margin-top:8px}
+    /* Stage count colors — one per pipeline stage */
+    .stage-card[data-stage="new"] .sc-count{color:var(--red)}
+    .stage-card[data-stage="working"] .sc-count{color:var(--amber)}
+    .stage-card[data-stage="engaged"] .sc-count{color:var(--cyan)}
+    .stage-card[data-stage="negotiation"] .sc-count{color:var(--gold)}
+    .stage-card[data-stage="appointment"] .sc-count{color:var(--blue)}
+    .stage-card[data-stage="sold"] .sc-count{color:var(--lime)}
     .sp-head,.sp-row{display:grid;grid-template-columns:1.5fr .45fr .6fr .6fr .75fr .8fr .45fr;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
     .sp-row:last-child{border-bottom:0}
     .sp-head{padding:2px 0 10px;color:var(--muted);font:600 9.5px/1.3 "IBM Plex Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
@@ -340,8 +349,12 @@
     .lead-cell.mut{color:var(--muted)}
     .lead-cell .due{display:block;color:var(--muted);font:500 11px/1.4 "IBM Plex Mono",monospace;margin-top:2px}
     .stage-chip{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:4px 9px;font:600 10px/1 "IBM Plex Mono",monospace;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
-    .stage-chip.working{border-color:var(--cyan);color:var(--cyan)}
-    .stage-chip.appointment{border-color:var(--amber);color:var(--amber)}
+    .stage-chip.new{border-color:var(--red);color:var(--red)}
+    .stage-chip.working{border-color:var(--amber);color:var(--amber)}
+    .stage-chip.engaged{border-color:var(--cyan);color:var(--cyan)}
+    .stage-chip.negotiation{border-color:var(--gold);color:var(--gold)}
+    .stage-chip.appointment{border-color:var(--blue);color:var(--blue)}
+    .stage-chip.sold{border-color:var(--lime);color:var(--lime)}
     .lead-detail{grid-column:1/-1;display:none;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:12px 14px;font:500 12px/1.7 "IBM Plex Mono",monospace;color:var(--muted)}
     .lead-detail .ld i{font-style:normal}
     .lead-detail strong{color:var(--text)}
@@ -350,7 +363,7 @@
     @media(min-width:1280px){.stage-grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
     @media(max-width:700px){
       .lead-head{display:none}
-      .lead-metrics{gap:10px}
+      .lead-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
       .lead-big{font-size:42px}
       .stage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .lead-row{grid-template-columns:minmax(0,1fr) auto;gap:7px 10px}
@@ -606,14 +619,24 @@
       <p class="snapshot-note">SNAPSHOT · OCT 21 — FULL OCTOBER CENSUS · STAGES FROM PROJECT RESURRECTION</p>
       <div class="lead-metrics">
         <article class="card card-pad">
-          <span class="section-label">Avg engagement score</span>
-          <div class="lead-big pending" id="avgScore">—</div>
-          <span class="metric-sub">0–100 · touches + engagement + recency</span>
+          <span class="section-label">Total leads · October</span>
+          <div class="lead-big cyan" id="totalLeads">—</div>
+          <span class="metric-sub">All lead types · Oct 1–21 census</span>
         </article>
         <article class="card card-pad">
-          <span class="section-label">Hot leads (score 70+)</span>
-          <div class="lead-big pending" id="hotLeads">—</div>
-          <span class="metric-sub">Work these first — highest revival odds</span>
+          <span class="section-label">Total showrooms · October</span>
+          <div class="lead-big positive" id="totalShowrooms">—</div>
+          <span class="metric-sub">Showroom ups logged in eLEAD</span>
+        </article>
+        <article class="card card-pad">
+          <span class="section-label">Total phone ups · October</span>
+          <div class="lead-big warning" id="totalPhoneUps">—</div>
+          <span class="metric-sub">Phone ups logged in eLEAD</span>
+        </article>
+        <article class="card card-pad">
+          <span class="section-label">Total internet leads · October</span>
+          <div class="lead-big" style="color:var(--gold)" id="totalInternet">—</div>
+          <span class="metric-sub">Internet leads logged in eLEAD</span>
         </article>
       </div>
       <div class="split-grid">
@@ -839,8 +862,16 @@
       function fmtD(iso){var p=iso.split('-');return MONTHS[Number(p[1])-1]+' '+Number(p[2])}
       function fmtDFull(iso){var p=iso.split('-');return MONTHS[Number(p[1])-1]+' '+Number(p[2])+', '+p[0]}
       function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-      /* Metrics: no app engagement data exists for this store yet, so the
-         Avg Engagement Score and Hot Leads cards stay in the "—" state. */
+      /* Month totals at the top of the tab. Total Leads is counted from
+         the census list below. Showroom ups (16), phone ups (6) and
+         internet leads (86) are the October eLEAD source totals from the
+         same Oct 1–21 pull — they match the Activity table on the
+         Sales People tab. */
+      var SHOWROOM_UPS=16,PHONE_UPS=6,INTERNET_LEADS=86;
+      document.getElementById('totalLeads').textContent=pending?'—':leads.length;
+      document.getElementById('totalShowrooms').textContent=pending?'—':SHOWROOM_UPS;
+      document.getElementById('totalPhoneUps').textContent=pending?'—':PHONE_UPS;
+      document.getElementById('totalInternet').textContent=pending?'—':INTERNET_LEADS;
       /* Stage cards */
       var stageFilter=null;
       var stageGrid=document.getElementById('stageGrid');
