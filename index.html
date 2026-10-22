@@ -324,7 +324,9 @@
     .stage-card[data-stage="negotiation"] .sc-count{color:var(--gold)}
     .stage-card[data-stage="appointment"] .sc-count{color:var(--blue)}
     .stage-card[data-stage="sold"] .sc-count{color:var(--lime)}
-    .sp-head,.sp-row{display:grid;grid-template-columns:1.5fr .45fr .6fr .6fr .75fr .8fr .45fr;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+    .sp-head,.sp-row{display:grid;grid-template-columns:minmax(0,1.6fr) repeat(7,minmax(0,.55fr));gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+    .sp-head>span,.sp-row>span{min-width:0}
+    .sp-short{display:none}
     .sp-row:last-child{border-bottom:0}
     .sp-head{padding:2px 0 10px;color:var(--muted);font:600 9.5px/1.3 "IBM Plex Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
     .sp-head>span:not(:first-child),.sp-row>span:not(:first-child){text-align:right;font:600 14px/1 "IBM Plex Mono",monospace}
@@ -373,6 +375,9 @@
       .lead-row .lead-cell::before{content:attr(data-label);display:block;color:var(--muted);font:600 8.5px/1.3 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
       .sp-name{font-size:14px}
       .sp-row>span:not(:first-child){font-size:13px}
+      .sp-head,.sp-row{gap:6px}
+      .sp-head .sp-full{display:none}
+      .sp-head .sp-short{display:inline}
     }
     /* LEADS view — compact phone layout (≤480px only). Desktop/tablet and all
        other views keep the layouts above, unchanged. Rows become tight
@@ -391,6 +396,12 @@
       #leads .stage-card{padding:10px 12px}
       #leads .stage-card .sc-count{font-size:26px;margin-top:5px}
       #leads .sp-head,#leads .sp-row{padding-top:7px;padding-bottom:7px}
+      /* By-salesperson audit table: fixed compact numeric columns so all
+         eight columns (incl. Sold) fit a 390px phone with nothing clipped */
+      #leads .sp-head,#leads .sp-row{grid-template-columns:minmax(0,1fr) 28px 23px 28px 27px 28px 28px 26px;gap:5px}
+      #leads .sp-head>span{font-size:8px;letter-spacing:.02em}
+      #leads .sp-name{font-size:13px;line-height:1.2}
+      #leads .sp-row>span:not(:first-child){font-size:12.5px}
       #leads .lead-controls{gap:8px;margin-bottom:2px}
       #leads .week-select{width:100%;padding:8px 10px}
       #leads .lead-count-line{font-size:10px}
@@ -895,7 +906,7 @@
         });
       }
       /* By salesperson */
-      var REP_STAGES=['working','engaged','negotiation','appointment','sold'];
+      var REP_STAGES=['new','working','engaged','negotiation','appointment','sold'];
       var repAgg={};
       REPS.forEach(function(name){repAgg[name]={n:0,stages:{}}});
       leads.forEach(function(l){
@@ -903,14 +914,16 @@
         a.n++;a.stages[l.stage]=(a.stages[l.stage]||0)+1;
       });
       /* Elias David (manager) holds one lead in the list but is not a row
-         in the By Salesperson audit table. */
+         in the By Salesperson audit table — his lead still counts in the
+         stage cards and the 144 total. */
       var repNames=Object.keys(repAgg).filter(function(n){return n!=='Elias David'});
       if(!pending)repNames.sort(function(a,b){return repAgg[b].n-repAgg[a].n||a.localeCompare(b)});
-      var repHtml='<div class="sp-head"><span>Salesperson</span><span>Leads</span><span>Working</span><span>Engaged</span><span>Negotiation</span><span>Appointment</span><span>Sold</span></div>';
+      var SP_COLS=[['Salesperson','Salesperson'],['Leads','Leads'],['New','New'],['Working','Work'],['Engaged','Eng'],['Negotiation','Nego'],['Appointment','Appt'],['Sold','Sold']];
+      var repHtml='<div class="sp-head">'+SP_COLS.map(function(c){return '<span><span class="sp-full">'+c[0]+'</span><span class="sp-short" aria-hidden="true">'+c[1]+'</span></span>'}).join('')+'</div>';
       repNames.forEach(function(name){
         var a=repAgg[name];
         if(pending){
-          repHtml+='<div class="sp-row"><span class="sp-name">'+esc(name)+'</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
+          repHtml+='<div class="sp-row"><span class="sp-name">'+esc(name)+'</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
         }else{
           repHtml+='<div class="sp-row"><span class="sp-name">'+esc(name)+'</span><span>'+a.n+'</span>';
           REP_STAGES.forEach(function(k){repHtml+='<span>'+(a.stages[k]||0)+'</span>'});
