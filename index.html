@@ -187,6 +187,9 @@
     .act-head{padding:2px 0 10px}
     .act-head>span{font-size:9.5px!important;letter-spacing:.07em}
     .act-name{font-size:17px;font-weight:700}
+    .act-row.calls-only{grid-template-columns:1.05fr .62fr .62fr}
+    .act-totals{display:flex;flex-wrap:wrap;gap:8px 34px;margin:0 0 6px}
+    .act-totals .glance-line{margin-top:0}
     @media (max-width:980px){.span-7,.span-5,.span-4{grid-column:span 12}}
     @media(max-width:820px){.health-grid{grid-template-columns:repeat(3,1fr)}}
     @media(max-width:620px){
@@ -247,6 +250,7 @@
       .act-head{display:none}
       .act-row{grid-template-columns:repeat(3,1fr);gap:13px 8px;padding:15px 0}
       .act-name{grid-column:1/-1}
+      .act-row.calls-only{grid-template-columns:repeat(2,1fr)}
       .act-row>span:not(.act-name){text-align:left}
       .act-stat::before{content:attr(data-label);display:block;color:var(--muted);font:600 8.5px/1.3 "IBM Plex Mono",monospace;letter-spacing:.07em;margin-bottom:4px}
     }
@@ -324,7 +328,8 @@
     .stage-card[data-stage="negotiation"] .sc-count{color:var(--gold)}
     .stage-card[data-stage="appointment"] .sc-count{color:var(--blue)}
     .stage-card[data-stage="sold"] .sc-count{color:var(--lime)}
-    .sp-head,.sp-row{display:grid;grid-template-columns:minmax(0,1.6fr) repeat(7,minmax(0,.55fr));gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+    .stage-card[data-stage="inactive"] .sc-count{color:var(--muted)}
+    .sp-head,.sp-row{display:grid;grid-template-columns:minmax(0,1.6fr) repeat(8,minmax(0,.55fr));gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
     .sp-head>span,.sp-row>span{min-width:0}
     .sp-short{display:none}
     .sp-row:last-child{border-bottom:0}
@@ -357,12 +362,13 @@
     .stage-chip.negotiation{border-color:var(--gold);color:var(--gold)}
     .stage-chip.appointment{border-color:var(--blue);color:var(--blue)}
     .stage-chip.sold{border-color:var(--lime);color:var(--lime)}
+    .stage-chip.inactive{border-color:var(--muted);color:var(--muted)}
     .lead-detail{grid-column:1/-1;display:none;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:12px 14px;font:500 12px/1.7 "IBM Plex Mono",monospace;color:var(--muted)}
     .lead-detail .ld i{font-style:normal}
     .lead-detail strong{color:var(--text)}
     .lead-row.open .lead-detail{display:block}
     .lead-empty{padding:26px 12px;color:var(--muted);font-size:15px;text-align:center}
-    @media(min-width:1280px){.stage-grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
+    @media(min-width:1280px){.stage-grid{grid-template-columns:repeat(7,minmax(0,1fr))}}
     @media(max-width:700px){
       .lead-head{display:none}
       .lead-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -398,7 +404,7 @@
       #leads .sp-head,#leads .sp-row{padding-top:7px;padding-bottom:7px}
       /* By-salesperson audit table: fixed compact numeric columns so all
          eight columns (incl. Sold) fit a 390px phone with nothing clipped */
-      #leads .sp-head,#leads .sp-row{grid-template-columns:minmax(0,1fr) 28px 23px 28px 27px 28px 28px 26px;gap:5px}
+      #leads .sp-head,#leads .sp-row{grid-template-columns:minmax(0,1fr) 24px 20px 24px 23px 24px 24px 24px 22px;gap:4px}
       #leads .sp-head>span{font-size:8px;letter-spacing:.02em}
       #leads .sp-name{font-size:13px;line-height:1.2}
       #leads .sp-row>span:not(:first-child){font-size:12.5px}
@@ -441,7 +447,7 @@
     <section class="command" aria-labelledby="page-title">
       <div>
         <h1 id="page-title">BERGLUND LUXURY LYNCHBURG</h1>
-        <p class="kicker">BMW · MERCEDES-BENZ · VOLVO<br>WAR ROOM · OCTOBER 2026 · DAY 20 OF 27</p>
+        <p class="kicker">BMW · MERCEDES-BENZ · VOLVO<br>WAR ROOM · OCTOBER 2026 · DAY 25 OF 27</p>
       </div>
       <div class="status" role="status"><span class="pulse" aria-hidden="true"></span><span>LIVE</span></div>
     </section>
@@ -456,51 +462,52 @@
 
     <section id="overview" class="view active">
       <div class="metrics">
-        <article class="card metric metric-units clickable" tabindex="0" role="button" aria-pressed="false" aria-label="Total units MTD: 15. Show new and used breakdown." data-units-toggle>
+        <article class="card metric metric-units clickable" tabindex="0" role="button" aria-pressed="false" aria-label="Total units MTD: 21. Show new and used breakdown." data-units-toggle>
           <div class="units-summary">
             <span class="metric-label">Total units MTD</span>
-            <div class="metric-value">15</div>
-            <span class="metric-sub">Through day <strong>19</strong> of <strong>27</strong></span>
+            <div class="metric-value">21</div>
+            <span class="metric-sub">Through day <strong>25</strong> of <strong>27</strong></span>
             <span class="tap">TAP FOR NEW / USED ›</span>
           </div>
           <div class="units-breakdown" aria-live="polite">
             <span class="metric-label">Units by type</span>
             <div class="units-split">
-              <div class="units-part"><span class="units-type">New</span><strong class="units-value">7</strong><span class="units-pace">Pace 9.9</span></div>
-              <div class="units-part"><span class="units-type">Used</span><strong class="units-value">8</strong><span class="units-pace">Pace 11.4</span></div>
+              <div class="units-part"><span class="units-type">New</span><strong class="units-value">11</strong><span class="units-pace">Pace 11.9</span></div>
+              <div class="units-part"><span class="units-type">Used</span><strong class="units-value">10</strong><span class="units-pace">Pace 10.8</span></div>
             </div>
             <span class="tap">TAP FOR TOTAL ›</span>
           </div>
         </article>
         <article class="card metric metric-total">
           <span class="metric-label">Total gross MTD</span>
-          <div class="metric-value">$87,903</div>
-          <span class="metric-sub">Front <strong>$64,000</strong> · back <strong>$23,903</strong></span>
+          <div class="metric-value">$114,185</div>
+          <span class="metric-sub">Front <strong>$84,391</strong> · back <strong>$29,793</strong></span>
         </article>
         <article class="card metric metric-new">
           <span class="metric-label">New gross MTD</span>
-          <div class="metric-value">$56,200</div>
-          <span class="metric-sub">Front <strong>$43,548</strong> · back <strong>$12,651</strong> · <strong>7</strong> units</span>
+          <div class="metric-value">$74,708</div>
+          <span class="metric-sub">Front <strong>$57,601</strong> · back <strong>$17,107</strong> · <strong>11</strong> units</span>
         </article>
         <article class="card metric metric-used">
           <span class="metric-label">Used gross MTD</span>
-          <div class="metric-value">$31,703</div>
-          <span class="metric-sub">Front <strong>$20,452</strong> · back <strong>$11,251</strong> · <strong>8</strong> units</span>
+          <div class="metric-value">$39,477</div>
+          <span class="metric-sub">Front <strong>$26,791</strong> · back <strong>$12,686</strong> · <strong>10</strong> units</span>
         </article>
       </div>
-      <p class="updated-line">OCTOBER 2026 · SALES LOG THROUGH OCT 22 · DEALERSLINK OCT 23 · ELEAD OCT 1–22 (APPTS OCT 1–23) · PURPLE CLOUD OCT 1–22</p>
+      <p class="glance-line">Deals working<strong>26</strong></p>
+      <p class="updated-line">OCTOBER 2026 · SALES LOG THROUGH OCT 28 · DEALERSLINK OCT 28 · ELEAD OCT 1–28 · PURPLE CLOUD OCT 1–28</p>
     </section>
 
     <section id="new" class="view">
       <div class="split-grid">
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">Summary · October MTD</span><h2 class="card-title">New At A Glance</h2></div><span class="tap">SALES LOG · OCT 22</span></div>
+          <div class="card-head"><div><span class="section-label">Summary · October MTD</span><h2 class="card-title">New At A Glance</h2></div><span class="tap">SALES LOG · OCT 28</span></div>
           <div class="tile-grid">
-            <div class="tile"><span class="tile-label">New units sold</span><span class="tile-num c-blue">7</span></div>
-            <div class="tile"><span class="tile-label">MTD new gross</span><span class="tile-num c-green">$56,200</span></div>
-            <div class="tile"><span class="tile-label">Avg front per deal</span><span class="tile-num positive">+$6,221</span></div>
-            <div class="tile"><span class="tile-logo"><svg class="inv-badge" viewBox="0 0 40 40" role="img" aria-label="New BMW sold"><circle cx="20" cy="20" r="18.5" fill="#0d1015" stroke="#4a5568" stroke-width="1.5"/><circle cx="20" cy="20" r="11" fill="#eef1f6"/><path d="M20 20 L20 9 A11 11 0 0 1 31 20 Z" fill="#2e9be6"/><path d="M20 20 L20 31 A11 11 0 0 1 9 20 Z" fill="#2e9be6"/><circle cx="20" cy="20" r="11" fill="none" stroke="#4a5568" stroke-width="1"/><text x="11.5" y="10.5" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" font-weight="600" fill="#dfe6f2">B</text><text x="20" y="8" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" font-weight="600" fill="#dfe6f2">M</text><text x="28.5" y="10.5" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" font-weight="600" fill="#dfe6f2">W</text></svg></span><span class="tile-num c-red">4</span></div>
-            <div class="tile"><span class="tile-logo"><svg class="inv-badge" viewBox="0 0 40 40" role="img" aria-label="New Mercedes sold"><defs><linearGradient id="blkChromeTile" gradientUnits="userSpaceOnUse" x1="7" y1="3" x2="31" y2="37"><stop offset="0" stop-color="#f4f7fa"/><stop offset=".28" stop-color="#a7b2bd"/><stop offset=".5" stop-color="#39424b"/><stop offset=".68" stop-color="#10141a"/><stop offset="1" stop-color="#7e8a95"/></linearGradient><linearGradient id="blkStarTile" gradientUnits="userSpaceOnUse" x1="20" y1="3" x2="20" y2="30"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#d9e1e8"/><stop offset=".62" stop-color="#8b98a4"/><stop offset=".85" stop-color="#c9d3dc"/><stop offset="1" stop-color="#67727d"/></linearGradient><linearGradient id="blkFaceTile" gradientUnits="userSpaceOnUse" x1="20" y1="2" x2="20" y2="38"><stop offset="0" stop-color="#31383f"/><stop offset=".5" stop-color="#0d1014"/><stop offset="1" stop-color="#05070a"/></linearGradient></defs><circle cx="20" cy="20" r="18" fill="url(#blkFaceTile)" stroke="url(#blkChromeTile)" stroke-width="2.2"/><path fill="url(#blkStarTile)" stroke="#eef3f7" stroke-width=".55" stroke-opacity=".9" stroke-linejoin="round" d="M18.2 20.6 L20 3.2 L21.8 20.6 Z M19.05 18.35 L5.7 28.3 L20.95 21.65 Z M20.95 18.35 L34.3 28.3 L19.05 21.65 Z"/><circle cx="20" cy="20" r="2.3" fill="url(#blkStarTile)"/><ellipse cx="14.5" cy="9" rx="6.5" ry="2.8" transform="rotate(-24 14.5 9)" fill="#ffffff" opacity=".13"/></svg></span><span class="tile-num c-green">1</span></div>
+            <div class="tile"><span class="tile-label">New units sold</span><span class="tile-num c-blue">11</span></div>
+            <div class="tile"><span class="tile-label">MTD new gross</span><span class="tile-num c-green">$74,708</span></div>
+            <div class="tile"><span class="tile-label">Avg front per deal</span><span class="tile-num positive">+$5,236</span></div>
+            <div class="tile"><span class="tile-logo"><svg class="inv-badge" viewBox="0 0 40 40" role="img" aria-label="New BMW sold"><circle cx="20" cy="20" r="18.5" fill="#0d1015" stroke="#4a5568" stroke-width="1.5"/><circle cx="20" cy="20" r="11" fill="#eef1f6"/><path d="M20 20 L20 9 A11 11 0 0 1 31 20 Z" fill="#2e9be6"/><path d="M20 20 L20 31 A11 11 0 0 1 9 20 Z" fill="#2e9be6"/><circle cx="20" cy="20" r="11" fill="none" stroke="#4a5568" stroke-width="1"/><text x="11.5" y="10.5" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" font-weight="600" fill="#dfe6f2">B</text><text x="20" y="8" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" font-weight="600" fill="#dfe6f2">M</text><text x="28.5" y="10.5" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" font-weight="600" fill="#dfe6f2">W</text></svg></span><span class="tile-num c-red">5</span></div>
+            <div class="tile"><span class="tile-logo"><svg class="inv-badge" viewBox="0 0 40 40" role="img" aria-label="New Mercedes sold"><defs><linearGradient id="blkChromeTile" gradientUnits="userSpaceOnUse" x1="7" y1="3" x2="31" y2="37"><stop offset="0" stop-color="#f4f7fa"/><stop offset=".28" stop-color="#a7b2bd"/><stop offset=".5" stop-color="#39424b"/><stop offset=".68" stop-color="#10141a"/><stop offset="1" stop-color="#7e8a95"/></linearGradient><linearGradient id="blkStarTile" gradientUnits="userSpaceOnUse" x1="20" y1="3" x2="20" y2="30"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#d9e1e8"/><stop offset=".62" stop-color="#8b98a4"/><stop offset=".85" stop-color="#c9d3dc"/><stop offset="1" stop-color="#67727d"/></linearGradient><linearGradient id="blkFaceTile" gradientUnits="userSpaceOnUse" x1="20" y1="2" x2="20" y2="38"><stop offset="0" stop-color="#31383f"/><stop offset=".5" stop-color="#0d1014"/><stop offset="1" stop-color="#05070a"/></linearGradient></defs><circle cx="20" cy="20" r="18" fill="url(#blkFaceTile)" stroke="url(#blkChromeTile)" stroke-width="2.2"/><path fill="url(#blkStarTile)" stroke="#eef3f7" stroke-width=".55" stroke-opacity=".9" stroke-linejoin="round" d="M18.2 20.6 L20 3.2 L21.8 20.6 Z M19.05 18.35 L5.7 28.3 L20.95 21.65 Z M20.95 18.35 L34.3 28.3 L19.05 21.65 Z"/><circle cx="20" cy="20" r="2.3" fill="url(#blkStarTile)"/><ellipse cx="14.5" cy="9" rx="6.5" ry="2.8" transform="rotate(-24 14.5 9)" fill="#ffffff" opacity=".13"/></svg></span><span class="tile-num c-green">4</span></div>
             <div class="tile"><span class="tile-logo"><svg class="inv-badge" viewBox="0 0 40 40" role="img" aria-label="New Volvo sold"><defs><linearGradient id="volvoChromeTile" gradientUnits="userSpaceOnUse" x1="6" y1="4" x2="30" y2="34"><stop offset="0" stop-color="#f2f5f8"/><stop offset=".45" stop-color="#8b95a1"/><stop offset=".75" stop-color="#39404a"/><stop offset="1" stop-color="#c3ccd4"/></linearGradient><linearGradient id="volvoFaceTile" gradientUnits="userSpaceOnUse" x1="18" y1="8" x2="18" y2="36"><stop offset="0" stop-color="#2b3038"/><stop offset=".5" stop-color="#0a0c10"/><stop offset="1" stop-color="#05070a"/></linearGradient></defs><circle cx="18" cy="22" r="13" fill="url(#volvoFaceTile)" stroke="url(#volvoChromeTile)" stroke-width="2.2"/><g stroke="url(#volvoChromeTile)" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" fill="none"><line x1="23.5" y1="16.5" x2="34" y2="6"/><path d="M28.6 5.4 L34.6 5.4 L34.6 11.4"/></g><rect x="5" y="18.4" width="26" height="7.4" fill="url(#volvoChromeTile)"/><text x="18" y="24.4" text-anchor="middle" font-family="IBM Plex Sans Condensed,sans-serif" font-size="6.4" font-weight="700" letter-spacing="1.1" fill="#0a0e13">VOLVO</text></svg></span><span class="tile-num c-orange">2</span></div>
           </div>
           <p class="glance-line">Deals working (new)<strong>0</strong></p>
@@ -509,34 +516,34 @@
           <article class="card inv-card inv-total">
             <div class="inv-top">
               <span class="inv-logo"><img src="assets/berglund-luxury-logo.jpg" alt="Berglund Luxury Lynchburg" width="1500" height="525"></span>
-              <span class="tap">DEALERSLINK · OCT 23</span>
+              <span class="tap">DEALERSLINK · OCT 28</span>
             </div>
             <h2 class="inv-name">Total inventory</h2>
-            <div class="inv-num">122</div>
-            <span class="inv-sub">New vehicles in stock</span>
+            <div class="inv-num">121</div>
+            <span class="inv-sub">75 new · 46 used in stock</span>
           </article>
           <article class="card inv-card inv-bmw">
             <div class="inv-top">
               <svg class="inv-badge" viewBox="0 0 40 40" role="img" aria-label="BMW"><circle cx="20" cy="20" r="18.5" fill="#0d1015" stroke="#4a5568" stroke-width="1.5"/><circle cx="20" cy="20" r="11" fill="#eef1f6"/><path d="M20 20 L20 9 A11 11 0 0 1 31 20 Z" fill="#2e9be6"/><path d="M20 20 L20 31 A11 11 0 0 1 9 20 Z" fill="#2e9be6"/><circle cx="20" cy="20" r="11" fill="none" stroke="#4a5568" stroke-width="1"/><text x="11.5" y="10.5" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" font-weight="600" fill="#dfe6f2">B</text><text x="20" y="8" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" font-weight="600" fill="#dfe6f2">M</text><text x="28.5" y="10.5" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" font-weight="600" fill="#dfe6f2">W</text></svg>
-              <span class="tap">DEALERSLINK · OCT 23</span>
+              <span class="tap">DEALERSLINK · OCT 29</span>
             </div>
             <h2 class="inv-name">New BMW</h2>
-            <div class="inv-num">39</div>
+            <div class="inv-num">34</div>
             <span class="inv-sub">New BMW units in stock</span>
           </article>
           <article class="card inv-card inv-benz">
             <div class="inv-top">
               <svg class="inv-badge" viewBox="0 0 40 40" role="img" aria-label="Mercedes-Benz"><defs><linearGradient id="blkChromeCard" gradientUnits="userSpaceOnUse" x1="7" y1="3" x2="31" y2="37"><stop offset="0" stop-color="#f4f7fa"/><stop offset=".28" stop-color="#a7b2bd"/><stop offset=".5" stop-color="#39424b"/><stop offset=".68" stop-color="#10141a"/><stop offset="1" stop-color="#7e8a95"/></linearGradient><linearGradient id="blkStarCard" gradientUnits="userSpaceOnUse" x1="20" y1="3" x2="20" y2="30"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#d9e1e8"/><stop offset=".62" stop-color="#8b98a4"/><stop offset=".85" stop-color="#c9d3dc"/><stop offset="1" stop-color="#67727d"/></linearGradient><linearGradient id="blkFaceCard" gradientUnits="userSpaceOnUse" x1="20" y1="2" x2="20" y2="38"><stop offset="0" stop-color="#31383f"/><stop offset=".5" stop-color="#0d1014"/><stop offset="1" stop-color="#05070a"/></linearGradient></defs><circle cx="20" cy="20" r="18" fill="url(#blkFaceCard)" stroke="url(#blkChromeCard)" stroke-width="2.2"/><path fill="url(#blkStarCard)" stroke="#eef3f7" stroke-width=".55" stroke-opacity=".9" stroke-linejoin="round" d="M18.2 20.6 L20 3.2 L21.8 20.6 Z M19.05 18.35 L5.7 28.3 L20.95 21.65 Z M20.95 18.35 L34.3 28.3 L19.05 21.65 Z"/><circle cx="20" cy="20" r="2.3" fill="url(#blkStarCard)"/><ellipse cx="14.5" cy="9" rx="6.5" ry="2.8" transform="rotate(-24 14.5 9)" fill="#ffffff" opacity=".13"/></svg>
-              <span class="tap">DEALERSLINK · OCT 23</span>
+              <span class="tap">DEALERSLINK · OCT 29</span>
             </div>
             <h2 class="inv-name">New Mercedes</h2>
-            <div class="inv-num">26</div>
+            <div class="inv-num">24</div>
             <span class="inv-sub">New Mercedes units in stock</span>
           </article>
           <article class="card inv-card inv-volvo">
             <div class="inv-top">
               <svg class="inv-badge" viewBox="0 0 40 40" role="img" aria-label="Volvo"><defs><linearGradient id="volvoChromeCard" gradientUnits="userSpaceOnUse" x1="6" y1="4" x2="30" y2="34"><stop offset="0" stop-color="#f2f5f8"/><stop offset=".45" stop-color="#8b95a1"/><stop offset=".75" stop-color="#39404a"/><stop offset="1" stop-color="#c3ccd4"/></linearGradient><linearGradient id="volvoFaceCard" gradientUnits="userSpaceOnUse" x1="18" y1="8" x2="18" y2="36"><stop offset="0" stop-color="#2b3038"/><stop offset=".5" stop-color="#0a0c10"/><stop offset="1" stop-color="#05070a"/></linearGradient></defs><circle cx="18" cy="22" r="13" fill="url(#volvoFaceCard)" stroke="url(#volvoChromeCard)" stroke-width="2.2"/><g stroke="url(#volvoChromeCard)" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" fill="none"><line x1="23.5" y1="16.5" x2="34" y2="6"/><path d="M28.6 5.4 L34.6 5.4 L34.6 11.4"/></g><rect x="5" y="18.4" width="26" height="7.4" fill="url(#volvoChromeCard)"/><text x="18" y="24.4" text-anchor="middle" font-family="IBM Plex Sans Condensed,sans-serif" font-size="6.4" font-weight="700" letter-spacing="1.1" fill="#0a0e13">VOLVO</text></svg>
-              <span class="tap">DEALERSLINK · OCT 23</span>
+              <span class="tap">DEALERSLINK · OCT 29</span>
             </div>
             <h2 class="inv-name">New Volvo</h2>
             <div class="inv-num">17</div>
@@ -544,14 +551,21 @@
           </article>
         </div>
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">New-car deals</span><h2 class="card-title">Every new deal · front &amp; back</h2></div><span class="tap">SALES LOG · OCT 22</span></div>
+          <div class="card-head"><div><span class="section-label">New-car deals</span><h2 class="card-title">Every new deal · front &amp; back</h2></div><span class="tap">SALES LOG · OCT 28</span></div>
           <div class="deal-list">
             <div class="deal deal-head" aria-hidden="true"><div>DEAL</div><div class="deal-num">FRONT</div><div class="deal-num">BACK</div><div class="deal-num">TOTAL</div></div>
-            <div class="deal deal-total"><div><div class="deal-title">New total · 7 units</div><div class="deal-meta">AVG $8,029 PER UNIT</div></div><div class="deal-num" data-label="FRONT">$43,548</div><div class="deal-num" data-label="BACK">$12,651</div><div class="deal-num" data-label="TOTAL">$56,200</div></div>
+            <div class="deal deal-total"><div><div class="deal-title">New total · 11 units</div><div class="deal-meta">AVG $6,792 PER UNIT</div></div><div class="deal-num" data-label="FRONT">$57,601</div><div class="deal-num" data-label="BACK">$17,107</div><div class="deal-num" data-label="TOTAL">$74,708</div></div>
             <div class="deal"><div><div class="deal-title">2026 BMW X3</div><div class="deal-meta">OCT 3 · DEAL #114364 · STOCK LLB4289 · HINNANT · ARABI</div></div><div class="deal-num positive" data-label="FRONT">$5,059</div><div class="deal-num positive" data-label="BACK">$710</div><div class="deal-num positive" data-label="TOTAL">$5,769</div></div>
             <div class="deal"><div><div class="deal-title">2027 Mercedes E350</div><div class="deal-meta">OCT 3 · DEAL #114375 · STOCK LLM4363 · PRESTON · HENRY</div></div><div class="deal-num positive" data-label="FRONT">$1,820</div><div class="deal-num positive" data-label="BACK">$5,318</div><div class="deal-num positive" data-label="TOTAL">$7,138</div></div>
             <div class="deal"><div><div class="deal-title">2027 Volvo XC60</div><div class="deal-meta">OCT 10 · DEAL #114365 · STOCK LLV4366 · FRIAR · RIPLEY / HENRY</div></div><div class="deal-num positive" data-label="FRONT">$4,513</div><div class="deal-num" data-label="BACK">$0</div><div class="deal-num positive" data-label="TOTAL">$4,513</div></div>
-            <div class="deal"><div><div class="deal-title">2026 Volvo V60</div><div class="deal-meta">OCT 17 · DEAL #114388 · STOCK LLV4366 · FRANK · HENRY</div></div><div class="deal-num positive" data-label="FRONT">$5,952</div><div class="deal-num positive" data-label="BACK">$4,260</div><div class="deal-num positive" data-label="TOTAL">$10,213</div></div>
+            <div class="deal"><div><div class="deal-title">2026 Volvo V60</div><div class="deal-meta">OCT 17 · DEAL #114388 · STOCK LLV4218 · ANDERSON · HENRY</div></div><div class="deal-num positive" data-label="FRONT">$5,952</div><div class="deal-num positive" data-label="BACK">$4,260</div><div class="deal-num positive" data-label="TOTAL">$10,213</div></div>
+            <div class="deal"><div><div class="deal-title">2027 BMW M3</div><div class="deal-meta">OCT 22 · DEAL #114396 · STOCK LLB4351 · ALUXOTIC LLC · RIPLEY</div></div><div class="deal-num positive" data-label="FRONT">$14,881</div><div class="deal-num" data-label="BACK">$0</div><div class="deal-num positive" data-label="TOTAL">$14,881</div></div>
+            <div class="deal"><div><div class="deal-title">2027 BMW iX3</div><div class="deal-meta">OCT 22 · DEAL #114397 · STOCK LLB4369 · STEWART · HENRY</div></div><div class="deal-num positive" data-label="FRONT">$5,912</div><div class="deal-num positive" data-label="BACK">$862</div><div class="deal-num positive" data-label="TOTAL">$6,774</div></div>
+            <div class="deal"><div><div class="deal-title">2027 BMW iX3</div><div class="deal-meta">OCT 22 · DEAL #114398 · STOCK LLB4355 · PARRY · HENRY</div></div><div class="deal-num positive" data-label="FRONT">$5,411</div><div class="deal-num positive" data-label="BACK">$1,500</div><div class="deal-num positive" data-label="TOTAL">$6,911</div></div>
+            <div class="deal"><div><div class="deal-title">2027 Mercedes GLE450</div><div class="deal-meta">OCT 24 · DEAL #114405 · STOCK LLM4341 · WILLIAMS · ARABI</div></div><div class="deal-num positive" data-label="FRONT">$6,801</div><div class="deal-num positive" data-label="BACK">$1,294</div><div class="deal-num positive" data-label="TOTAL">$8,095</div></div>
+            <div class="deal"><div><div class="deal-title">2027 Mercedes GLE450</div><div class="deal-meta">OCT 26 · DEAL #114399 · STOCK LLM4335 · HACKETT · HENRY</div></div><div class="deal-num positive" data-label="FRONT">$4,399</div><div class="deal-num positive" data-label="BACK">$450</div><div class="deal-num positive" data-label="TOTAL">$4,849</div></div>
+            <div class="deal"><div><div class="deal-title">2027 Mercedes GLE350</div><div class="deal-meta">OCT 26 · DEAL #114406 · STOCK LLM4279 · YE · HENRY / RIPLEY</div></div><div class="deal-num positive" data-label="FRONT">$439</div><div class="deal-num positive" data-label="BACK">$1,996</div><div class="deal-num positive" data-label="TOTAL">$2,435</div></div>
+            <div class="deal"><div><div class="deal-title">2026 BMW X3</div><div class="deal-meta">OCT 28 · DEAL #114408 · STOCK LLB4345 · JENNINGS · ARABI</div></div><div class="deal-num positive" data-label="FRONT">$2,413</div><div class="deal-num positive" data-label="BACK">$716</div><div class="deal-num positive" data-label="TOTAL">$3,129</div></div>
           </div>
         </article>
       </div>
@@ -560,12 +574,12 @@
     <section id="used" class="view">
       <div class="split-grid">
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">Summary · October MTD</span><h2 class="card-title">Used At A Glance</h2></div><span class="tap">SALES LOG · OCT 22</span></div>
+          <div class="card-head"><div><span class="section-label">Summary · October MTD</span><h2 class="card-title">Used At A Glance</h2></div><span class="tap">SALES LOG · OCT 28</span></div>
           <div class="tile-grid">
-            <div class="tile"><span class="tile-label">Used units sold</span><span class="tile-num c-blue">8</span></div>
-            <div class="tile"><span class="tile-label">MTD used gross</span><span class="tile-num c-green">$31,703</span></div>
-            <div class="tile"><span class="tile-label">Avg front per deal</span><span class="tile-num positive">+$2,557</span></div>
-            <div class="tile"><span class="tile-label">For sale</span><span class="tile-num c-orange">44</span></div>
+            <div class="tile"><span class="tile-label">Used units sold</span><span class="tile-num c-blue">10</span></div>
+            <div class="tile"><span class="tile-label">MTD used gross</span><span class="tile-num c-green">$39,477</span></div>
+            <div class="tile"><span class="tile-label">Avg front per deal</span><span class="tile-num positive">+$2,679</span></div>
+            <div class="tile"><span class="tile-label">For sale</span><span class="tile-num c-orange">46</span></div>
             <div class="tile"><span class="tile-label">Avg age in stock</span><span class="tile-num sm c-orange">67 days</span></div>
             <div class="tile"><span class="tile-label">Oldest unit</span><span class="tile-num sm c-red">433 days</span><span class="tile-cap">2026 BMW XM Label · LLB4039</span></div>
           </div>
@@ -584,16 +598,20 @@
           </table>
         </article>
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">Used-car deals</span><h2 class="card-title">Every used deal · front &amp; back</h2></div><span class="tap">SALES LOG · OCT 22</span></div>
+          <div class="card-head"><div><span class="section-label">Used-car deals</span><h2 class="card-title">Every used deal · front &amp; back</h2></div><span class="tap">SALES LOG · OCT 28</span></div>
           <div class="deal-list">
             <div class="deal deal-head" aria-hidden="true"><div>DEAL</div><div class="deal-num">FRONT</div><div class="deal-num">BACK</div><div class="deal-num">TOTAL</div></div>
-            <div class="deal deal-total"><div><div class="deal-title">Used total · 8 units</div><div class="deal-meta">FRONT $20,452 · BACK $11,251</div></div><div class="deal-num" data-label="FRONT">$20,452</div><div class="deal-num" data-label="BACK">$11,251</div><div class="deal-num" data-label="TOTAL">$31,703</div></div>
+            <div class="deal deal-total"><div><div class="deal-title">Used total · 10 units</div><div class="deal-meta">FRONT $26,791 · BACK $12,686</div></div><div class="deal-num" data-label="FRONT">$26,791</div><div class="deal-num" data-label="BACK">$12,686</div><div class="deal-num" data-label="TOTAL">$39,477</div></div>
             <div class="deal"><div><div class="deal-title">2021 Mercedes GLE350</div><div class="deal-meta">OCT 7 · DEAL #114368 · STOCK LRM35394A · COX · RIPLEY / HENRY</div></div><div class="deal-num negative" data-label="FRONT">−$305</div><div class="deal-num positive" data-label="BACK">$941</div><div class="deal-num positive" data-label="TOTAL">$636</div></div>
             <div class="deal"><div><div class="deal-title">2022 BMW X5</div><div class="deal-meta">OCT 8 · DEAL #114366 · STOCK LLP6412A · MUSENSCKI · HENRY</div></div><div class="deal-num positive" data-label="FRONT">$2,922</div><div class="deal-num" data-label="BACK">$0</div><div class="deal-num positive" data-label="TOTAL">$2,922</div></div>
             <div class="deal"><div><div class="deal-title">2026 Mercedes C300</div><div class="deal-meta">OCT 12 · DEAL #114381 · STOCK LLL6435 · ZAINAB · RIPLEY</div></div><div class="deal-num positive" data-label="FRONT">$1,879</div><div class="deal-num" data-label="BACK">$0</div><div class="deal-num positive" data-label="TOTAL">$1,879</div></div>
-            <div class="deal"><div><div class="deal-title">2020 Lincoln Corsair</div><div class="deal-meta">OCT 17 · DEAL #114387 · STOCK LLP6369B · SCOTT · ARABI</div></div><div class="deal-num negative" data-label="FRONT">−$326</div><div class="deal-num positive" data-label="BACK">$1,997</div><div class="deal-num positive" data-label="TOTAL">$1,670</div></div>
+            <div class="deal"><div><div class="deal-title">2020 Lincoln Corsair</div><div class="deal-meta">OCT 17 · DEAL #114387 · STOCK LLP6369B · SCOTT · ARABI</div></div><div class="deal-num negative" data-label="FRONT">−$887</div><div class="deal-num positive" data-label="BACK">$1,997</div><div class="deal-num positive" data-label="TOTAL">$1,109</div></div>
             <div class="deal"><div><div class="deal-title">2023 BMW M2</div><div class="deal-meta">OCT 19 · DEAL #114390 · STOCK LLP6448 · WILLIAMS · RIPLEY</div></div><div class="deal-num positive" data-label="FRONT">$1,723</div><div class="deal-num positive" data-label="BACK">$5,837</div><div class="deal-num positive" data-label="TOTAL">$7,560</div></div>
             <div class="deal"><div><div class="deal-title">2024 Chevrolet Blazer EV</div><div class="deal-meta">OCT 19 · DEAL #114391 · STOCK BCP49633 · TOMLIN · ARABI</div></div><div class="deal-num positive" data-label="FRONT">$608</div><div class="deal-num positive" data-label="BACK">$2,476</div><div class="deal-num positive" data-label="TOTAL">$3,084</div></div>
+            <div class="deal"><div><div class="deal-title">2026 BMW X5 M60</div><div class="deal-meta">OCT 20 · DEAL #114392 · STOCK LRV2434A · SPERRY · HENRY</div></div><div class="deal-num positive" data-label="FRONT">$7,718</div><div class="deal-num positive" data-label="BACK">$500</div><div class="deal-num positive" data-label="TOTAL">$8,218</div></div>
+            <div class="deal"><div><div class="deal-title">2026 Volvo XC90</div><div class="deal-meta">OCT 20 · DEAL #114385 · STOCK LLL6421 · CRIST · ARABI</div></div><div class="deal-num positive" data-label="FRONT">$6,795</div><div class="deal-num" data-label="BACK">$0</div><div class="deal-num positive" data-label="TOTAL">$6,795</div></div>
+            <div class="deal"><div><div class="deal-title">2023 Chevrolet Corvette</div><div class="deal-meta">OCT 24 · DEAL #114400 · STOCK LRV2434B · CANODY · RIPLEY / ARABI</div></div><div class="deal-num positive" data-label="FRONT">$2,894</div><div class="deal-num" data-label="BACK">$0</div><div class="deal-num positive" data-label="TOTAL">$2,894</div></div>
+            <div class="deal"><div><div class="deal-title">2021 BMW X5</div><div class="deal-meta">OCT 28 · DEAL #114409 · STOCK LLB4355A · BLACKE · HENRY</div></div><div class="deal-num positive" data-label="FRONT">$3,445</div><div class="deal-num positive" data-label="BACK">$935</div><div class="deal-num positive" data-label="TOTAL">$4,380</div></div>
           </div>
         </article>
       </div>
@@ -602,37 +620,42 @@
     <section id="team" class="view">
       <div class="split-grid">
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">Team board · ranked by total gross</span><h2 class="card-title">Units first</h2></div><span class="tap">SALES LOG · OCT 22</span></div>
+          <div class="card-head"><div><span class="section-label">Team board · ranked by total gross</span><h2 class="card-title">Units first</h2></div><span class="tap">SALES LOG · OCT 28</span></div>
           <div class="rep-list">
-            <div class="rep"><span class="rank"><span class="age-dot fresh" aria-hidden="true"></span>01</span><div><strong>Justin Henry</strong><small>Front $31,839 · Back $11,941 · $6,254 per unit</small></div><span class="rep-units">7<small>UNITS</small></span><span class="rep-total">$43,780</span></div>
-            <div class="rep"><span class="rank"><span class="age-dot mid" aria-hidden="true"></span>02</span><div><strong>David Ripley</strong><small>Front $20,587 · Back $6,779 · $6,842 per unit</small></div><span class="rep-units">4<small>UNITS</small></span><span class="rep-total">$27,366</span></div>
-            <div class="rep"><span class="rank"><span class="age-dot old" aria-hidden="true"></span>03</span><div><strong>Pirooz Arabi</strong><small>Front $11,574 · Back $5,183 · $4,189 per unit</small></div><span class="rep-units">4<small>UNITS</small></span><span class="rep-total">$16,757</span></div>
+            <div class="rep"><span class="rank"><span class="age-dot fresh" aria-hidden="true"></span>01</span><div><strong>Justin Henry</strong><small>Front $39,902 · Back $15,822 · $5,866 per unit</small></div><span class="rep-units">9.5<small>UNITS</small></span><span class="rep-total">$55,724</span></div>
+            <div class="rep"><span class="rank"><span class="age-dot mid" aria-hidden="true"></span>02</span><div><strong>Pirooz Arabi</strong><small>Front $22,235 · Back $7,193 · $4,527 per unit</small></div><span class="rep-units">6.5<small>UNITS</small></span><span class="rep-total">$29,428</span></div>
+            <div class="rep"><span class="rank"><span class="age-dot old" aria-hidden="true"></span>03</span><div><strong>David Ripley</strong><small>Front $22,254 · Back $6,779 · $5,807 per unit</small></div><span class="rep-units">5<small>UNITS</small></span><span class="rep-total">$29,033</span></div>
           </div>
-          <p class="footnote" style="margin:14px 0 0">Ranked by total gross on deals where each rep is the primary salesperson; split partners appear in the deal tables. Covers all 15 units sold in October.</p>
+          <p class="footnote" style="margin:14px 0 0">Ranked by total gross on deals where each rep is the primary salesperson; split partners appear in the deal tables. Covers all 21 units sold in October.</p>
         </article>
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">Activity · October MTD</span><h2 class="card-title">Ups, calls, texts &amp; appointments</h2></div><span class="tap">ELEAD OCT 1–22 (APPTS OCT 1–23) · PURPLE CLOUD OCT 1–22</span></div>
-          <div class="activity">
-            <div class="act-row act-head" aria-hidden="true"><span class="act-name"></span><span>SHOWROOM UPS</span><span>PHONE UPS</span><span>INTERNET LEADS</span><span>OUTBOUND CALLS</span><span>TEXTS SENT</span><span>APPTS SET</span></div>
-            <div class="act-row"><span class="act-name">Pirooz Arabi</span><span class="act-stat" data-label="SHOWROOM UPS">4</span><span class="act-stat" data-label="PHONE UPS">1</span><span class="act-stat" data-label="INTERNET LEADS">21</span><span class="act-stat" data-label="OUTBOUND CALLS">290</span><span class="act-stat" data-label="TEXTS SENT">365</span><span class="act-stat" data-label="APPTS SET">6</span></div>
-            <div class="act-row"><span class="act-name">David Ripley</span><span class="act-stat" data-label="SHOWROOM UPS">7</span><span class="act-stat" data-label="PHONE UPS">2</span><span class="act-stat" data-label="INTERNET LEADS">17</span><span class="act-stat" data-label="OUTBOUND CALLS">226</span><span class="act-stat" data-label="TEXTS SENT">250</span><span class="act-stat" data-label="APPTS SET">6</span></div>
-            <div class="act-row"><span class="act-name">Justin Henry</span><span class="act-stat" data-label="SHOWROOM UPS">6</span><span class="act-stat" data-label="PHONE UPS">2</span><span class="act-stat" data-label="INTERNET LEADS">38</span><span class="act-stat" data-label="OUTBOUND CALLS">276</span><span class="act-stat" data-label="TEXTS SENT">519</span><span class="act-stat" data-label="APPTS SET">4</span></div>
-            <div class="act-row"><span class="act-name">Isaiah Contreras</span><span class="act-stat" data-label="SHOWROOM UPS">0</span><span class="act-stat" data-label="PHONE UPS">1</span><span class="act-stat" data-label="INTERNET LEADS">6</span><span class="act-stat" data-label="OUTBOUND CALLS">222</span><span class="act-stat" data-label="TEXTS SENT">350</span><span class="act-stat" data-label="APPTS SET">27</span></div>
-            <div class="act-row"><span class="act-name">Ashton Brown</span><span class="act-stat" data-label="SHOWROOM UPS">0</span><span class="act-stat" data-label="PHONE UPS">0</span><span class="act-stat" data-label="INTERNET LEADS">4</span><span class="act-stat" data-label="OUTBOUND CALLS">173</span><span class="act-stat" data-label="TEXTS SENT">33</span><span class="act-stat" data-label="APPTS SET">5</span></div>
+          <div class="card-head"><div><span class="section-label">Activity · October MTD</span><h2 class="card-title">Ups, calls, texts &amp; appointments</h2></div><span class="tap">ELEAD · PURPLE CLOUD</span></div>
+          <div class="act-totals">
+            <p class="glance-line">Showroom ups · eLEAD<strong>72</strong></p>
+            <p class="glance-line">Appointments set · eLEAD<strong>70</strong></p>
           </div>
-          <p class="footnote" style="margin:14px 0 0">Ups &amp; internet leads: eLEAD (CDK), Oct 1–22 · Appointments: eLEAD, Oct 1–23 · Calls &amp; texts: Purple Cloud, Oct 1–22, 2026.</p>
+          <div class="activity">
+            <div class="act-row act-head calls-only" aria-hidden="true"><span class="act-name"></span><span>OUTBOUND CALLS</span><span>TEXTS SENT</span></div>
+            <div class="act-row calls-only"><span class="act-name">Pirooz Arabi</span><span class="act-stat" data-label="OUTBOUND CALLS">321</span><span class="act-stat" data-label="TEXTS SENT">436</span></div>
+            <div class="act-row calls-only"><span class="act-name">Justin Henry</span><span class="act-stat" data-label="OUTBOUND CALLS">304</span><span class="act-stat" data-label="TEXTS SENT">588</span></div>
+            <div class="act-row calls-only"><span class="act-name">David Ripley</span><span class="act-stat" data-label="OUTBOUND CALLS">279</span><span class="act-stat" data-label="TEXTS SENT">373</span></div>
+            <div class="act-row calls-only"><span class="act-name">Isaiah Contreras</span><span class="act-stat" data-label="OUTBOUND CALLS">248</span><span class="act-stat" data-label="TEXTS SENT">381</span></div>
+            <div class="act-row calls-only"><span class="act-name">Ashton Brown</span><span class="act-stat" data-label="OUTBOUND CALLS">197</span><span class="act-stat" data-label="TEXTS SENT">53</span></div>
+            <div class="act-row calls-only"><span class="act-name">Elias David</span><span class="act-stat" data-label="OUTBOUND CALLS">59</span><span class="act-stat" data-label="TEXTS SENT">451</span></div>
+          </div>
+          <p class="footnote" style="margin:14px 0 0">Showroom ups &amp; appointments: eLEAD (CDK) store totals · Calls &amp; texts: Purple Cloud, per person · All October 1–28, 2026.</p>
         </article>
       </div>
-      <p class="footnote">Roster: Berglund Luxury Lynchburg sales team · October 2026 · Sales log through Oct 22.</p>
+      <p class="footnote">Roster: Berglund Luxury Lynchburg sales team · October 2026 · Sales log through Oct 28.</p>
     </section>
 
     <section id="leads" class="view">
-      <p class="snapshot-note">SNAPSHOT · OCT 21 — FULL OCTOBER CENSUS · STAGES FROM PROJECT RESURRECTION</p>
+      <p class="snapshot-note">CENSUS · LEADS CREATED OCT 1–28, 2026 · STATUSES AS OF OCT 29, 2026 · ELEAD 8890</p>
       <div class="lead-metrics">
         <article class="card card-pad">
           <span class="section-label">Total leads · October</span>
           <div class="lead-big cyan" id="totalLeads">—</div>
-          <span class="metric-sub">All lead types · Oct 1–21 census</span>
+          <span class="metric-sub">All lead types · Oct 1–28 census</span>
         </article>
         <article class="card card-pad">
           <span class="section-label">Total showrooms · October</span>
@@ -652,18 +675,18 @@
       </div>
       <div class="split-grid">
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">Pipeline · tap a stage to filter the list</span><h2 class="card-title">Stages</h2></div><span class="tap">ELEAD 8890 · OCT 1–21</span></div>
+          <div class="card-head"><div><span class="section-label">Pipeline · tap a stage to filter the list</span><h2 class="card-title">Stages</h2></div><span class="tap">ELEAD 8890 · OCT 1–28</span></div>
           <div class="stage-grid" id="stageGrid"></div>
         </article>
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">Audit</span><h2 class="card-title">By salesperson</h2></div><span class="tap">ELEAD 8890 · OCT 1–21</span></div>
+          <div class="card-head"><div><span class="section-label">Audit</span><h2 class="card-title">By salesperson</h2></div><span class="tap">ELEAD 8890 · OCT 1–28</span></div>
           <div id="repTable"></div>
         </article>
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">Project Resurrection</span><h2 class="card-title">Lead list</h2></div><span class="tap">ELEAD 8890 · OCT 1–21</span></div>
+          <div class="card-head"><div><span class="section-label">Census · Oct 1–28</span><h2 class="card-title">Lead list</h2></div><span class="tap">ELEAD 8890 · OCT 1–28</span></div>
           <div class="lead-controls">
             <select class="week-select" id="weekSelect" aria-label="Filter leads by week">
-              <option value="rolling" selected>Current 7 days (rolling) · Oct 15–21</option>
+              <option value="rolling" selected>Current 7 days (rolling) · Oct 22–28</option>
               <option value="w1">Week 1 · Oct 1–7</option>
               <option value="w2">Week 2 · Oct 8–14</option>
               <option value="w3">Week 3 · Oct 15–21</option>
@@ -693,17 +716,17 @@
       function toggleUnits(){
         var split=unitsToggle.classList.toggle('is-split');
         unitsToggle.setAttribute('aria-pressed',split?'true':'false');
-        unitsToggle.setAttribute('aria-label',split?'Units by type: 7 new, 8 used. Show total units.':'Total units MTD: 15. Show new and used breakdown.');
+        unitsToggle.setAttribute('aria-label',split?'Units by type: 11 new, 10 used. Show total units.':'Total units MTD: 21. Show new and used breakdown.');
       }
       unitsToggle.addEventListener('click',toggleUnits);
       unitsToggle.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleUnits()}});
     })();
   </script>
   <script>
-    /* LEADS snapshot — static Project Resurrection data (Oct 21): the full
-       October census of BLL eLEAD (8890) leads created Oct 1–21, 2026 —
-       all lead types (new, used, internet, phone-up, showroom, service),
-       144 leads staged by actual CRM activity. */
+    /* LEADS snapshot — eLEAD (8890) census of leads created Oct 1–28, 2026,
+       statuses as of Oct 29, 2026. 203 leads. Stage mapping: "Customer
+       Engaged" and "Hot" → Engaged; "Manager Review" → Negotiation;
+       "LTF" → Working; UnWind and all Inactive substatuses → Inactive. */
     (function(){
       var STAGES=[
         {key:'new',label:'New — Not Contacted',short:'New'},
@@ -711,162 +734,221 @@
         {key:'engaged',label:'Engaged',short:'Engaged'},
         {key:'negotiation',label:'Negotiation',short:'Negotiation'},
         {key:'appointment',label:'Appointment',short:'Appointment'},
-        {key:'sold',label:'Sold',short:'Sold'}
+        {key:'sold',label:'Sold',short:'Sold'},
+        {key:'inactive',label:'Inactive',short:'Inactive'}
       ];
       var stageOrder={},stageShort={};
       STAGES.forEach(function(s,i){stageOrder[s.key]=i;stageShort[s.key]=s.short});
-      var REPS=['Pirooz Arabi','David Ripley','Justin Henry','Isaiah Contreras','Ashton Brown'];
-      /* name | vehicle | salesperson | date in | stage | next task | due | touches | score | phone
-         (phone shows in the expanded detail only, per the user's call — same as the Kia tab) */
+      var REPS=['Justin Henry','Pirooz Arabi','David Ripley','Isaiah Contreras','Ashton Brown'];
+      /* name | vehicle | salesperson | date in | stage | source (provider) | phone
+         (phone shows in the expanded detail only) */
       var RAW=[
-        ["Hester Bruce","2022 Used Mercedes-Benz GLE 350","David Ripley","2026-10-03","appointment","MGR Appointment Confirmation Call","2026-10-12",0,0,"(434) 665-4533"],
-        ["Mark Clodfelter","2026 Used Volvo XC40","Justin Henry","2026-10-15","appointment","Email #1","2026-10-15",0,0,"(703) 731-9297"],
-        ["Donald Delorey","2023 Used Jeep Wrangler 4xe","Justin Henry","2026-10-17","appointment","—","",10,0,"(252) 435-3490"],
-        ["Stephen Elam","2026 Used Volvo XC40","Pirooz Arabi","2026-10-11","appointment","Call #4","2026-10-19",0,0,"(561) 324-5115"],
-        ["Sandra Finch","2024 Used BMW X5","Justin Henry","2026-10-02","appointment","—","",41,0,"(540) 871-3922"],
-        ["Matthew Fisher","2022 Used BMW X5","Pirooz Arabi","2026-10-05","appointment","Phone Follow-Up","2026-10-16",0,0,"(434) 660-6936"],
-        ["Maria Horteloup","2026 Used BMW X3","David Ripley","2026-10-06","appointment","—","",39,0,"(540) 750-1728"],
-        ["Zaciah Jones","2027 New Mercedes-Benz GLC 300","David Ripley","2026-10-13","appointment","Email #1","2026-10-13",0,0,"(434) 473-9868"],
-        ["Andrew Morcum","2027 New BMW X5","David Ripley","2026-10-10","appointment","—","",0,0,"(434) 238-3323"],
-        ["Jonathan Musgrove","2026 Used BMW X6","Pirooz Arabi","2026-10-14","appointment","—","",7,0,"(540) 460-8071"],
-        ["Diana Summers","","Justin Henry","2026-10-19","appointment","Email #1","2026-10-19",0,0,"(434) 509-5505"],
-        ["Hamid Akbarali","2027 New BMW iX3","Justin Henry","2026-10-14","engaged","Email #1","2026-10-14",0,0,"(804) 248-7990"],
-        ["Doug Albert","2026 New Mercedes-Benz GLS 450","Justin Henry","2026-10-03","engaged","—","",4,0,"(847) 494-5337"],
-        ["Adam Amro","2027 New BMW","Pirooz Arabi","2026-10-11","engaged","Email #2","2026-10-13",0,0,"(804) 877-2075"],
-        ["Colleen Bathan","2027 New BMW X5","Pirooz Arabi","2026-10-05","engaged","Phone Follow-Up","2026-10-15",0,0,"(540) 447-3414"],
-        ["Angele Beeman","2018 Used MINI Convertible","Justin Henry","2026-10-16","engaged","Call #3","2026-10-20",0,0,"(919) 645-8425"],
-        ["Claus Bonner","2026 New BMW","Justin Henry","2026-10-18","engaged","Email #1","2026-10-18",0,0,"(804) 380-5436"],
-        ["Norman Bouchard","2026 New Volvo XC40","David Ripley","2026-10-11","engaged","Call #2","2026-10-13",0,0,"(703) 395-8243"],
-        ["Naman Bradley","","David Ripley","2026-10-20","engaged","—","",10,0,"(434) 941-9732"],
-        ["Shanta Brown","","David Ripley","2026-10-04","engaged","Email #1","2026-10-04",0,0,"(434) 473-0505"],
-        ["Maria Brown","2022 Used Mercedes-Benz GLC 300","Pirooz Arabi","2026-10-19","engaged","—","",1,0,"(434) 665-6941"],
-        ["Dalton Cesarz","2026 New BMW X5","Isaiah Contreras","2026-10-09","engaged","Email #4","2026-10-16",0,0,"(814) 279-4074"],
-        ["Deandra Chamblee","2022 Used Mercedes-Benz C-Class","David Ripley","2026-10-11","engaged","Email #1","2026-10-11",0,0,"(252) 258-5684"],
-        ["Tanadol Chawalertpanyakul","2026 New BMW X5","David Ripley","2026-10-04","engaged","—","",18,0,"(540) 937-1959"],
-        ["Pawan Chitta","2027 New BMW M3","Justin Henry","2026-10-05","engaged","Phone Follow-Up","2026-10-12",0,0,"(757) 770-0022"],
-        ["Akeia Clarke","2023 Used BMW M2","David Ripley","2026-10-17","engaged","—","",14,0,"(804) 939-9504"],
-        ["Frances Clemons","2026 New BMW Z4","Pirooz Arabi","2026-10-14","engaged","Email #2","2026-10-16",0,0,"(540) 500-4700"],
-        ["Alexis Coles","2026 New BMW 430","Pirooz Arabi","2026-10-09","engaged","Email #2","2026-10-17",0,0,"(540) 238-5422"],
-        ["Devin Cox","2026 New Mercedes-Benz","Justin Henry","2026-10-12","engaged","Phone Follow-Up","2026-10-13",0,0,"(434) 953-0506"],
-        ["Rose Croft","","Isaiah Contreras","2026-10-09","engaged","—","",3,0,"(540) 598-8085"],
-        ["Michael Davis","","Justin Henry","2026-10-13","engaged","—","",3,0,"(434) 401-0334"],
-        ["Mike Dixon","2027 New BMW X5","Pirooz Arabi","2026-10-07","engaged","Email #4","2026-10-10",0,0,"(804) 929-4492"],
-        ["Alison Eckis","2026 New BMW","Justin Henry","2026-10-12","engaged","Email #1","2026-10-12",0,0,"(804) 484-0622"],
-        ["Venkat Epusanti","2026 New BMW X5","Pirooz Arabi","2026-10-21","engaged","—","",1,0,"(860) 605-5066"],
-        ["Daniel Flores","2026 New BMW M2","Justin Henry","2026-10-19","engaged","Email #1","2026-10-19",0,0,"(540) 908-6514"],
-        ["Daniel Flores","2026 New BMW M2","Justin Henry","2026-10-19","engaged","Email #1","2026-10-19",0,0,"(540) 908-6514"],
-        ["Mary Fuller-Gore","2027 New BMW X6 M","David Ripley","2026-10-06","engaged","Email #1","2026-10-06",0,0,"(434) 770-1480"],
-        ["Courtney Greco","2027 New BMW X7","Justin Henry","2026-10-06","engaged","—","",7,0,"(919) 389-4951"],
-        ["Tina Halterman","2027 New Mercedes-Benz GLC 300","Pirooz Arabi","2026-10-01","engaged","Email #2","2026-10-03",0,0,"(304) 646-3959"],
-        ["Chris Hanessian","2026 New Mercedes-Benz GLE 580","Justin Henry","2026-10-17","engaged","Email #1","2026-10-17",0,0,"(301) 529-9747"],
-        ["David Herb","2026 New BMW","Pirooz Arabi","2026-10-19","engaged","Email #1","2026-10-19",0,0,"(434) 238-8513"],
-        ["David Herb","2026 New BMW","Pirooz Arabi","2026-10-19","engaged","Email #1","2026-10-19",0,0,"(434) 238-8513"],
-        ["Daniel Hernandez","2026 Used BMW X5","Justin Henry","2026-10-16","engaged","Email #1","2026-10-16",0,0,""],
-        ["Gerald Horne","2023 Used Mercedes-Benz GLS 450","David Ripley","2026-10-20","engaged","—","",7,0,"(347) 325-6350"],
-        ["Glenn Hussein","2025 New Mercedes-Benz GLC 300","Pirooz Arabi","2026-10-09","engaged","—","",5,0,"(540) 642-9475"],
-        ["Ahana Israt","2026 New BMW","Justin Henry","2026-10-03","engaged","Email #1","2026-10-03",0,0,"(213) 415-5136"],
-        ["Kenterio Jefferson","","David Ripley","2026-10-09","engaged","Email #4","2026-10-11",0,0,"(434) 546-1582"],
-        ["Tamra Johnson","New BMW X3","David Ripley","2026-10-13","engaged","—","",12,0,"(678) 618-3517"],
-        ["Mary Kate Toms","","Isaiah Contreras","2026-10-06","engaged","—","",3,0,"(434) 568-0816"],
-        ["Colin King","2022 Used Volvo S60","David Ripley","2026-10-14","engaged","—","",5,0,"(904) 827-3348"],
-        ["Sumit Kumar","2027 New BMW X7","Pirooz Arabi","2026-10-05","engaged","Phone Follow-Up","2026-10-16",0,0,"(804) 587-9652"],
-        ["Alex Laon","2027 New BMW X5","David Ripley","2026-10-14","engaged","—","",37,0,"(434) 257-9893"],
-        ["Andy Mathews Agency","","Isaiah Contreras","2026-10-06","engaged","—","",3,0,"(434) 534-9004"],
-        ["Rawen Mohammed","2026 New BMW M4","Justin Henry","2026-10-18","engaged","Email #1","2026-10-18",0,0,"(540) 476-4052"],
-        ["Pedro Montiel Acosta","2026 New BMW","Elias David","2026-10-04","engaged","Email #1","2026-10-04",0,0,"(540) 764-8147"],
-        ["Keith Morris","2027 New BMW X5","David Ripley","2026-10-16","engaged","Email #2","2026-10-17",0,0,"(540) 241-0144"],
-        ["Nnamdi Ogbu","2026 Used Volvo XC40","David Ripley","2026-10-10","engaged","—","",12,0,"(479) 283-2265"],
-        ["Robert Olockwood","2026 New BMW 330","Isaiah Contreras","2026-10-05","engaged","—","",10,0,"(540) 250-3172"],
-        ["Toby Oyeleye","2026 New BMW X5","David Ripley","2026-10-10","engaged","—","",7,0,"(602) 621-7416"],
-        ["Joshua Pattek","2027 New BMW M3","Pirooz Arabi","2026-10-07","engaged","—","",20,0,"(954) 629-4571"],
-        ["Kenneth Philips","","Justin Henry","2026-10-20","engaged","—","",3,0,"(440) 221-4011"],
-        ["Peter Quill","2027 New BMW M3","Isaiah Contreras","2026-10-07","engaged","Call #2","2026-10-16",0,0,""],
-        ["Krishna Reddy","2026 New BMW 330","Justin Henry","2026-10-05","engaged","Phone Follow-Up","2026-10-05",0,0,"(479) 287-0123"],
-        ["Jeff Rinker","2027 New BMW","Pirooz Arabi","2026-10-09","engaged","Email #1","2026-10-09",0,0,"(540) 421-0444"],
-        ["Bryson Rittenhouse","2026 New BMW M2","Pirooz Arabi","2026-10-07","engaged","Phone Follow-Up","2026-10-15",0,0,"(434) 989-9537"],
-        ["Jack Ross","2026 Used BMW X5","David Ripley","2026-10-16","engaged","Phone Follow-Up","2026-10-17",0,0,"(757) 535-0174"],
-        ["Andrea Rousseau","2024 Used BMW X5","Pirooz Arabi","2026-10-12","engaged","—","",4,0,"(434) 664-0364"],
-        ["Angela Sachar","2027 New BMW X5","Justin Henry","2026-10-14","engaged","Email #1","2026-10-14",0,0,"(434) 979-3912"],
-        ["George Sharo","2026 New BMW X2","Justin Henry","2026-10-16","engaged","Call #2","2026-10-18",0,0,"(804) 306-8707"],
-        ["Pamela Sheffer","2018 Used MINI Convertible","David Ripley","2026-10-13","engaged","Email #1","2026-10-13",0,0,"(540) 290-0583"],
-        ["Barak Shushan","2027 New Mercedes-Benz AMG GLE 53e","Justin Henry","2026-10-21","engaged","—","",1,0,""],
-        ["Robert Sisti","2026 New BMW 228 Gran Coupe","Justin Henry","2026-10-16","engaged","Email #1","2026-10-16",0,0,"(786) 271-4853"],
-        ["Akhil Sripaithi","2026 New BMW 530","Pirooz Arabi","2026-10-05","engaged","Phone Follow-Up","2026-10-17",0,0,"(660) 238-3337"],
-        ["David Steppe","2026 New BMW","Ashton Brown","2026-10-13","engaged","Email #1","2026-10-13",0,0,"(804) 909-2050"],
-        ["Mason Talbott","2022 Used Mercedes-Benz C-Class","David Ripley","2026-10-13","engaged","Email #1","2026-10-13",0,0,"(434) 222-6771"],
-        ["Tim Tanner","2026 New BMW","Justin Henry","2026-10-05","engaged","—","",15,0,"(434) 238-8132"],
-        ["Harry Tao","","Justin Henry","2026-10-16","engaged","Call #2","2026-10-17",0,0,"(213) 828-8899"],
-        ["Camden Toliver","2026 Used BMW M4","Justin Henry","2026-10-04","engaged","Email #1","2026-10-04",0,0,"(540) 351-7667"],
-        ["Sitaram Varkal","2026 New BMW","Justin Henry","2026-10-11","engaged","Call #2","2026-10-13",0,0,"(580) 222-7126"],
-        ["Jacqueline Vechery","2020 Used Lincoln Corsair","Pirooz Arabi","2026-10-03","engaged","Phone Follow-Up","2026-10-12",0,0,"(804) 214-8751"],
-        ["Chloey Vereen","2026 New Volvo XC90","Pirooz Arabi","2026-10-14","engaged","Email #2","2026-10-16",0,0,"(434) 736-6202"],
-        ["Alexander Vershinskiy","2026 New Volvo EX90","Justin Henry","2026-10-15","engaged","Email #1","2026-10-15",0,0,"(919) 480-5052"],
-        ["Ganier Vincent","2027 New BMW X5","Pirooz Arabi","2026-10-18","engaged","Call #2","2026-10-21",0,0,"(540) 926-5866"],
-        ["Ashley Walker","2026 New Volvo V60 Cross Country","David Ripley","2026-10-12","engaged","—","",0,0,"(828) 545-9551"],
-        ["Kay Wilson","2026 Used Volvo XC90","Justin Henry","2026-10-08","engaged","Email #1","2026-10-08",0,0,"(434) 338-9083"],
-        ["Alma Wright","2022 Used BMW 230","Isaiah Contreras","2026-10-12","engaged","Email #1","2026-10-12",0,0,"(240) 377-7285"],
-        ["Clark Zealand","New BMW X3","David Ripley","2026-10-02","engaged","—","",15,0,"(540) 448-1190"],
-        ["Bourdillon A Ameh","2027 New Mercedes-Benz AMG GLE 53e","Ashton Brown","2026-10-09","negotiation","—","",0,0,"(973) 452-3898"],
-        ["Gregory Barthelon","2022 Used Mercedes-Benz GLC 300","David Ripley","2026-10-20","negotiation","—","",18,0,"(704) 201-2567"],
-        ["Whitney Dooley","2026 New Mercedes-Benz GLA 250","Pirooz Arabi","2026-10-07","negotiation","—","",0,0,"(434) 515-3918"],
-        ["Jim Gardner","2018 Used MINI Convertible","Pirooz Arabi","2026-10-15","negotiation","Email #1","2026-10-15",0,0,"(941) 412-7955"],
-        ["Navid Geula","2026 New BMW XM","Justin Henry","2026-10-18","negotiation","Email #1","2026-10-18",0,0,"(818) 917-8394"],
-        ["Amy Hackett","2026 New Mercedes-Benz GLE 350","Justin Henry","2026-10-21","negotiation","—","",21,0,"(610) 587-6869"],
-        ["Kelly Handy","2026 Used BMW X3","David Ripley","2026-10-09","negotiation","—","",93,0,"(540) 819-0793"],
-        ["Jameel John","2027 New BMW M3","Justin Henry","2026-10-13","negotiation","Email #1","2026-10-13",0,0,"(561) 281-7325"],
-        ["Michael Kane","2026 New BMW X5","Justin Henry","2026-10-12","negotiation","Email #1","2026-10-12",0,0,"(585) 313-5646"],
-        ["ALUXOTIC LLC","2027 New BMW M3","David Ripley","2026-10-16","negotiation","—","",0,0,"(630) 688-2886"],
-        ["LYNE PROS LLC","2027 New Mercedes-Benz AMG GLE 53e","Isaiah Contreras","2026-10-13","negotiation","—","",0,0,"(630) 777-2451"],
-        ["Kelly McAlarney","2026 New Mercedes-Benz GLE 350 4MATIC","Justin Henry","2026-10-19","negotiation","Email #1","2026-10-19",0,0,"(917) 301-8452"],
-        ["Coleen Miller","2026 Used INFINITI QX60","Justin Henry","2026-10-15","negotiation","—","",7,0,"(434) 944-7400"],
-        ["Brylee Olivares","2027 New BMW","Justin Henry","2026-10-10","negotiation","Email #1","2026-10-10",0,0,"(804) 295-2926"],
-        ["Derek Quinn-Woods","2027 New BMW X7","Pirooz Arabi","2026-10-03","negotiation","—","",0,0,"(518) 844-8481"],
-        ["John Reagan","2026 New Volvo V60 Cross Country","Justin Henry","2026-10-07","negotiation","—","",0,0,""],
-        ["Michael Santoliquido","2026 New BMW X5","Justin Henry","2026-10-12","negotiation","Email #1","2026-10-12",0,0,"(914) 447-1172"],
-        ["Thomas Stauffer","2026 Used Volvo XC90","Pirooz Arabi","2026-10-03","negotiation","—","",12,0,"(757) 710-9675"],
-        ["Dennis White","2027 New BMW X6 M","Justin Henry","2026-10-07","negotiation","Email #1","2026-10-07",0,0,"(804) 883-6110"],
-        ["Verify Lead-Report","2023 Used Volvo C40 Recharge","Justin Henry","2026-10-06","new","Email #1","2026-10-06",0,0,"(404) 620-5501"],
-        ["Ian Miller","2023 Used Volvo C40 Recharge","Pirooz Arabi","2026-10-09","new","—","",0,0,"(774) 307-0302"],
-        ["Frank Anderson","2026 New Volvo V60 Cross Country","Justin Henry","2026-10-16","sold","—","",0,0,"(434) 251-1380"],
-        ["Christine Crist","2026 Used Volvo XC90","Pirooz Arabi","2026-10-16","sold","—","",19,0,"(434) 907-7306"],
-        ["Thomas Mucenski","2022 Used BMW X5","Justin Henry","2026-10-05","sold","—","",15,0,"(434) 227-0785"],
-        ["Lydia Scott","2020 Used Lincoln Corsair","Pirooz Arabi","2026-10-17","sold","—","",3,0,"(434) 420-4158"],
-        ["Brent Sperry","2026 Used BMW X5","Justin Henry","2026-10-16","sold","Email #1","2026-10-16",0,0,"(814) 881-0679"],
-        ["James Tomlin","2024 Used Chevrolet Blazer EV","Pirooz Arabi","2026-10-19","sold","—","",6,0,"(434) 258-2886"],
-        ["Rayna Williams","2023 Used BMW M2","David Ripley","2026-10-19","sold","—","",3,0,"(434) 509-9691"],
-        ["Umaria Zainab","2026 New Mercedes-Benz C-Class","Isaiah Contreras","2026-10-12","sold","—","",0,0,"(732) 688-0544"],
-        ["Ezekiel Ampem","2026 Used BMW 530","David Ripley","2026-10-11","working","Email #1","2026-10-11",0,0,"(804) 389-2301"],
-        ["Malik Andrews","","Justin Henry","2026-10-12","working","Email #1","2026-10-12",0,0,""],
-        ["Larry Baker","2027 New Volvo EX60","Justin Henry","2026-10-14","working","Email #1","2026-10-14",0,0,"(839) 293-9124"],
-        ["Rina Brigham","2022 Used Mercedes-Benz C-Class","Justin Henry","2026-10-05","working","Email #1","2026-10-05",0,0,""],
-        ["John Brockman","2023 Used Chevrolet Corvette","Ashton Brown","2026-10-21","working","—","",3,0,"(434) 665-0987"],
-        ["Don Carlson","2026 Used Volvo XC60","Justin Henry","2026-10-06","working","Email #1","2026-10-06",0,0,"(315) 882-3432"],
-        ["Jacinda Childress","2025 New BMW 330","Justin Henry","2026-10-10","working","—","",0,0,"(434) 841-4554"],
-        ["Meir Cohen","2027 New Mercedes-Benz AMG GLE 53e","Pirooz Arabi","2026-10-20","working","—","",10,0,"(254) 260-0600"],
-        ["Lauren Crawford","2025 Used Volvo V60 Cross Country","Ashton Brown","2026-10-12","working","Call #1","2026-10-12",0,0,"(804) 980-6181"],
-        ["Brandeis Croner","","Pirooz Arabi","2026-10-11","working","Email #4","2026-10-15",0,0,"(434) 347-0957"],
-        ["James Curtiss","2023 New BMW 330","David Ripley","2026-10-05","working","—","",0,0,"(540) 907-5925"],
-        ["Natalie Darling","","Justin Henry","2026-10-12","working","Email #1","2026-10-13",0,0,"(434) 941-3784"],
-        ["Brittany Deacon","2026 New BMW X3","David Ripley","2026-10-15","working","—","",0,0,"(434) 444-2478"],
-        ["Brent Gerald","","Justin Henry","2026-10-04","working","Email #1","2026-10-04",0,0,"(540) 810-0630"],
-        ["Michael Graley","2024 Used BMW X5","David Ripley","2026-10-05","working","Email #1","2026-10-05",0,0,""],
-        ["Tim Hamilton","2023 Used Volvo C40 Recharge","Pirooz Arabi","2026-10-07","working","Phone Follow-Up","2026-10-16",0,0,"(434) 386-3089"],
-        ["Yusuf Ibrahim Abdulrafiu","2024 Used BMW X5","Isaiah Contreras","2026-10-08","working","Call #2","2026-10-16",0,0,"(234) 803-2274"],
-        ["Don Long","2026 Used Genesis GV80","Justin Henry","2026-10-03","working","Email #1","2026-10-03",0,0,"(703) 851-8001"],
-        ["Paul Mahoney","2026 New Volvo XC60 Plug-In Hybrid","Isaiah Contreras","2026-10-12","working","Email #1","2026-10-12",0,0,"(540) 989-9171"],
-        ["Hannah Maxwell","2024 New Mercedes-Benz","Ashton Brown","2026-10-19","working","—","",7,0,"(704) 632-5492"],
-        ["Bradley McDaniel","2026 New BMW M4","Isaiah Contreras","2026-10-21","working","—","",2,0,"(540) 609-3570"],
-        ["Denise McKeown","2019 Used Toyota RAV4 Hybrid","David Ripley","2026-10-01","working","Phone Follow-Up","2026-10-08",0,0,"(843) 276-4876"],
-        ["Colleen Miller","2026 New BMW","Pirooz Arabi","2026-10-15","working","—","",7,0,"(434) 660-6871"],
-        ["Howard Moye","2026 New BMW","Pirooz Arabi","2026-10-15","working","—","",0,0,"(919) 781-0196"],
-        ["Jay Patel","2026 BMW 330","Pirooz Arabi","2026-10-14","working","Call #1","2026-10-14",0,0,""],
-        ["Thomas Pettus","2027 New Mercedes-Benz GLE 450","David Ripley","2026-10-09","working","—","",0,0,"(434) 547-8966"],
-        ["Darren Ullrich","2023 Used BMW M2","Ashton Brown","2026-10-17","working","—","",3,0,""],
-        ["Keys Wilford","2026 New Volvo XC40","Ashton Brown","2026-10-07","working","Email #2","2026-10-09",0,0,"(304) 645-5111"]
+        ["(No name in CRM)","2023 Porsche Macan","Pirooz Arabi","2026-10-26","new","Internet (CarGurus)","(276) 264-0040"],
+        ["Adam Amro","2027 BMW X5 / 2027+ BMW","Pirooz Arabi","2026-10-11","new","Internet (JD Power SmartLeads)","(804) 877-2075"],
+        ["Ahana Israt","2026 BMW","Justin Henry","2026-10-03","new","Internet (JD Power SmartLeads)","(213) 415-5136"],
+        ["Akhil Sripaithi","2026 BMW / 2026+ BMW 530","Pirooz Arabi","2026-10-05","new","Internet (JD Power SmartLeads)","(660) 238-3337"],
+        ["Alexander Vershinskiy","2026 Volvo EX90","Justin Henry","2026-10-15","new","Internet (Volvo)","(919) 480-5052"],
+        ["Alison Eckis","2026 BMW","Justin Henry","2026-10-12","new","Internet (JD Power SmartLeads)","(804) 484-0622"],
+        ["Alma Wright","2022 BMW 230","Pirooz Arabi","2026-10-12","new","Internet (Autotrader.com)","(240) 377-7285"],
+        ["Amanda Van Blaricom","2025 BMW X3 / 2026+ BMW 330","Pirooz Arabi","2026-10-24","new","Showroom","(515) 708-3333"],
+        ["Angela Moore","2026 BMW 228 Gran Coupe","David Ripley","2026-10-28","new","Showroom","(434) 547-9171"],
+        ["Angela Sachar","2027 BMW X5","Justin Henry","2026-10-14","new","Internet (JD Power SmartLeads)","(434) 979-3912"],
+        ["Angele Beeman","2018 MINI Convertible","Justin Henry","2026-10-15","new","Internet (CarGurus)","(919) 645-8425"],
+        ["Anna Henry","2026+ Hyundai / 2025 KIA Sportage / 2024 Mercedes-Benz C-Class","David Ripley","2026-10-28","new","Phone","(434) 948-0849"],
+        ["Ashley Johnson","2025 Mercedes-Benz GLA 250","Ashton Brown","2026-10-28","new","Internet (CARFAX.com)","(434) 306-4441"],
+        ["Becky Webb","2025 BMW X3 / 2026+ BMW 330","Justin Henry","2026-10-25","new","Internet (Dealer Website)","(618) 237-2897"],
+        ["Brandeis Croner","","Pirooz Arabi","2026-10-11","new","Internet (700Credit.com)","(434) 347-0957"],
+        ["Brent Gerald","","Justin Henry","2026-10-04","new","Internet (Trade-In Lead: CARFAX)","(540) 810-0630"],
+        ["Brian Linhart","2018 MINI Convertible","Isaiah Contreras","2026-10-28","new","Internet (CarGurus)","(614) 657-4695"],
+        ["Bridgett Craghead","2020 BMW X3 PHEV","Ashton Brown","2026-10-28","new","Internet (Dealer.com)","(540) 617-9410"],
+        ["Brylee Olivares","2026 BMW / 2027+ BMW X6 M / 2027+ BMW","Justin Henry","2026-10-10","new","Internet (JD Power SmartLeads)","(804) 295-2926"],
+        ["Camden Toliver","2027 BMW M4 / 2026+ BMW M4","Justin Henry","2026-10-04","new","Internet (JD Power SmartLeads)","(540) 351-7667"],
+        ["Candi Denoncourt","2023 Volvo XC40","Pirooz Arabi","2026-10-27","new","Internet (CarGurus)","(540) 383-7843"],
+        ["Chaudharybipin Chaudharybipin","2023 Porsche Macan","David Ripley","2026-10-26","new","Phone (CarGurus)","(276) 264-0040"],
+        ["Chloey Vereen","2026 Volvo XC90","Pirooz Arabi","2026-10-14","new","Internet (Volvo)","(434) 736-6202"],
+        ["Chris Hanessian","2026 Mercedes-Benz GLE 580","Justin Henry","2026-10-17","new","Internet (Mercedes-Benz USA)","(301) 529-9747"],
+        ["Christopher Webb","2026 BMW X3","Justin Henry","2026-10-27","new","Internet (Military Program)","(618) 237-2897"],
+        ["Clark Zealand","","David Ripley","2026-10-02","new","Showroom","(540) 448-1190"],
+        ["Claus Bonner","2026 BMW","Justin Henry","2026-10-18","new","Internet (JD Power SmartLeads)","(804) 380-5436"],
+        ["Colin King","2022 Volvo S60","David Ripley","2026-10-14","new","Showroom","(904) 827-3348"],
+        ["Courtney Greco","2027 BMW X7","Justin Henry","2026-10-06","new","Showroom","(919) 389-4951"],
+        ["Dalton Cesarz","2026 BMW X5 / 2026+ BMW X5","Isaiah Contreras","2026-10-09","new","Internet (JD Power SmartLeads)","(814) 279-4074"],
+        ["Daniel Flores","2026 BMW M2","Justin Henry","2026-10-19","new","Internet (JD Power SmartLeads)","(540) 908-6514"],
+        ["Daniel Hernandez","2026 BMW X5","Justin Henry","2026-10-16","new","Internet (CarGurus)",""],
+        ["David Herb","2026 BMW","Pirooz Arabi","2026-10-19","new","Internet (JD Power SmartLeads)","(434) 238-8513"],
+        ["David Steppe","2026 BMW","Ashton Brown","2026-10-13","new","Internet (JD Power SmartLeads)","(804) 909-2050"],
+        ["Deandra Chamblee","2022 Mercedes-Benz C-Class","David Ripley","2026-10-11","new","Internet (CARFAX.com)","(252) 258-5684"],
+        ["Denise Mckeown","2019 Toyota RAV4 Hybrid","David Ripley","2026-10-01","new","Internet (CARFAX.com)","(843) 276-4876"],
+        ["Dennis White","2026 BMW / 2027+ BMW iX3 / 2027+ BMW X6 M","Justin Henry","2026-10-07","new","Internet (JD Power SmartLeads)","(804) 883-6110"],
+        ["Derek Quinn-Woods","2024 BMW / 2027+ BMW X7","Pirooz Arabi","2026-10-03","new","Campaign (BMW Group)","(518) 844-8481"],
+        ["Devin Cox","2026 Mercedes-Benz","Justin Henry","2026-10-12","new","Internet (Mercedes-Benz USA)","(434) 953-0506"],
+        ["Diana Summers","","Justin Henry","2026-10-19","new","Internet (Dealer.com)","(434) 509-5505"],
+        ["Don Carlson","2026 Volvo XC60 / 2026+ Volvo XC60 / 2026+ Volvo XC40","Justin Henry","2026-10-06","new","Internet (Volvo)","(315) 882-3432"],
+        ["Don Long","2026 Genesis GV80","Justin Henry","2026-10-03","new","Internet (Autotrader.com)","(703) 851-8001"],
+        ["Donald Delorey","2023 Jeep Wrangler 4xe","Justin Henry","2026-10-17","new","Showroom","(252) 435-3490"],
+        ["Doris Austin","","David Ripley","2026-10-27","new","Internet (Dealer.com)","(434) 485-1008"],
+        ["Doug Albert","2026+ Mercedes-Benz GLS 450","Justin Henry","2026-10-03","new","Showroom","(847) 494-5337"],
+        ["Ezra Terry","2023 Jeep Wrangler 4xe","David Ripley","2026-10-28","new","Showroom","(304) 994-2928"],
+        ["Frances Clemons","2026 BMW Z4","Pirooz Arabi","2026-10-14","new","Internet (JD Power SmartLeads)","(540) 500-4700"],
+        ["Ganier Vincent","2026 BMW / 2027+ BMW X5","Pirooz Arabi","2026-10-18","new","Internet (JD Power SmartLeads)","(540) 926-5866"],
+        ["George Sharo","2026 BMW X2","Justin Henry","2026-10-16","new","Internet (JD Power SmartLeads)","(804) 306-8707"],
+        ["Gerald Horne","2023 Mercedes-Benz GLS 450","David Ripley","2026-10-20","new","Internet (CarGurus)","(347) 325-6350"],
+        ["Guy Penrod","2025 BMW X7","Pirooz Arabi","2026-10-23","new","Showroom","(615) 812-8514"],
+        ["Hamid Akbarali","2026 BMW iX / 2027+ BMW iX3","Justin Henry","2026-10-14","new","Internet (JD Power SmartLeads)","(804) 248-7990"],
+        ["Hannah Locklear","2026 Volvo XC60","Ashton Brown","2026-10-25","new","Internet (Volvo)","(910) 610-9039"],
+        ["Hannah Maxwell","2024 Mercedes-Benz","Ashton Brown","2026-10-19","new","Campaign (MBFS - 180 Day Maturity)","(704) 632-5492"],
+        ["Harry Tao","","Justin Henry","2026-10-16","new","Internet (Dealer.com)","(213) 828-8899"],
+        ["Hozan Thamer","2026 BMW X5","Isaiah Contreras","2026-10-24","new","Internet (JD Power SmartLeads)","(540) 830-6068"],
+        ["Ian Miller","2023 Volvo C40 Recharge Pure Electric","Pirooz Arabi","2026-10-09","new","Showroom","(774) 307-0302"],
+        ["Jacinda Childress","2025 BMW 330","Justin Henry","2026-10-10","new","Campaign (BMW Group)","(434) 258-6130"],
+        ["Jacqueline Vechery","2020 Lincoln Corsair","Pirooz Arabi","2026-10-03","new","Internet (CARFAX.com)","(804) 214-8751"],
+        ["Jameel John","2027 BMW M3","Justin Henry","2026-10-13","new","Internet (Autotrader.com)","(561) 281-7325"],
+        ["Jasleen Chahal","2022 Mercedes-Benz GLE 350","Isaiah Contreras","2026-10-27","new","Internet (Dealer.com)","(586) 303-1468"],
+        ["Jason Aguirre","2026 BMW 530","Justin Henry","2026-10-26","new","Internet (Autotrader.com)","(412) 613-3144"],
+        ["Jay Patel","2026 BMW 330","Pirooz Arabi","2026-10-14","new","Internet (Dealer.com)",""],
+        ["Jim Gardner","2018 MINI Convertible","Pirooz Arabi","2026-10-15","new","Internet (Autotrader.com)","(941) 412-7955"],
+        ["Jing Ye","2026 Mercedes-Benz GLE 350","Justin Henry","2026-10-24","new","Internet (Autotrader.com)","(646) 479-9988"],
+        ["John Leasure","2019 BMW 640 Gran Turismo","Pirooz Arabi","2026-10-24","new","Internet (Dealer Website)","(919) 444-3575"],
+        ["John Moody","2026 BMW X3 / 2026+ BMW X3","Ashton Brown","2026-10-25","new","Internet (BYO)","(804) 516-3148"],
+        ["Jonathan Musgrove","2026 BMW X6","Pirooz Arabi","2026-10-14","new","Phone","(540) 460-8069"],
+        ["Joshua Bennett","2026 BMW","Pirooz Arabi","2026-10-25","new","Campaign (BMW Group)","(434) 485-6289"],
+        ["Joshua Pattek","2027 BMW M3","Pirooz Arabi","2026-10-07","new","Phone (CarGurus)","(954) 629-4571"],
+        ["Joy King","2026 Volvo XC60","Justin Henry","2026-10-24","new","Showroom","(970) 819-0669"],
+        ["Kay Wilson","2026 Volvo XC90 / 2026+ Volvo XC90","Justin Henry","2026-10-07","new","Internet (Volvo)","(540) 588-8131"],
+        ["Kelly Mcalarney","2026+ Mercedes-Benz GLE 350","Justin Henry","2026-10-19","new","Internet (Dealer.com)","(917) 301-8452"],
+        ["Kevin Mosby","2027 BMW X7 / 2027+ BMW X7","Pirooz Arabi","2026-10-23","new","Internet (JD Power SmartLeads)","(434) 841-5537"],
+        ["Keys Wilford","2026 Volvo XC40 / 2026+ Volvo XC40","Ashton Brown","2026-10-07","new","Internet (Volvo)","(304) 645-5111"],
+        ["Krishna Reddy","2027 BMW M3 / 2026+ BMW 330","Justin Henry","2026-10-04","new","Internet (JD Power SmartLeads)","(479) 287-0123"],
+        ["Larry Baker","2027 Volvo EX60","Justin Henry","2026-10-14","new","Internet (Volvo)","(839) 293-9124"],
+        ["Lauren Crawford","2026 Volvo V60 Cross Country / 2025+ Volvo V60 Cross Country","Ashton Brown","2026-10-12","new","Internet (Volvo)","(804) 980-6181"],
+        ["Lorie Shoup","2027 Volvo XC60","Pirooz Arabi","2026-10-24","new","Internet (Volvo)","(607) 483-8857"],
+        ["Lyne Pros Llc","2027 Mercedes-Benz AMG GLE 53e","Isaiah Contreras","2026-10-13","new","Phone","(630) 777-2451"],
+        ["Malik Andrews","","Justin Henry","2026-10-12","new","Internet (Trade-In Lead: CARFAX)",""],
+        ["Maria Brown","2022 Mercedes-Benz GLC 300","Pirooz Arabi","2026-10-19","new","Showroom","(434) 316-4626"],
+        ["Mark Feldmann","2026 BMW X3","Pirooz Arabi","2026-10-27","new","Internet (JD Power SmartLeads)","(540) 314-3352"],
+        ["Matthew Bass","2027 BMW iX3","Isaiah Contreras","2026-10-28","new","Internet (Dealer Website)","(434) 466-5183"],
+        ["Meir Cohen","2027 Mercedes-Benz AMG GLE 53e","Pirooz Arabi","2026-10-20","new","Internet (Dealer.com)","(254) 260-0600"],
+        ["Michael Davis","","Justin Henry","2026-10-13","new","Phone","(434) 401-0334"],
+        ["Michael Kane","2026 BMW X5","Justin Henry","2026-10-12","new","Internet (Dealer.com)","(585) 313-5646"],
+        ["Michael Santoliquido","2026 BMW X5","Justin Henry","2026-10-12","new","Internet (Dealer Website)","(914) 447-1172"],
+        ["Michael Tarver","2027 BMW X6 / 2027+ BMW X5","David Ripley","2026-10-23","new","Internet (JD Power SmartLeads)","(804) 241-3881"],
+        ["Michelle Plogger","2026 Volvo XC40","Isaiah Contreras","2026-10-24","new","Internet (Volvo)","(540) 784-8290"],
+        ["Nana Asare","2027 BMW X6","Ashton Brown","2026-10-24","new","Internet (JD Power SmartLeads)","(410) 703-7562"],
+        ["Navid Geula","2026 BMW XM","Justin Henry","2026-10-18","new","Internet (CarGurus)","(818) 917-8394"],
+        ["Nnamdi Ogbu","2026+ Volvo XC40","David Ripley","2026-10-10","new","Showroom","(479) 283-2265"],
+        ["Norman Bouchard","2026 BMW X1 / 2026 Volvo XC40","David Ripley","2026-10-11","new","Internet (JD Power SmartLeads)","(703) 395-8243"],
+        ["Pamela Sheffer","2018 MINI Convertible","David Ripley","2026-10-13","new","Internet (Autotrader.com)","(540) 290-0583"],
+        ["Paul Mahoney","2026 Volvo XC60 Plug-In Hybrid","Isaiah Contreras","2026-10-12","new","Internet (Volvo)","(540) 989-9171"],
+        ["Pawan Chitta","2027 BMW M3","Justin Henry","2026-10-05","new","Internet (Dealer Website)","(757) 770-0022"],
+        ["Peter Quill","2027 BMW M3","Isaiah Contreras","2026-10-07","new","Internet (Dealer.com)",""],
+        ["Pinar Shehrin","2026 BMW","Pirooz Arabi","2026-10-25","new","Internet (JD Power SmartLeads)","(826) 245-3971"],
+        ["Praj Shar","2026 BMW XM","Justin Henry","2026-10-23","new","Internet (Dealer Website)","(631) 640-2577"],
+        ["Rachel Labounty","","Pirooz Arabi","2026-10-24","new","Campaign (Service Appraisal)","(434) 609-7188"],
+        ["Rawen Mohammed","2026 BMW M4","Justin Henry","2026-10-18","new","Internet (JD Power SmartLeads)","(540) 476-4052"],
+        ["Rina Brigham","2022 Mercedes-Benz C-Class","Justin Henry","2026-10-05","new","Internet (Mercedes-Benz USA)",""],
+        ["Robert Sisti","2026 BMW 228 Gran Coupe","Justin Henry","2026-10-16","new","Internet (Autotrader.com)","(786) 271-4853"],
+        ["Rose Croft","","Isaiah Contreras","2026-10-09","new","Phone","(540) 598-8085"],
+        ["Sitaram Varkal","2026 BMW","Justin Henry","2026-10-11","new","Internet (JD Power SmartLeads)","(580) 222-7126"],
+        ["Stephanie Stewart","2027 BMW iX3","Ashton Brown","2026-10-22","new","Internet (BYO)","(434) 426-1897"],
+        ["Stephen Elam","2026 Volvo XC40 / 2026+ Volvo XC40","Pirooz Arabi","2026-10-11","new","Internet (Dealer.com)","(561) 324-5115"],
+        ["Tamra Johnson","","David Ripley","2026-10-13","new","Showroom (Service)","(678) 618-3517"],
+        ["Tina Halterman","2027 Mercedes-Benz GLC 300","Pirooz Arabi","2026-10-01","new","Internet (Dealer.com)","(304) 646-3959"],
+        ["Toby Oyeleye","2026 BMW X5","David Ripley","2026-10-10","new","Showroom","(602) 621-7416"],
+        ["Toni Brown","","Isaiah Contreras","2026-10-24","new","Campaign (Service Appraisal)","(540) 460-1776"],
+        ["Verify Lead-Report","2023 Volvo C40 Recharge Pure Electric","Justin Henry","2026-10-06","new","Internet (CarGurus)","(404) 620-5501"],
+        ["Yusuf Ibrahim Abdulrafiu","2024 BMW X5","Isaiah Contreras","2026-10-08","new","Internet (Autotrader.com)","(234) 803-2274"],
+        ["Alexis Coles","2026 BMW / 2026+ BMW 430","Pirooz Arabi","2026-10-09","working","Internet (JD Power SmartLeads)","(540) 238-5422"],
+        ["Andrew Morcum","2027 BMW X5","David Ripley","2026-10-10","working","Phone","(434) 238-3323"],
+        ["Bradley Mcdaniel","2026 BMW M4","Pirooz Arabi","2026-10-21","working","Internet (JD Power SmartLeads)","(540) 609-3570"],
+        ["Colleen Bathan","2027 BMW X5","Pirooz Arabi","2026-10-05","working","Internet (JD Power SmartLeads)","(540) 447-3414"],
+        ["Derrick Staten","2026 BMW X7 / 2027+ BMW X7","Pirooz Arabi","2026-10-21","working","Internet (JD Power SmartLeads)","(434) 347-9057"],
+        ["Ezekiel Ampem","2026 BMW 530","David Ripley","2026-10-11","working","Internet (Autotrader.com)","(804) 389-2301"],
+        ["Faith-Laura Etta","2022 Mercedes-Benz C-Class","Pirooz Arabi","2026-10-26","working","Internet (Autotrader.com)","(240) 302-3790"],
+        ["Gregory Barthelon","2022 Mercedes-Benz GLC 300","David Ripley","2026-10-20","working","Showroom","(704) 201-2567"],
+        ["Heather Tulow","2027 Mercedes-Benz","Isaiah Contreras","2026-10-22","working","Internet (Mercedes-Benz USA)","(704) 650-1017"],
+        ["Howard Moye","2026 BMW","Pirooz Arabi","2026-10-15","working","Campaign (Current Owner in Markt)","(919) 669-7650"],
+        ["Joel Zombade","2025 BMW X3","Isaiah Contreras","2026-10-22","working","Internet (BMWUSA.COM)",""],
+        ["Kelly Handy","2026 BMW X3 / 2024+ BMW X5 / 2024 BMW X5 / 2026+ BMW X3","David Ripley","2026-10-09","working","Phone","(540) 819-0793"],
+        ["Kenneth Philips","","Justin Henry","2026-10-20","working","Phone (Carfax - Phone)","(440) 221-4011"],
+        ["Kenterio Jefferson","","David Ripley","2026-10-09","working","Internet (700Credit.com)","(434) 546-1582"],
+        ["Maria Horteloup","2026+ BMW X3","David Ripley","2026-10-06","working","Phone","(540) 750-1728"],
+        ["Michael Odenbach","2027 BMW X5","David Ripley","2026-10-26","working","Showroom","(434) 841-8676"],
+        ["Mike Dixon","2027 BMW X5","Pirooz Arabi","2026-10-07","working","Internet (JD Power SmartLeads)","(804) 929-4492"],
+        ["Shanta Brown","","David Ripley","2026-10-04","working","Internet (Trade-In Lead: CARFAX)","(434) 473-0505"],
+        ["Sumit Kumar","2027 BMW X7","Pirooz Arabi","2026-10-05","working","Internet (JD Power SmartLeads)","(804) 587-9652"],
+        ["Tim Hamilton","2023 Volvo C40 Recharge Pure Electric","Pirooz Arabi","2026-10-07","working","Internet (CarGurus)","(434) 386-3089"],
+        ["Tracie Marshall","2026 Volvo XC40","David Ripley","2026-10-27","working","Internet (Volvo)","(818) 624-1211"],
+        ["Alex Laon","2027 BMW X5","David Ripley","2026-10-14","engaged","Showroom","(434) 257-9893"],
+        ["Amy Hackett","2027 Mercedes-Benz GLC 300 / 2027+ Mercedes-Benz GLE 450 / 2026 Mercedes-Benz GLE 450 / 2026 Mercedes-Benz GLE 350","Justin Henry","2026-10-21","engaged","Showroom","(610) 587-6869"],
+        ["Bryson Rittenhouse","2026 BMW M2","Pirooz Arabi","2026-10-07","engaged","Internet (BYO)","(434) 989-9537"],
+        ["Clarke Edgar","2019 BMW 640 Gran Turismo","Justin Henry","2026-10-21","engaged","Internet (Autotrader.com)","(917) 981-7656"],
+        ["Coleen Miller","2026 INFINITI QX60","Justin Henry","2026-10-15","engaged","Showroom","(434) 944-7400"],
+        ["Jeff Rinker","2027 BMW","Pirooz Arabi","2026-10-09","engaged","Internet (JD Power SmartLeads)","(540) 421-0444"],
+        ["Olivia Newsome","2023 Porsche Macan","Pirooz Arabi","2026-10-22","engaged","Showroom","(804) 761-4471"],
+        ["Rohit Desai","2027 BMW iX3","Pirooz Arabi","2026-10-22","engaged","Internet (Dealer Website)",""],
+        ["Theodore Fisher","","Justin Henry","2026-10-22","engaged","Phone","(540) 239-5600"],
+        ["Zaciah Jones","2027 Mercedes-Benz GLC 300","David Ripley","2026-10-13","engaged","Internet (Mercedes-Benz USA)","(434) 473-9868"],
+        ["Ashley Walker","2026 Volvo / 2026+ Volvo V60 Cross Country","David Ripley","2026-10-12","negotiation","Internet (Kelley Blue Book)","(828) 545-9551"],
+        ["Barak Shushan","2027 Mercedes-Benz AMG GLE 53e","Justin Henry","2026-10-21","negotiation","Phone",""],
+        ["Brittany Deacon","2026 BMW / 2026+ BMW / 2026+ BMW X3","David Ripley","2026-10-15","negotiation","Campaign (Current Owner in Markt)","(434) 444-2478"],
+        ["Hester Bruce","2026 Mercedes-Benz GLC 300 / 2022+ Mercedes-Benz GLE 350","David Ripley","2026-10-03","negotiation","Internet (Autotrader.com)","(434) 665-4533"],
+        ["Jack Ross","2026 BMW X5","David Ripley","2026-10-16","negotiation","Internet (CarGurus)","(757) 535-0174"],
+        ["Keith Morris","2027 BMW X5","David Ripley","2026-10-16","negotiation","Internet (JD Power SmartLeads)","(540) 241-0144"],
+        ["Lindsy Mueller","2025 Mercedes-Benz C-Class","David Ripley","2026-10-24","negotiation","Internet (Dealer.com)","(843) 305-9075"],
+        ["Mary Fuller-Gore","2027 BMW X6 / 2027+ BMW X6 M","David Ripley","2026-10-06","negotiation","Internet (JD Power SmartLeads)","(434) 770-1480"],
+        ["Mason Talbott","2022 Mercedes-Benz C-Class","David Ripley","2026-10-13","negotiation","Internet (CarGurus)","(434) 222-6771"],
+        ["Michael Graley","2022 BMW X5 / 2024+ BMW X5","David Ripley","2026-10-05","negotiation","Internet (Autotrader.com)",""],
+        ["Naman Bradley","","David Ripley","2026-10-20","negotiation","Internet (700Credit.com)","(434) 941-9732"],
+        ["Tim Martin","2026 BMW X5","Pirooz Arabi","2026-10-22","negotiation","Internet (CarGurus)","(703) 615-4784"],
+        ["Venkat Epusanti","2026 BMW X5","Pirooz Arabi","2026-10-21","negotiation","Phone","(860) 605-5066"],
+        ["John Brockman","2023 Chevrolet Corvette","Justin Henry","2026-10-21","appointment","Internet (Autotrader.com)","(434) 665-0987"],
+        ["Mark Clodfelter","2026 Volvo XC40","Justin Henry","2026-10-15","appointment","Internet (Volvo)","(703) 731-9297"],
+        ["Matthew Fisher","2022 BMW X5","Pirooz Arabi","2026-10-05","appointment","Internet (Dealer Website)","(434) 660-6936"],
+        ["Aluxotic Llc","2027+ BMW M3","David Ripley","2026-10-16","sold","Phone (Autotrader)","(630) 688-2886"],
+        ["Amy Jennings","","Pirooz Arabi","2026-10-27","sold","Showroom (Other)","(434) 841-8243"],
+        ["Brent Sperry","2026 BMW X5","Justin Henry","2026-10-16","sold","Internet (CARFAX.com)","(814) 881-0679"],
+        ["Frank Anderson","2025 Volvo V60 Cross Country / 2026+ Volvo V60 Cross Country","Justin Henry","2026-10-16","sold","Phone","(434) 251-1380"],
+        ["Jacqueline Blake","2021 BMW X5","Justin Henry","2026-10-27","sold","Showroom","(434) 942-2941"],
+        ["James Tomlin","2026 / 2024+ Chevrolet Blazer EV","Pirooz Arabi","2026-10-19","sold","Showroom","(434) 258-2886"],
+        ["John Canody","2023+ Chevrolet Corvette","David Ripley","2026-10-23","sold","Showroom","(434) 981-5309"],
+        ["Lydia Scott","2020 Lincoln Corsair","Pirooz Arabi","2026-10-17","sold","Showroom","(434) 420-4158"],
+        ["Rayna Williams","2023+ BMW M2","Isaiah Contreras","2026-10-19","sold","Phone","(434) 509-9691"],
+        ["Stephan Parry","2027 BMW iX3","Justin Henry","2026-10-22","sold","Internet (Dealer Website)","(804) 314-7269"],
+        ["Stephanie Stewart","2027+ BMW iX3","Justin Henry","2026-10-21","sold","Showroom","(434) 941-9015"],
+        ["Thomas Mucenski","2022 BMW X5","Justin Henry","2026-10-05","sold","Phone","(434) 227-0785"],
+        ["Troy Williams","2027 Mercedes-Benz GLE 450 / 2027+ Mercedes-Benz GLE 450","Pirooz Arabi","2026-10-22","sold","Showroom","(434) 229-9119"],
+        ["Umaria Zainab","2026 Mercedes-Benz C-Class","Isaiah Contreras","2026-10-12","sold","Campaign (Service Appraisal)","(732) 688-0544"],
+        ["Akeia Clarke","2023 BMW M2","David Ripley","2026-10-17","inactive","Internet (CarGurus)","(804) 939-9504"],
+        ["Andrea Rousseau","2020 BMW X3 PHEV / 2024+ BMW X5","Pirooz Arabi","2026-10-12","inactive","Showroom","(434) 664-0364"],
+        ["Andy Mathews Agency","","Isaiah Contreras","2026-10-06","inactive","Phone (Autotrader)","(434) 534-9004"],
+        ["Benjamin Bailey","","Ashton Brown","2026-10-27","inactive","Phone (CarGurus)","(656) 201-9371"],
+        ["Berglund Luxlyn","","Isaiah Contreras","2026-10-07","inactive","Phone (CarGurus)","(434) 455-7414"],
+        ["Bourdillon A Ameh","2027 Mercedes-Benz AMG GLE 53e","Ashton Brown","2026-10-09","inactive","Phone (Autotrader)","(973) 452-3898"],
+        ["Cargurus Inc","","Isaiah Contreras","2026-10-06","inactive","Phone (CarGurus)","(617) 340-9342"],
+        ["Christine Crist","2026 Volvo XC90 / 2025+ Volvo XC60 Plug-In Hybrid / 2026+ Volvo XC90","Pirooz Arabi","2026-10-16","inactive","Showroom","(434) 907-7306"],
+        ["Colleen Miller","2026 BMW","Pirooz Arabi","2026-10-15","inactive","Campaign (Current Owner in Markt)","(434) 660-6871"],
+        ["Darren Ullrich","2023 BMW M2","Ashton Brown","2026-10-16","inactive","Internet (CarGurus)",""],
+        ["Fuck You","2025 BMW X4 M","Pirooz Arabi","2026-10-17","inactive","Internet (JD Power SmartLeads)","(234) 567-8910"],
+        ["Glenn Hussein","2025 Mercedes-Benz GLC 300","Pirooz Arabi","2026-10-09","inactive","Showroom","(540) 642-9475"],
+        ["James Curtiss","2023 BMW 330","David Ripley","2026-10-05","inactive","Campaign (BMW Group)","(540) 907-9423"],
+        ["John Reagan","2026 Volvo V60 Cross Country","Justin Henry","2026-10-07","inactive","Internet (Dealer.com)",""],
+        ["Marin Hart","","Pirooz Arabi","2026-10-21","inactive","Internet (Dealer.com)",""],
+        ["Mary Kate Toms","","Isaiah Contreras","2026-10-06","inactive","Phone (Autotrader)","(434) 568-0816"],
+        ["Natalie Darling","","Justin Henry","2026-10-12","inactive","Internet (Trade-In Lead: CARFAX)","(434) 941-3784"],
+        ["Robert Olockwood","2026 BMW / 2026+ BMW 330","Isaiah Contreras","2026-10-05","inactive","Internet (JD Power SmartLeads)","(540) 250-3172"],
+        ["Sandra Finch","2024 BMW X5","Justin Henry","2026-10-02","inactive","Phone","(540) 871-3922"],
+        ["Stafford 20261019103909","","Justin Henry","2026-10-19","inactive","Phone (Carfax - Phone)","(540) 426-5530"],
+        ["Steve Lanng","2024 Volkswagen Tiguan","Justin Henry","2026-10-26","inactive","Phone","(434) 315-4508"],
+        ["Tamika Scott","2027 BMW X6 / 2026+ BMW X6","Pirooz Arabi","2026-10-23","inactive","Internet (JD Power SmartLeads)","(804) 461-0139"],
+        ["Tanadol Chawalertpanyakul","2026 BMW X5","David Ripley","2026-10-04","inactive","Internet (JD Power SmartLeads)","(540) 937-1959"],
+        ["Thomas Pettus","2027 Mercedes-Benz GLE 450","David Ripley","2026-10-09","inactive","Campaign (Service Referral)","(434) 547-8966"],
+        ["Thomas Stauffer","2026 Volvo / 2026+ Volvo XC90","Pirooz Arabi","2026-10-02","inactive","Internet (Dealer.com)","(757) 710-9675"],
+        ["Tim Tanner","2026 BMW","Justin Henry","2026-10-05","inactive","Internet (JD Power SmartLeads)","(434) 238-8132"],
+        ["Warren Brown Jr","","Isaiah Contreras","2026-10-26","inactive","Internet (Dealer.com)","(360) 320-5059"],
+        ["Whitney Dooley","2026 Mercedes-Benz GLA 250","Pirooz Arabi","2026-10-07","inactive","Phone","(434) 515-3918"]
       ];
       var leads=RAW.map(function(r){
-        return {name:r[0],vehicle:r[1],rep:r[2],dateIn:r[3],stage:r[4],
-          task:r[5]||'Day 1 Email',due:(r[5]==='—')?'':(r[6]||r[3]),touches:r[7]||0,score:r[8]||0,phone:r[9]||''};
+        return {name:r[0],vehicle:r[1],rep:r[2],dateIn:r[3],stage:r[4],source:r[5],phone:r[6]||''};
       });
       var pending=leads.length===0;
       var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -874,11 +956,10 @@
       function fmtDFull(iso){var p=iso.split('-');return MONTHS[Number(p[1])-1]+' '+Number(p[2])+', '+p[0]}
       function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
       /* Month totals at the top of the tab. Total Leads is counted from
-         the census list below. Showroom ups (16), phone ups (6) and
-         internet leads (86) are the October eLEAD source totals from the
-         same Oct 1–21 pull — they match the Activity table on the
-         Sales People tab. */
-      var SHOWROOM_UPS=16,PHONE_UPS=6,INTERNET_LEADS=86;
+         the census list below. Showroom (31), phone (28) and internet
+         (132) are the October eLEAD source totals from the same
+         Oct 1–28 census (campaign adds the remaining 12). */
+      var SHOWROOM_UPS=31,PHONE_UPS=28,INTERNET_LEADS=132;
       document.getElementById('totalLeads').textContent=pending?'—':leads.length;
       document.getElementById('totalShowrooms').textContent=pending?'—':SHOWROOM_UPS;
       document.getElementById('totalPhoneUps').textContent=pending?'—':PHONE_UPS;
@@ -906,24 +987,21 @@
         });
       }
       /* By salesperson */
-      var REP_STAGES=['new','working','engaged','negotiation','appointment','sold'];
+      var REP_STAGES=['new','working','engaged','negotiation','appointment','sold','inactive'];
       var repAgg={};
       REPS.forEach(function(name){repAgg[name]={n:0,stages:{}}});
       leads.forEach(function(l){
         var a=repAgg[l.rep]||(repAgg[l.rep]={n:0,stages:{}});
         a.n++;a.stages[l.stage]=(a.stages[l.stage]||0)+1;
       });
-      /* Elias David (manager) holds one lead in the list but is not a row
-         in the By Salesperson audit table — his lead still counts in the
-         stage cards and the 144 total. */
-      var repNames=Object.keys(repAgg).filter(function(n){return n!=='Elias David'});
+      var repNames=Object.keys(repAgg);
       if(!pending)repNames.sort(function(a,b){return repAgg[b].n-repAgg[a].n||a.localeCompare(b)});
-      var SP_COLS=[['Salesperson','Salesperson'],['Leads','Leads'],['New','New'],['Working','Work'],['Engaged','Eng'],['Negotiation','Nego'],['Appointment','Appt'],['Sold','Sold']];
+      var SP_COLS=[['Salesperson','Salesperson'],['Leads','Leads'],['New','New'],['Working','Work'],['Engaged','Eng'],['Negotiation','Nego'],['Appointment','Appt'],['Sold','Sold'],['Inactive','Inact']];
       var repHtml='<div class="sp-head">'+SP_COLS.map(function(c){return '<span><span class="sp-full">'+c[0]+'</span><span class="sp-short" aria-hidden="true">'+c[1]+'</span></span>'}).join('')+'</div>';
       repNames.forEach(function(name){
         var a=repAgg[name];
         if(pending){
-          repHtml+='<div class="sp-row"><span class="sp-name">'+esc(name)+'</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
+          repHtml+='<div class="sp-row"><span class="sp-name">'+esc(name)+'</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
         }else{
           repHtml+='<div class="sp-row"><span class="sp-name">'+esc(name)+'</span><span>'+a.n+'</span>';
           REP_STAGES.forEach(function(k){repHtml+='<span>'+(a.stages[k]||0)+'</span>'});
@@ -932,7 +1010,7 @@
       });
       document.getElementById('repTable').innerHTML=repHtml;
       /* List: week filter + sort + render */
-      var WEEKS={rolling:['2026-10-15','2026-10-21'],w1:['2026-10-01','2026-10-07'],w2:['2026-10-08','2026-10-14'],w3:['2026-10-15','2026-10-21'],w4:['2026-10-22','2026-10-28'],w5:['2026-10-29','2026-10-31'],all:null};
+      var WEEKS={rolling:['2026-10-22','2026-10-28'],w1:['2026-10-01','2026-10-07'],w2:['2026-10-08','2026-10-14'],w3:['2026-10-15','2026-10-21'],w4:['2026-10-22','2026-10-28'],w5:['2026-10-29','2026-10-31'],all:null};
       var weekSel=document.getElementById('weekSelect');
       var listEl=document.getElementById('leadList');
       var countLine=document.getElementById('leadCountLine');
@@ -944,7 +1022,7 @@
         {key:'stage',label:'Stage'},
         {key:'vehicle',label:'Vehicle'},
         {key:'rep',label:'Salesperson'},
-        {key:'next',label:'Next step'}
+        {key:'source',label:'Source'}
       ];
       var headEl=document.getElementById('leadHead');
       COLS.forEach(function(c){
@@ -964,7 +1042,6 @@
       }
       function sortVal(l,key){
         if(key==='stage')return stageOrder[l.stage];
-        if(key==='next')return l.due+'|'+l.task;
         return (l[key]||'').toLowerCase();
       }
       function visibleLeads(){
@@ -984,7 +1061,7 @@
         var rows=visibleLeads();
         countLine.textContent='SHOWING '+rows.length+' OF '+leads.length+' LEADS';
         clearBtn.hidden=!(stageFilter||weekSel.value!=='rolling');
-        if(pending){listEl.innerHTML='<div class="empty-note">No leads posted yet — the October eLEAD (8890) internet lead list will land here the moment the BLL lead feed connects.</div>';return}
+        if(pending){listEl.innerHTML='<div class="empty-note">No leads posted yet.</div>';return}
         if(!rows.length){listEl.innerHTML='<div class="lead-empty">No leads in this window.</div>';return}
         var html='';
         rows.forEach(function(l,i){
@@ -994,16 +1071,14 @@
             +'<span class="lead-cell c-stage"><span class="stage-chip '+esc(l.stage)+'">'+esc(stageShort[l.stage])+'</span></span>'
             +'<span class="lead-cell c-veh" data-label="Vehicle">'+esc(l.vehicle||'—')+'</span>'
             +'<span class="lead-cell c-rep" data-label="Salesperson">'+esc(l.rep)+'</span>'
-            +'<span class="lead-cell c-next" data-label="Next step">'+esc(l.task)+(l.due?'<span class="due">DUE '+fmtD(l.due).toUpperCase()+'</span>':'')+'</span>'
+            +'<span class="lead-cell c-next" data-label="Source">'+esc(l.source)+'</span>'
             +'<span class="lead-detail">'
-            +'<span class="ld"><i>NEXT STEP </i><strong>'+esc(l.task)+'</strong></span><span class="ld-sep"> · </span>'
-            +'<span class="ld"><i>DUE </i><strong>'+esc(l.due?fmtDFull(l.due):'—')+'</strong></span><br>'
-            +'<span class="ld"><i>TOUCHES </i><strong>'+l.touches+'</strong></span><span class="ld-sep"> · </span>'
-            +'<span class="ld"><i>ENGAGEMENT SCORE </i><strong>'+l.score+'</strong></span><br>'
+            +'<span class="ld"><i>SOURCE </i><strong>'+esc(l.source)+'</strong></span><span class="ld-sep"> · </span>'
+            +'<span class="ld"><i>PHONE </i><strong>'+esc(l.phone||'—')+'</strong></span><br>'
             +'<span class="ld"><i>DATE IN </i><strong>'+esc(fmtDFull(l.dateIn))+'</strong></span><span class="ld-sep"> · </span>'
             +'<span class="ld"><i>STAGE </i><strong>'+esc(stageShort[l.stage])+'</strong></span><span class="ld-sep"> · </span>'
             +'<span class="ld"><i>SALESPERSON </i><strong>'+esc(l.rep)+'</strong></span><br>'
-            +'<span class="ld"><i>PHONE </i><strong>'+esc(l.phone||'—')+'</strong></span>'
+            +'<span class="ld"><i>VEHICLE </i><strong>'+esc(l.vehicle||'—')+'</strong></span>'
             +'</span>'
             +'</div>';
         });
@@ -1024,5 +1099,6 @@
       renderHead();renderList();
     })();
   </script>
+
 </body>
 </html>
