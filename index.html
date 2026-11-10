@@ -325,11 +325,11 @@
     .stage-card[data-stage="new"] .sc-count{color:var(--red)}
     .stage-card[data-stage="working"] .sc-count{color:var(--amber)}
     .stage-card[data-stage="engaged"] .sc-count{color:var(--cyan)}
-    .stage-card[data-stage="negotiation"] .sc-count{color:var(--gold)}
+    .stage-card[data-stage="negotiation"] .sc-count,.stage-card[data-stage="review"] .sc-count{color:var(--gold)}
     .stage-card[data-stage="appointment"] .sc-count{color:var(--blue)}
     .stage-card[data-stage="sold"] .sc-count{color:var(--lime)}
     .stage-card[data-stage="inactive"] .sc-count{color:var(--muted)}
-    .sp-head,.sp-row{display:grid;grid-template-columns:minmax(0,1.6fr) repeat(8,minmax(0,.55fr));gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+    .sp-head,.sp-row{display:grid;grid-template-columns:minmax(0,1.6fr) repeat(9,minmax(0,.55fr));gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
     .sp-head>span,.sp-row>span{min-width:0}
     .sp-short{display:none}
     .sp-row:last-child{border-bottom:0}
@@ -359,7 +359,7 @@
     .stage-chip.new{border-color:var(--red);color:var(--red)}
     .stage-chip.working{border-color:var(--amber);color:var(--amber)}
     .stage-chip.engaged{border-color:var(--cyan);color:var(--cyan)}
-    .stage-chip.negotiation{border-color:var(--gold);color:var(--gold)}
+    .stage-chip.negotiation,.stage-chip.review{border-color:var(--gold);color:var(--gold)}
     .stage-chip.appointment{border-color:var(--blue);color:var(--blue)}
     .stage-chip.sold{border-color:var(--lime);color:var(--lime)}
     .stage-chip.inactive{border-color:var(--muted);color:var(--muted)}
@@ -404,7 +404,7 @@
       #leads .sp-head,#leads .sp-row{padding-top:7px;padding-bottom:7px}
       /* By-salesperson audit table: fixed compact numeric columns so all
          eight columns (incl. Sold) fit a 390px phone with nothing clipped */
-      #leads .sp-head,#leads .sp-row{grid-template-columns:minmax(0,1fr) 24px 20px 24px 23px 24px 24px 24px 22px;gap:4px}
+      #leads .sp-head,#leads .sp-row{grid-template-columns:minmax(0,1fr) 24px 20px 24px 23px 24px 24px 24px 24px 22px;gap:4px}
       #leads .sp-head>span{font-size:8px;letter-spacing:.02em}
       #leads .sp-name{font-size:13px;line-height:1.2}
       #leads .sp-row>span:not(:first-child){font-size:12.5px}
@@ -657,47 +657,49 @@
     </section>
 
     <section id="leads" class="view">
-      <p class="snapshot-note">CENSUS · LEADS CREATED NOV 1–4, 2026 · STATUSES AS OF NOV 4, 2026 (EVENING) · ELEADS 8890</p>
+      <p class="snapshot-note">STATUS PULL · STATUSES PULLED FROM ELEADS ON NOV 9, 2026 · SWEEP-NOTED LEADS, NOV 3–9 · ELEADS 8890</p>
       <div class="lead-metrics">
         <article class="card card-pad">
           <span class="section-label">Total leads · November</span>
           <div class="lead-big cyan" id="totalLeads">—</div>
-          <span class="metric-sub">BMW 12 · Mercedes-Benz 6 · Volvo 5 · Other 7</span>
+          <span class="metric-sub">BMW 16 · Mercedes-Benz 7 · Volvo 8 · Other 6</span>
         </article>
         <article class="card card-pad">
           <span class="section-label">Deals working</span>
-          <div class="lead-big positive">5</div>
-          <span class="metric-sub">Working 3 · Customer Engaged 2</span>
+          <div class="lead-big positive">4</div>
+          <span class="metric-sub">Working 2 · Manager Review 2</span>
         </article>
         <article class="card card-pad">
           <span class="section-label">Delivered sold</span>
           <div class="lead-big positive">2</div>
-          <span class="metric-sub">Sold from the November census</span>
+          <span class="metric-sub">DMS Sold · Nov 9 status pull</span>
         </article>
         <article class="card card-pad">
           <span class="section-label">Unassigned</span>
-          <div class="lead-big" style="color:var(--gold)">0</div>
-          <span class="metric-sub">Every November lead has an owner</span>
+          <div class="lead-big" style="color:var(--gold)">5</div>
+          <span class="metric-sub">No primary salesperson in eLEADS</span>
         </article>
       </div>
       <div class="split-grid">
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">Pipeline · tap a stage to filter the list</span><h2 class="card-title">Stages</h2></div><span class="tap">ELEADS 8890 · NOV 1–4</span></div>
+          <div class="card-head"><div><span class="section-label">Pipeline · tap a stage to filter the list</span><h2 class="card-title">Stages</h2></div><span class="tap">ELEADS 8890 · NOV 9 PULL</span></div>
           <div class="stage-grid" id="stageGrid"></div>
         </article>
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">Audit</span><h2 class="card-title">By salesperson</h2></div><span class="tap">ELEADS 8890 · NOV 1–4</span></div>
+          <div class="card-head"><div><span class="section-label">Audit</span><h2 class="card-title">By salesperson</h2></div><span class="tap">ELEADS 8890 · NOV 9 PULL</span></div>
           <div id="repTable"></div>
         </article>
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">Census · Nov 1–4</span><h2 class="card-title">Lead list</h2></div><span class="tap">ELEADS 8890 · NOV 1–4</span></div>
+          <div class="card-head"><div><span class="section-label">Status pull · Nov 9</span><h2 class="card-title">Lead list</h2></div><span class="tap">ELEADS 8890 · NOV 9 PULL</span></div>
           <div class="lead-controls">
             <select class="week-select" id="weekSelect" aria-label="Filter leads by day">
-              <option value="all" selected>All November leads · Nov 1–4</option>
-              <option value="d1">Nov 1</option>
-              <option value="d2">Nov 2</option>
+              <option value="all" selected>All leads · status pull Nov 9</option>
               <option value="d3">Nov 3</option>
               <option value="d4">Nov 4</option>
+              <option value="d5">Nov 5</option>
+              <option value="d6">Nov 6</option>
+              <option value="d7">Nov 7</option>
+              <option value="d9">Nov 9</option>
             </select>
             <span class="lead-count-line" id="leadCountLine"></span>
             <button class="clear-filter" id="clearFilter" type="button" hidden>CLEAR FILTERS</button>
@@ -728,17 +730,22 @@
     })();
   </script>
   <script>
-    /* LEADS snapshot — eLEADS (8890) census of leads created Nov 1–4, 2026,
-       statuses as of the evening of Nov 4, 2026. 30 leads. Stage mapping:
-       "Customer Engaged" → Engaged; "Delivered Sold" → Sold. No phone
-       numbers were collected in this census, so expanded rows carry the
-       stock number instead of phone detail. */
+    /* LEADS snapshot — eLEADS (8890) status pull of Nov 9, 2026: the 37
+       sweep-noted leads (45 records checked; Debenard and Walker excluded
+       — no current record). Stage mapping: "Manager Review" → Manager
+       Review (gold, the negotiation treatment); "DMS Sold" → Sold.
+       Date In and Source are carried from the Nov 1–4 census where the
+       lead appeared there; otherwise the date is the morning sweep that
+       first noted the lead. No phone numbers were collected in this
+       pull, so expanded rows carry the stock number instead of phone
+       detail. */
     (function(){
       var STAGES=[
         {key:'new',label:'New — Not Contacted',short:'New'},
         {key:'working',label:'Working',short:'Working'},
         {key:'engaged',label:'Engaged',short:'Engaged'},
         {key:'negotiation',label:'Negotiation',short:'Negotiation'},
+        {key:'review',label:'Manager Review',short:'Manager Review'},
         {key:'appointment',label:'Appointment',short:'Appointment'},
         {key:'sold',label:'Sold',short:'Sold'},
         {key:'inactive',label:'Inactive',short:'Inactive'}
@@ -748,36 +755,43 @@
       var REPS=['Justin Henry','Pirooz Arabi','David Ripley','Isaiah Contreras','Ashton Brown'];
       /* name | vehicle | stock | salesperson | date in | stage | source */
       var RAW=[
-        ["Doliscat, Dieunel","Used 2019 Toyota RAV4 Hybrid XSE","LLB4237A","Pirooz Arabi","2026-11-01","working","CARFAX.com"],
-        ["Hussey, Sherry","Used 2025 Mercedes-Benz GLA 250","LRP3634","Justin Henry","2026-11-01","engaged","Autotrader.com"],
-        ["Kern, Debra","Used 2019 Toyota RAV4 Hybrid XSE","LLB4237A","David Ripley","2026-11-01","new","CARFAX.com"],
-        ["Nachman, James","New 2026 Mercedes-Benz GLE 580 4MATIC","LLM4254","Pirooz Arabi","2026-11-01","working","mbusa.com"],
-        ["Taylor, Darlene","New 2027 BMW X5","","Isaiah Contreras","2026-11-01","working","JD Power SmartLeads"],
-        ["Welsh, Rebecca","No vehicle of interest","","Justin Henry","2026-11-01","engaged","700Credit.com"],
-        ["Fetters II, Jerry","Used 2019 BMW 640 Gran Turismo","LLV4218A","David Ripley","2026-11-02","sold","Location"],
-        ["Foxworth, Donta","New 2027 BMW X5 40 xDrive","LLB4372","David Ripley","2026-11-02","new","Location"],
-        ["Paraiso, Edward","New 2027 BMW iX3","","Justin Henry","2026-11-02","new","JD Power SmartLeads"],
-        ["Ram, Venkat","New 2027 Mercedes-Benz GLE 450 4MATIC (build)","","Pirooz Arabi","2026-11-02","new","mbusa.com Build"],
-        ["Roach, Taylor","New 2027 BMW X5","LLB4356","Pirooz Arabi","2026-11-02","sold","Location"],
-        ["Stevens, David","New 2027 Volvo XC90","","David Ripley","2026-11-02","new","Volvo / Request Dealer Quote"],
-        ["Wajciechowski, James","New 2026 Volvo XC40 B5 Core","","Pirooz Arabi","2026-11-02","new","Volvo / Request Dealer Quote"],
-        ["Miley, Dan L","New 2026 BMW X5 xDrive40i","LLB4311","Justin Henry","2026-11-03","new","Autotrader / Phone Lead"],
-        ["Bailey, Benjamin","No vehicle of interest","","Ashton Brown","2026-11-03","new","CarGurus"],
-        ["Bays, Ginger","Trade-in: 2016 Jeep Wrangler","","Pirooz Arabi","2026-11-03","new","Trade-In Lead: CARFAX"],
-        ["Charnock, Brian","New 2027 Mercedes-AMG GT SUV (future interest)","","Justin Henry","2026-11-03","new","mbusa.com Future Vehicles"],
-        ["Debenard, Kelly","Loaner Mercedes-Benz GLC","LRM3475","Justin Henry","2026-11-03","new","Location"],
-        ["Dofflemyer, Shania","New 2025 BMW (M4/M5 interest)","","David Ripley","2026-11-03","new","Black Book Leads"],
+        ["Charnock, Brian","New 2027 BMW","","Justin Henry","2026-11-03","new","mbusa.com Future Vehicles"],
+        ["Bailey, Benjamin","No vehicle of interest","","Unassigned","2026-11-03","new","CarGurus"],
+        ["Miley, Dan L","New 2026 BMW X5 xDrive40i (bought elsewhere 11/6)","LLB4311","Justin Henry","2026-11-03","review","Autotrader / Phone Lead"],
         ["Jarvis, CJ","Used 2024 Volkswagen Tiguan 2.0T SEL R-Line","LRP3617A","David Ripley","2026-11-03","new","Location"],
         ["Parker, Jordan","New 2027 BMW 530 i xDrive","LLB4324","David Ripley","2026-11-03","new","Dealer Website ePricer"],
+        ["Bays, Ginger","Trade-in: 2016 Jeep Wrangler Unlimited","","Pirooz Arabi","2026-11-03","new","Trade-In Lead: CARFAX"],
+        ["Obrien, Joseph","Used 2022 BMW 230 i","LLM4294A","Pirooz Arabi","2026-11-04","new","CARFAX.com"],
         ["Altarifi, Zaid","New 2027 Mercedes-Benz AMG GLE 53e Coupe","LLM4343","Pirooz Arabi","2026-11-04","new","Autotrader.com"],
-        ["Bartsch, Carl","New 2026 Volvo EX90 Twin Motor Performance Ultra 7-Seater","LLV4199","David Ripley","2026-11-04","new","Volvo Quick Quote"],
+        ["Bartsch, Carl","New 2026 Volvo EX90","LLV4199","David Ripley","2026-11-04","new","Volvo Quick Quote"],
         ["Coleman, Lora","Used 2025 Volvo XC90","LLB4310A","Justin Henry","2026-11-04","new","Volvo / Request Dealer Quote"],
-        ["Elliott, Wes","New 2026 Volvo XC60 B5 Core","","Pirooz Arabi","2026-11-04","new","Volvo / Request Dealer Quote"],
+        ["Elliott, Wes","Used 2026 Volvo XC60 B5 Plus","LLL6377","Pirooz Arabi","2026-11-04","new","Volvo / Request Dealer Quote"],
         ["Hook, Marcus","New 2026 BMW 330 i xDrive","LLB4269","David Ripley","2026-11-04","new","Dealer Website ePricer"],
-        ["Hunt, James","New 2027 BMW X7 xDrive40i","LLB4300","Pirooz Arabi","2026-11-04","new","Location"],
-        ["Jerominek, Olivia","Used 2022 Lexus RX 450h","CJP6134","David Ripley","2026-11-04","new","Dealer.com Test Drive"],
+        ["Hunt, James","New 2027 Mercedes-Benz GLS 450 (also BMW X7, LLB4300)","LLM4339","Pirooz Arabi","2026-11-04","working","Location"],
+        ["Jerominek, Olivia","Used 2022 Lexus RX 450h (at Berglund CJDR)","CJP6134","David Ripley","2026-11-04","new","Dealer.com Test Drive"],
         ["Kuncio, Donna","Used 2022 BMW X7 xDrive40i","LLM4227C","Pirooz Arabi","2026-11-04","new","Autotrader.com"],
-        ["Obrien, Joseph","Used 2022 BMW 230 i","LLM4294A","Pirooz Arabi","2026-11-04","new","CARFAX.com"]
+        ["Bryant, Jerry","Used 2022 BMW X7 xDrive40i","LLM4227C","David Ripley","2026-11-05","new","eLEADS"],
+        ["Reagan, Ronald","Used 2026 BMW 330 i xDrive","LLL6451","Pirooz Arabi","2026-11-06","sold","eLEADS"],
+        ["Habeeb, Ann","New 2027 BMW X1 xDrive28i","LLB4327","Justin Henry","2026-11-06","new","eLEADS"],
+        ["Bunn, Robert","New 2026 BMW","","Pirooz Arabi","2026-11-06","new","eLEADS"],
+        ["McCargo, Frances","No vehicle of interest","","Unassigned","2026-11-06","new","eLEADS"],
+        ["Faulkner, Ruth","Used 2022 Mercedes-Benz C 300 AWD 4MATIC","LLP6414","Pirooz Arabi","2026-11-06","new","eLEADS"],
+        ["Melnyk, Oleksii","New 2026 Mercedes-Benz GLC 300 (flagged not available)","LLM4207","Unassigned","2026-11-06","new","eLEADS"],
+        ["Mitchell, Dallaqny","Used 2025 Mercedes-Benz C 300 AWD 4MATIC","LRM3491A","David Ripley","2026-11-06","new","eLEADS"],
+        ["Browning, Chris","Used 2018 Volvo XC90 T6 Inscription (at Berglund Chevrolet Buick)","BCP49650","Unassigned","2026-11-06","new","eLEADS"],
+        ["Malave, Matt","New 2027 BMW M3 base (allocation inquiry)","","David Ripley","2026-11-06","new","eLEADS"],
+        ["Hamlor, Fred","New 2027 BMW iX3 50 xDrive (build quote)","","Justin Henry","2026-11-06","new","eLEADS"],
+        ["Friedwald, Don","Used 2024 Mercedes-Benz GLE 350 AWD 4MATIC","LLP6450","Pirooz Arabi","2026-11-07","working","eLEADS"],
+        ["Gutsu, Viktor","Used 2022 BMW X7 xDrive40i","LLM4227C","David Ripley","2026-11-07","new","eLEADS"],
+        ["Kenney, Patrick","New 2026 Volvo XC40 B5 Core","LLV4308","Pirooz Arabi","2026-11-07","sold","eLEADS"],
+        ["Nichols, Dianne","New Mercedes-Benz GLC (locate, grey/black)","","David Ripley","2026-11-07","new","eLEADS"],
+        ["Noel, Odell","New 2027 Volvo XC90 B6 Plus 7-Seater","","David Ripley","2026-11-07","new","eLEADS"],
+        ["Perry, John","Used Volvo XC90","","David Ripley","2026-11-07","new","eLEADS"],
+        ["Spratley, Selma","Used 2024 Volkswagen Tiguan 2.0T SEL R-Line","LRP3617A","David Ripley","2026-11-07","new","eLEADS"],
+        ["Carroll, Charles","Used 2026 Volvo XC90 B6 Plus 7-Seater (at Berglund Luxury Roanoke)","LLL6418","Unassigned","2026-11-09","review","Volvo / Request Dealer Quote"],
+        ["Franklin, Joyce","New 2027 BMW X5","","David Ripley","2026-11-09","new","JD Power SmartLeads"],
+        ["Holmes, Robert","Used 2026 BMW 330 i xDrive (car sold 11/7)","LLL6451","Pirooz Arabi","2026-11-09","new","CARFAX.com"],
+        ["Nabors, Michael","New 2027 BMW","","Justin Henry","2026-11-09","new","JD Power SmartLeads"]
       ];
       var leads=RAW.map(function(r){
         return {name:r[0],vehicle:r[1],stock:r[2],rep:r[3],dateIn:r[4],stage:r[5],source:r[6]};
@@ -787,9 +801,9 @@
       function fmtD(iso){var p=iso.split('-');return MONTHS[Number(p[1])-1]+' '+Number(p[2])}
       function fmtDFull(iso){var p=iso.split('-');return MONTHS[Number(p[1])-1]+' '+Number(p[2])+', '+p[0]}
       function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-      /* Month total at the top of the tab, counted from the census list below.
-         Deals working (5), delivered sold (2) and unassigned (0) are the
-         November pipeline figures from the same Nov 1–4 census. */
+      /* Month total at the top of the tab, counted from the list below.
+         Deals working (4), delivered sold (2) and unassigned (5) are the
+         pipeline figures from the same Nov 9, 2026 status pull. */
       document.getElementById('totalLeads').textContent=pending?'—':leads.length;
       /* Stage cards */
       var stageFilter=null;
@@ -814,7 +828,7 @@
         });
       }
       /* By salesperson */
-      var REP_STAGES=['new','working','engaged','negotiation','appointment','sold','inactive'];
+      var REP_STAGES=['new','working','engaged','negotiation','review','appointment','sold','inactive'];
       var repAgg={};
       REPS.forEach(function(name){repAgg[name]={n:0,stages:{}}});
       leads.forEach(function(l){
@@ -823,12 +837,12 @@
       });
       var repNames=Object.keys(repAgg);
       if(!pending)repNames.sort(function(a,b){return repAgg[b].n-repAgg[a].n||a.localeCompare(b)});
-      var SP_COLS=[['Salesperson','Salesperson'],['Leads','Leads'],['New','New'],['Working','Work'],['Engaged','Eng'],['Negotiation','Nego'],['Appointment','Appt'],['Sold','Sold'],['Inactive','Inact']];
+      var SP_COLS=[['Salesperson','Salesperson'],['Leads','Leads'],['New','New'],['Working','Work'],['Engaged','Eng'],['Negotiation','Nego'],['Manager Review','Mgr Rev'],['Appointment','Appt'],['Sold','Sold'],['Inactive','Inact']];
       var repHtml='<div class="sp-head">'+SP_COLS.map(function(c){return '<span><span class="sp-full">'+c[0]+'</span><span class="sp-short" aria-hidden="true">'+c[1]+'</span></span>'}).join('')+'</div>';
       repNames.forEach(function(name){
         var a=repAgg[name];
         if(pending){
-          repHtml+='<div class="sp-row"><span class="sp-name">'+esc(name)+'</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
+          repHtml+='<div class="sp-row"><span class="sp-name">'+esc(name)+'</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
         }else{
           repHtml+='<div class="sp-row"><span class="sp-name">'+esc(name)+'</span><span>'+a.n+'</span>';
           REP_STAGES.forEach(function(k){repHtml+='<span>'+(a.stages[k]||0)+'</span>'});
@@ -837,7 +851,7 @@
       });
       document.getElementById('repTable').innerHTML=repHtml;
       /* List: week filter + sort + render */
-      var WEEKS={all:null,d1:['2026-11-01','2026-11-01'],d2:['2026-11-02','2026-11-02'],d3:['2026-11-03','2026-11-03'],d4:['2026-11-04','2026-11-04']};
+      var WEEKS={all:null,d3:['2026-11-03','2026-11-03'],d4:['2026-11-04','2026-11-04'],d5:['2026-11-05','2026-11-05'],d6:['2026-11-06','2026-11-06'],d7:['2026-11-07','2026-11-07'],d9:['2026-11-09','2026-11-09']};
       var weekSel=document.getElementById('weekSelect');
       var listEl=document.getElementById('leadList');
       var countLine=document.getElementById('leadCountLine');
