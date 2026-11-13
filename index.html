@@ -735,12 +735,12 @@
         </article>
 
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label">Sales People</span><h2 class="card-title">Tap a name</h2></div><span class="tap">62 LEADS</span></div>
+          <div class="card-head"><div><span class="section-label">Sales People</span><h2 class="card-title">Working Clients</h2></div><span class="tap">62 LEADS</span></div>
           <div class="lv-people" id="peopleGrid"></div>
         </article>
 
         <article class="card card-pad span-12">
-          <div class="card-head"><div><span class="section-label" id="listLabel">His List</span><h2 class="card-title" id="listTitle">Justin Henry</h2></div><span class="tap" id="listCount"></span></div>
+          <div class="card-head"><div><span class="section-label" id="listLabel">Client List</span><h2 class="card-title" id="listTitle">Justin Henry — Client List</h2></div><span class="tap" id="listCount"></span></div>
           <p class="metric-sub" style="font-size:13px;margin-bottom:6px">Most urgent first · Non-responsive at the bottom</p>
           <div id="personList"></div>
         </article>
@@ -906,8 +906,8 @@
       }
       function renderList(){
         var per=null;PEOPLE.forEach(function(x){if(x.id===selected)per=x});
-        document.getElementById('listTitle').textContent=per.name+(per.id==='unassigned'?' — Needs An Owner':' — His List');
-        document.getElementById('listLabel').textContent=per.id==='unassigned'?'Unassigned List':'His List';
+        document.getElementById('listTitle').textContent=per.name+(per.id==='unassigned'?' — Needs An Owner':' — Client List');
+        document.getElementById('listLabel').textContent=per.id==='unassigned'?'Unassigned List':'Client List';
         document.getElementById('listCount').textContent=per.count+(per.count===1?' LEAD':' LEADS');
         var html='';
         per.groups.forEach(function(g){
